@@ -4,9 +4,7 @@
 //      }
 //  }
  
-
- 
- // This is only used when we have to make a web request
+ //  web request
  
  const asyncHandler =(fn)=>async(req,res,next)=>{
     try {
