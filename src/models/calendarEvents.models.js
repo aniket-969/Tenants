@@ -1,7 +1,5 @@
 import { Schema } from "mongoose";
 
-import { Schema } from 'mongoose';
-
 const calendarEventSchema = new Schema({
   title: {
     type: String,
