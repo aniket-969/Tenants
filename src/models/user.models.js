@@ -52,18 +52,18 @@ const userSchema = new Schema(
       },
       isGuest: {
         type: Boolean,
-        default: true // Default flag for guest users
+        default: true 
       },
       rooms: [
         {
           type: mongoose.Schema.Types.ObjectId,
-        //   ref: 'Room' // Reference to the rooms this user belongs to
+        //   ref: 'Room' 
         }
       ],
       tasks: [
         {
           type: mongoose.Schema.Types.ObjectId,
-        //   ref: 'Task' // Reference to the tasks assigned to the user
+        //   ref: 'Task' 
         }
       ],
       calendarEvents: [
