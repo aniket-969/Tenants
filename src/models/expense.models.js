@@ -1,4 +1,4 @@
-import { Schema } from 'mongoose';
+import mongoose,{ Schema } from 'mongoose';
 
 const expenseSchema = new Schema({
   name: {
