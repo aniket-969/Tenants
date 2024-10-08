@@ -13,8 +13,9 @@ const registerUser = asyncHandler(async (req, res) => {
       throw new ApiError(400, "Room is required to create a guest account");
     }
     const user = await User.create({
-      isGuest: true,
+      isGuest,
       role: "guest",
+      rooms: [room],
     });
     const createdUser = await User.findById(user._id);
     return res.json(

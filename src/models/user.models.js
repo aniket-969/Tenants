@@ -4,6 +4,10 @@ import jwt from "jsonwebtoken";
 
 const userSchema = new Schema(
   {
+    isGuest: {
+      type: Boolean,
+      default: false,
+    },
     username: {
       type: String,
       required: function () {
@@ -12,9 +16,9 @@ const userSchema = new Schema(
       unique: true,
       lowercase: true,
       trim: true,
-      index: true,
+      index:true,
+      sparse:true
     },
-
     email: {
       type: String,
       required: function () {
@@ -23,49 +27,39 @@ const userSchema = new Schema(
       unique: true,
       lowercase: true,
       trim: true,
+      sparse: true,
     },
-
     fullName: {
-      type: String,
-      required: function () {
-        return !this.isGuest;
+        type: String,
+        required: function () {
+          return !this.isGuest;
+        },
+        trim: true,
+        index: true,
       },
-      trim: true,
-      index: true,
-    },
-
     avatar: {
       type: String,
       required: function () {
         return !this.isGuest;
       },
     },
-
     password: {
       type: String,
       required: function () {
         return !this.isGuest;
       },
     },
-
     role: {
       type: String,
       enum: ["guest", "tenant", "landlord"],
       default: "guest",
     },
-
-    isGuest: {
-      type: Boolean,
-      default: true,
-    },
-
     rooms: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Room",
       },
     ],
-
     refreshToken: {
       type: String,
     },
