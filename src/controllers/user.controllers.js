@@ -5,23 +5,8 @@ import { User } from "../models/user.models.js";
 
 const registerUser = asyncHandler(async (req, res) => {
   console.log("this is body", req.body);
-  const { isGuest, username, email, fullName, avatar, password, room } =
+  const {  username, email, fullName, avatar, password, room } =
     req.body;
-
-  if (isGuest) {
-    if (!room) {
-      throw new ApiError(400, "Room is required to create a guest account");
-    }
-    const user = await User.create({
-      isGuest,
-      role: "guest",
-      rooms: [room],
-    });
-    const createdUser = await User.findById(user._id);
-    return res.json(
-      new ApiResponse(200, createdUser, "Guest user created successfully")
-    );
-  }
 
   const existedUser = await user.findOne({
     $or: [{ username }, { email }],

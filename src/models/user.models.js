@@ -4,10 +4,7 @@ import jwt from "jsonwebtoken";
 
 const userSchema = new Schema(
   {
-    isGuest: {
-      type: Boolean,
-      default: false,
-    },
+   
     username: {
       type: String,
       required: function () {
