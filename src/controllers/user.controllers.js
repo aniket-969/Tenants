@@ -3,6 +3,16 @@ import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { User } from "../models/user.models.js";
 
+const generateTokens = async (userId) => {
+  const user = await User.findById(userId);
+  const accessToken = await user.generateAccessToken();
+  const refreshToken = await user.generateRefreshToken();
+  user.refreshToken = refreshToken;
+  await user.save({ validateBeforeSave: false });
+//   console.log(accessToken, refreshToken);
+  return {accessToken,refreshToken};
+};
+
 const registerUser = asyncHandler(async (req, res) => {
   console.log("this is body", req.body);
   const { username, email, fullName, avatar, password, room } = req.body;
@@ -45,20 +55,28 @@ const loginUser = asyncHandler(async (req, res) => {
   if (!existedUser) {
     throw new ApiError(409, "User not found");
   }
-  console.log("existed", existedUser);
+//   console.log("existed", existedUser);
   const isPasswordValid = await existedUser.isPasswordCorrect(password);
-  console.log("pass", isPasswordValid);
+
   if (!isPasswordValid) {
     throw new ApiError(401, "Invalid user credentials");
   }
 
+  const {accessToken,refreshToken} = await generateTokens(existedUser._id);
+
   const loggedInUser = await User.findById(existedUser._id).select(
     "username avatar email fullName"
   );
-  console.log("Log", loggedInUser);
-  return res.json(
-    new ApiResponse(200, loggedInUser, "User logged in successfully")
-  );
+
+  const options = {
+    httpOnly: true,
+    secure: true,
+  };
+  //   console.log("Log", loggedInUser);
+  return res
+    .cookie("accessToken", accessToken, options)
+    .cookie("refreshToken", refreshToken, options)
+    .json(new ApiResponse(200, loggedInUser, "User logged in successfully"));
 });
 
 export { registerUser, loginUser };
