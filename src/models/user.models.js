@@ -57,28 +57,13 @@ const userSchema = new Schema(
       rooms: [
         {
           type: mongoose.Schema.Types.ObjectId,
-        //   ref: 'Room' 
-        }
-      ],
-      tasks: [
-        {
-          type: mongoose.Schema.Types.ObjectId,
-        //   ref: 'Task' 
-        }
-      ],
-      calendarEvents: [
-        {
-          type: mongoose.Schema.Types.ObjectId,
-        //   ref: 'CalendarEvent' 
+          ref: 'Room' 
         }
       ],
     
       refreshToken: {
         type: String,
-      },
-      expiresAt: { 
-        type: Date,
-      },
+      }
     },
     {
       timestamps: true,
