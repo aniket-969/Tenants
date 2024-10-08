@@ -1,45 +1,44 @@
-import mongoose,{ Schema } from 'mongoose';
+import mongoose, { Schema } from "mongoose";
 
-const voteSchema = new Schema({
-  voteType: {
-    type: String, 
-    required: true
-  },
-  issue: {
-    type: String, 
-    required: true
-  },
-  createdBy: {
-    type: Schema.Types.ObjectId,
-    ref: 'User', 
-    required: true
-  },
-  participants: [
-    {
-      user: {
-        type: Schema.Types.ObjectId,
-        ref: 'User' 
+const voteSchema = new Schema(
+  {
+    voteType: {
+      type: String,
+      required: true,
+    },
+    issue: {
+      type: String,
+      required: true,
+    },
+    createdBy: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    participants: [
+      {
+        user: {
+          type: Schema.Types.ObjectId,
+          ref: "User",
+        },
+        vote: {
+          type: String,
+          enum: ["yes", "no", "abstain"],
+          required: true,
+        },
       },
-      vote: {
-        type: String, 
-        enum: ['yes', 'no', 'abstain'],
-        required: true
-      }
-    }
-  ],
-  outcome: {
-    type: String,
-    enum: ['pending', 'approved', 'rejected'],
-    default: 'pending' 
+    ],
+    outcome: {
+      type: String,
+      enum: ["pending", "approved", "rejected"],
+      default: "pending",
+    },
+    voteEndTime: {
+      type: Date,
+    },
+    
   },
-  voteEndTime: {
-    type: Date 
-  },
-  room: {
-    type: Schema.Types.ObjectId,
-    ref: 'Room', 
-    required: true
-  }
-}, { timestamps: true });
+  { timestamps: true }
+);
 
-export default mongoose.model('Vote', voteSchema);
+export default mongoose.model("Vote", voteSchema);
