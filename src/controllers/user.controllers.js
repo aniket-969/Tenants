@@ -9,8 +9,8 @@ const generateTokens = async (userId) => {
   const refreshToken = await user.generateRefreshToken();
   user.refreshToken = refreshToken;
   await user.save({ validateBeforeSave: false });
-//   console.log(accessToken, refreshToken);
-  return {accessToken,refreshToken};
+  //   console.log(accessToken, refreshToken);
+  return { accessToken, refreshToken };
 };
 
 const registerUser = asyncHandler(async (req, res) => {
@@ -55,14 +55,14 @@ const loginUser = asyncHandler(async (req, res) => {
   if (!existedUser) {
     throw new ApiError(409, "User not found");
   }
-//   console.log("existed", existedUser);
+  //   console.log("existed", existedUser);
   const isPasswordValid = await existedUser.isPasswordCorrect(password);
 
   if (!isPasswordValid) {
     throw new ApiError(401, "Invalid user credentials");
   }
 
-  const {accessToken,refreshToken} = await generateTokens(existedUser._id);
+  const { accessToken, refreshToken } = await generateTokens(existedUser._id);
 
   const loggedInUser = await User.findById(existedUser._id).select(
     "username avatar email fullName"
@@ -79,4 +79,28 @@ const loginUser = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, loggedInUser, "User logged in successfully"));
 });
 
-export { registerUser, loginUser };
+const logoutUser = asyncHandler(async (req, res) => {
+  const userId = "67057849c71e4fb08bfd306b";
+
+  const updatedUser = await User.findByIdAndUpdate(
+    userId,
+    {
+      $set: {
+        refreshToken: null,
+      },
+    },
+    {
+      new: true,
+    }
+  );
+  const options = {
+    httpOnly: true,
+    secure: true,
+  };
+  return res
+    .clearCookie("accessToken", options)
+    .clearCookie("refreshToken", options)
+    .json(new ApiResponse(200, {}, "User logged out successfully"));
+});
+
+export { registerUser, loginUser, logoutUser };
