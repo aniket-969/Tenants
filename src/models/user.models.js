@@ -7,49 +7,36 @@ const userSchema = new Schema(
    
     username: {
       type: String,
-      required: function () {
-        return !this.isGuest;
-      },
+      required: true,
       unique: true,
       lowercase: true,
       trim: true,
       index:true,
-      sparse:true
     },
     email: {
       type: String,
-      required: function () {
-        return !this.isGuest;
-      },
+      required: true,
       unique: true,
       lowercase: true,
       trim: true,
-      sparse: true,
     },
     fullName: {
         type: String,
-        required: function () {
-          return !this.isGuest;
-        },
+        required:true,
         trim: true,
         index: true,
       },
     avatar: {
       type: String,
-      required: function () {
-        return !this.isGuest;
-      },
+      required: true,
     },
     password: {
       type: String,
-      required: function () {
-        return !this.isGuest;
-      },
+      required: true,
     },
     role: {
       type: String,
-      enum: ["guest", "tenant", "landlord"],
-      default: "guest",
+      enum: [ "tenant", "landlord"],
     },
     rooms: [
       {
