@@ -30,7 +30,35 @@ const registerUser = asyncHandler(async (req, res) => {
     throw new ApiError(500, "Something went wrong while creating user");
   }
 
-  return res.json(new ApiResponse(200,createdUser, "User registered successfully"));
+  return res.json(
+    new ApiResponse(200, createdUser, "User registered successfully")
+  );
 });
 
-export { registerUser };
+const loginUser = asyncHandler(async (req, res) => {
+  console.log(req.body);
+  const { identifier, password } = req.body;
+
+  const existedUser = await User.findOne({
+    $or: [{ username: identifier }, { email: identifier }],
+  });
+  if (!existedUser) {
+    throw new ApiError(409, "User not found");
+  }
+  console.log("existed", existedUser);
+  const isPasswordValid = await existedUser.isPasswordCorrect(password);
+  console.log("pass", isPasswordValid);
+  if (!isPasswordValid) {
+    throw new ApiError(401, "Invalid user credentials");
+  }
+
+  const loggedInUser = await User.findById(existedUser._id).select(
+    "username avatar email fullName"
+  );
+  console.log("Log", loggedInUser);
+  return res.json(
+    new ApiResponse(200, loggedInUser, "User logged in successfully")
+  );
+});
+
+export { registerUser, loginUser };
