@@ -1,4 +1,4 @@
-import mongoose,{ Schema } from "mongoose";
+import mongoose, { Schema } from "mongoose";
 import voteModels from "./vote.models";
 
 const roomSchema = new Schema(
@@ -49,12 +49,12 @@ const roomSchema = new Schema(
         ref: "MaintenanceRequest",
       },
     ],
-    vote:[
-        {
-            type:Schema.types.ObjectId,
-            ref:Vote
-        }
-    ]
+    vote: [
+      {
+        type: Schema.types.ObjectId,
+        ref: "Vote",
+      },
+    ],
   },
   { timestamps: true }
 );

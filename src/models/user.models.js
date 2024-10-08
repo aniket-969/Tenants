@@ -1,4 +1,5 @@
 import mongoose,{ Schema } from "mongoose";
+import bcrypt from "bcrypt"
 
 const userSchema = new Schema(
     {
@@ -45,15 +46,18 @@ const userSchema = new Schema(
             return !this.isGuest; 
           }
       },
+
       role: {
         type: String,
         enum: ['guest', 'tenant', 'landlord'],
         default: 'guest'
       },
+
       isGuest: {
         type: Boolean,
         default: true 
       },
+
       rooms: [
         {
           type: mongoose.Schema.Types.ObjectId,
@@ -69,3 +73,11 @@ const userSchema = new Schema(
       timestamps: true,
     }
   );
+
+  userSchema.pre('save',async function(next){
+    if(!this.isModified("password")) return next();
+    this.password = await bcrypt.hash(this.password,10)
+    next()
+  })
+
+  
