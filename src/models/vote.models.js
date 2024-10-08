@@ -36,7 +36,6 @@ const voteSchema = new Schema(
     voteEndTime: {
       type: Date,
     },
-    
   },
   { timestamps: true }
 );
