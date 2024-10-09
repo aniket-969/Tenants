@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { loginSchema, registerSchema } from "./../zod/user.schema.js";
+import { changePasswordSchema, loginSchema, registerSchema } from "./../zod/user.schema.js";
 import { validate } from "../middleware/validator.middleware.js";
 import {
   changePassword,
@@ -20,7 +20,7 @@ router.route("/login").post(validate(loginSchema), loginUser);
 router.route("/logout").post(verifyJWT, logoutUser);
 
 router.route("/refreshTokens").post(verifyJWT, refreshTokens);
-router.route("/change-password").post(verifyJWT, changePassword);
+router.route("/change-password").post(validate(changePasswordSchema),verifyJWT, changePassword);
 router.route("/update-user").patch(verifyJWT, updateAccountDetails);
 
 export default router;

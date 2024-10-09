@@ -1,4 +1,3 @@
-
 import { z } from "zod";
 import { objectIdValidation, stringValidation } from "./customValidator.js";
 
@@ -26,6 +25,12 @@ export const registerSchema = z.object({
 });
 
 export const loginSchema = z.object({
-    identifier:stringValidation(1,20,"identifier"),
-    password:passwordSchema
-})
+  identifier: stringValidation(1, 20, "identifier"),
+  password: passwordSchema,
+});
+
+export const changePasswordSchema = z.object({
+  oldPassword: passwordSchema,
+  newPassword: passwordSchema,
+});
+
