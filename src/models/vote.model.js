@@ -17,7 +17,7 @@ const voteSchema = new Schema(
       required: true,
     },
     voteEndTime: {
-      type: Date,
+      type: string,
       required: true,
     },
 
