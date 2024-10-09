@@ -7,7 +7,7 @@ export const objectIdValidation = z
   });
 
 export const stringValidation = (min, max, fieldName) => {
-  z.string()
+ return z.string()
     .min(min, {
       message: `${fieldName} must be at least ${min} characters long.`,
     })
