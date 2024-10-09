@@ -1,12 +1,9 @@
 import mongoose, { Schema } from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 const voteSchema = new Schema(
   {
-    voteType: {
-      type: String,
-      required: true,
-    },
-    issue: {
+    title: {
       type: String,
       required: true,
     },
@@ -15,26 +12,36 @@ const voteSchema = new Schema(
       ref: "User",
       required: true,
     },
-    participants: [
-      {
-        user: {
-          type: Schema.Types.ObjectId,
-          ref: "User",
-        },
-        vote: {
-          type: String,
-          enum: ["yes", "no", "abstain"],
-          required: true,
-        },
-      },
-    ],
-    outcome: {
-      type: String,
-      enum: ["pending", "approved", "rejected"],
-      default: "pending",
+    room: {
+      type: Schema.Types.ObjectId,
+      ref: "Room",
+      required: true,
     },
     voteEndTime: {
       type: Date,
+      required: true,
+    },
+
+    options: [
+      {
+        optionText: {
+          type: String,
+          required: true,
+        },
+        votes: [
+          {
+            voter: {
+              type: Schema.Types.ObjectId,
+              ref: "User",
+            },
+          },
+        ],
+      },
+    ],
+    status: {
+      type: String,
+      enum: ["active", "completed", "closed"],
+      default: "active",
     },
   },
   { timestamps: true }
