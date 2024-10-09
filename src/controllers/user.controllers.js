@@ -80,7 +80,10 @@ const loginUser = asyncHandler(async (req, res) => {
 });
 
 const logoutUser = asyncHandler(async (req, res) => {
-  const userId = "67057849c71e4fb08bfd306b";
+  const userId = req.user?._id
+if(!userId){
+    throw new ApiError(401,"Unidentified user")
+}
 
   const updatedUser = await User.findByIdAndUpdate(
     userId,
