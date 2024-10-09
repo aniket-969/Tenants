@@ -34,3 +34,8 @@ export const changePasswordSchema = z.object({
   newPassword: passwordSchema,
 });
 
+export const updateUserSchema = z.object({
+    username:stringValidation(1,20,"username").optional(),
+    fullName:stringValidation(1,20,"fullName").optional(),
+    avatar:stringValidation(1,20,"avatar").optional(),
+})
