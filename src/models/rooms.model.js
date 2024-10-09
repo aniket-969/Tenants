@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose";
-import voteModels from "./vote.models";
+import voteModels from "./vote.model";
 
 const roomSchema = new Schema(
   {
