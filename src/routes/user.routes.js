@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { registerSchema } from "./../zod/user.schema.js";
+import { loginSchema, registerSchema } from "./../zod/user.schema.js";
 import { validate } from "../middleware/validator.middleware.js";
 import {
   loginUser,
@@ -10,7 +10,7 @@ import {
 const router = Router();
 
 router.route("/register").post(validate(registerSchema), registerUser);
-router.route("/login").post(loginUser);
+router.route("/login").post(validate(loginSchema),loginUser);
 router.route("/logout").post(logoutUser);
 
 export default router;

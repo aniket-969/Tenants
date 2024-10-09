@@ -29,7 +29,7 @@ const registerUser = asyncHandler(async (req, res) => {
     fullName,
     email,
     password,
-    avatar,
+    avatar
   });
 
   const createdUser = await User.findById(user._id).select(

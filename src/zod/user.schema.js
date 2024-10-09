@@ -1,6 +1,6 @@
-import { isValidObjectId } from "mongoose";
+
 import { z } from "zod";
-import { objectIdValidation, stringValidation } from "./customValdator.js";
+import { objectIdValidation, stringValidation } from "./customValidator.js";
 
 const passwordSchema = z
   .string()
@@ -24,3 +24,8 @@ export const registerSchema = z.object({
   role: z.enum(["tenant", "landlord"]),
   room: objectIdValidation.optional(),
 });
+
+export const loginSchema = z.object({
+    identifier:stringValidation(1,20,"identifier"),
+    password:passwordSchema
+})
