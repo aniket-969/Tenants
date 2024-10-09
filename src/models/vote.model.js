@@ -1,5 +1,4 @@
 import mongoose, { Schema } from "mongoose";
-import mongoose, { Schema } from "mongoose";
 
 const voteSchema = new Schema(
   {
@@ -46,5 +45,7 @@ const voteSchema = new Schema(
   },
   { timestamps: true }
 );
+
+voteSchema.index({ room: 1, 'options.votes.voter': 1 }, { unique: true });
 
 export default mongoose.model("Vote", voteSchema);
