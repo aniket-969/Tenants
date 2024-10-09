@@ -178,6 +178,26 @@ const changePassword = asyncHandler(async (req, res) => {
   });
   
   
+const updateAccountDetails = asyncHandler(async (req, res) => {
+    console.log("this is request", req);
+    const { fullName, username,avatar } = req.body;
+  
+    const user = await User.findByIdAndUpdate(
+      req.user?._id,
+      {
+        $set: {
+          fullName,
+          username,
+          avatar
+        },
+      },
+      { new: true }
+    ).select("username email fullName avatar");
+    console.log("this is user", user);
+    return res
+      .status(200)
+      .json(new ApiResponse(200, user, "Account details updated successfully"));
+  });
   
 
-export { registerUser, loginUser, logoutUser,refreshTokens };
+export { registerUser, loginUser, logoutUser,refreshTokens,changePassword,updateAccountDetails };
