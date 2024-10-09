@@ -4,7 +4,7 @@ import { z } from "zod";
 export const voteSchema = z.object({
   title: stringValidation(1, 30, "title"),
   createdBy: objectIdValidation,
-  room: objectIdValidation,
+  roomId: objectIdValidation,
   status: z.enum[("active", "completed", "closed")],
   voteEndTime: stringValidation(1, 10, "voteEndTime"),
   options: z
