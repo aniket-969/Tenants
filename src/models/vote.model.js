@@ -15,7 +15,6 @@ const voteSchema = new Schema(
       type: string,
       required: true,
     },
-
     options: [
       {
         optionText: {
@@ -37,10 +36,16 @@ const voteSchema = new Schema(
       enum: ["active", "completed", "closed"],
       default: "active",
     },
+    ,
+    roomId: {
+      type: Schema.Types.ObjectId,
+      ref: "Room",
+      required: true, 
+    },
   },
   { timestamps: true }
 );
 
-voteSchema.index({ _id: 1, 'votes.voter': 1 }, { unique: true });
+voteSchema.index({ _id: 1, "votes.voter": 1 }, { unique: true });
 
 export default mongoose.model("Vote", voteSchema);
