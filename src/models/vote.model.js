@@ -11,11 +11,6 @@ const voteSchema = new Schema(
       ref: "User",
       required: true,
     },
-    room: {
-      type: Schema.Types.ObjectId,
-      ref: "Room",
-      required: true,
-    },
     voteEndTime: {
       type: string,
       required: true,
@@ -46,6 +41,6 @@ const voteSchema = new Schema(
   { timestamps: true }
 );
 
-voteSchema.index({ room: 1, 'options.votes.voter': 1 }, { unique: true });
+voteSchema.index({ _id: 1, 'votes.voter': 1 }, { unique: true });
 
 export default mongoose.model("Vote", voteSchema);
