@@ -6,17 +6,19 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 
 const getRoomAwards = asyncHandler(async (req, res) => {
   const { roomId } = req.params;
-
   const room = await Room.findById(roomId).populate("tenants landlord");
+  if (!room) throw new ApiError(404, "Room not found");
+
   const roomUsers = [...room.tenants, room.landlord];
 
   const awards = await AwardTemplate.find({
     awardedTo: { $in: roomUsers },
-  });
+  }).populate("awardTemplate awardedTo"); 
 
   if (!awards.length) {
     throw new ApiError(404, "No awards found");
   }
+
   return res.json(
     new ApiResponse(200, awards, "Room awards fetched successfully")
   );
@@ -61,6 +63,4 @@ const createCustomAward = asyncHandler(async (req, res) => {
   );
 });
 
-export { createCustomAward };
-
-export { getRoomAwards, createAwardTemplate };
+export { getRoomAwards, createAwardTemplate, createCustomAward };
