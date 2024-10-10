@@ -78,15 +78,29 @@ const castVote = asyncHandler(async (req, res) => {
 
 const getPollResults = asyncHandler(async (req, res) => {
   const { pollId } = req.params;
-  const poll = await Poll.findById(pollId);
-
-  if (poll.status != "completed")
-    throw new ApiError(404, "Poll is still active or closed");
+  const poll = await Poll.findById(pollId)
+    .populate({
+      path: 'options.votes.voter',  // Populating voters with their details
+      select: 'username avatar',  // Choose what to include (username, avatar, etc.)
+    });
 
   if (!poll) throw new ApiError(404, "Poll not found");
-  return res.json(
-    new ApiResponse(200, poll.options, "Poll results retrieved successfully")
-  );
+
+  // Build the response with title, options, and voter information
+  const pollResults = {
+    title: poll.title,
+    options: poll.options.map(option => ({
+      optionText: option.optionText,
+      voteCount: option.votes.length,  // Number of votes
+      voters: option.votes.map(vote => ({
+        username: vote.voter.username,
+        avatar: vote.voter.avatar,  // Assuming avatar exists in user schema
+      })),
+    })),
+    status: poll.status,
+  };
+
+  return res.json(new ApiResponse(200, pollResults, "Poll results fetched successfully"));
 });
 
 const updatePoll = asyncHandler(async (req, res) => {
@@ -113,14 +127,34 @@ const getRoomPolls = asyncHandler(async (req, res) => {
 
   const filters = { roomId };
   if (status) {
-    filters.status = status;
+    filters.status = status; // Filter by status if provided (active, completed, etc.)
   }
 
-  const polls = await Poll.find(filters);
+  // Fetch polls and populate the voters in each option
+  const polls = await Poll.find(filters)
+    .populate({
+      path: 'options.votes.voter', // Populate the voters' data
+      select: 'username avatar',   // Only select relevant fields
+    });
+
   if (!polls.length) throw new ApiError(404, "No polls found for this room");
 
+  // Format the poll data to include title, status, options with votes and voters
+  const formattedPolls = polls.map(poll => ({
+    title: poll.title,
+    status: poll.status,  // Include poll status
+    options: poll.options.map(option => ({
+      optionText: option.optionText,
+      voteCount: option.votes.length,  // Number of votes per option
+      voters: option.votes.map(vote => ({
+        username: vote.voter.username,
+        avatar: vote.voter.avatar,
+      })),
+    })),
+  }));
+
   return res.json(
-    new ApiResponse(200, polls, "Room polls fetched successfully")
+    new ApiResponse(200, formattedPolls, "Room polls fetched successfully")
   );
 });
 
