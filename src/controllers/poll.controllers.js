@@ -124,4 +124,12 @@ const getRoomPolls = asyncHandler(async (req, res) => {
   );
 });
 
-export { createPoll, castVote, getPollResults, updatePoll, getRoomPolls };
+const deletePoll = asyncHandler(async(req,res)=>{
+  const{pollId} = req.params;
+  const poll = await Poll.findByIdAndDelete(pollId)
+
+  if(!poll) throw new ApiError(404,"Poll not found")
+return res.json(new ApiResponse(200,{},"Poll deleted successfully"))
+})
+
+export { createPoll, castVote, getPollResults, updatePoll, getRoomPolls,deletePoll };
