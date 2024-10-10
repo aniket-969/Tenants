@@ -31,8 +31,8 @@ const roomSchema = new Schema(
     ],
     awards: [
       {
-        type: Schema.Types.ObjectId,
-        ref: "Award",
+        awardTemplate: { type: Schema.Types.ObjectId, ref: 'Award' }, 
+        awardedTo: { type: Schema.Types.ObjectId, ref: 'User' },
       },
     ],
     expenses: [

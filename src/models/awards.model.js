@@ -12,11 +12,6 @@ const awardSchema = new Schema(
     image: {
       type: String,
     },
-    awardedTo: {
-      type: Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
-    },    
     criteria: {
       type: String,
     },
