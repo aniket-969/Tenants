@@ -6,7 +6,6 @@ const roomSchema = new Schema(
       type: String,
       required: true,
     },
-
     landlord: {
       type: Schema.Types.ObjectId,
       ref: "User",
@@ -48,7 +47,6 @@ const roomSchema = new Schema(
         ref: "MaintenanceRequest",
       },
     ],
-  
   },
   { timestamps: true }
 );

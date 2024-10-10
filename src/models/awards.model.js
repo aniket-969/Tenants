@@ -17,10 +17,7 @@ const awardSchema = new Schema(
       ref: "User",
       required: true,
     },
-    awardedBy: {
-      type: Schema.Types.ObjectId,
-      ref: "User",
-    },
+    
     criteria: {
       type: String,
     },
