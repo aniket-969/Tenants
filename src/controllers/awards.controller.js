@@ -1,16 +1,22 @@
 import { Room } from "../models/rooms.model.js";
+import { ApiError } from "../utils/ApiError.js";
+import { ApiResponse } from "../utils/ApiResponse.js";
+import { asyncHandler } from "../utils/asyncHandler.js";
 
-const isRoomMember = async (roomId, userId) => {
-  const room = await Room.findById(roomId);
-  if (!room) throw new ApiError(404, "Room not found");
+const getRoomAwards = asyncHandler(async(req,res)=>{
+   const {roomId} = req.params
 
-  const isMember =
-    room.tenants.some((tenant) => tenant.equals(userId)) ||
-    room.landlord.equals(userId);
+   const room = await Room.findById(roomId).populate('tenants landlord')
+   const roomUsers = [...room.tenants,room.landlord]
 
-  if (!isMember) throw new ApiError(403, "User is not a member of this room");
+   const awards = await Award.find({
+    awardedTo:{$in:roomUsers},
+   })
 
-  return room; 
-};
+   if(!awards.length){
+    throw new ApiError(404,"No awards found")
+   }
+   return res.json(new ApiResponse(200,awards,"Room awards fetched successfully"))
+})
 
-
+export {getRoomAwards}
