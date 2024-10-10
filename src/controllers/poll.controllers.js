@@ -13,7 +13,7 @@ const createPoll = asyncHandler(async (req, res) => {
     votes: [],
   }));
 
-  const poll = Poll.create({
+  const poll = await Poll.create({
     createdBy,
     title,
     status,
@@ -32,6 +32,16 @@ const castVote = asyncHandler(async (req, res) => {
   if (!poll) return new ApiError(404, "Poll not found");
   if (new Date() > new Date(poll.voteEndTime)) {
     throw new ApiError(400, "Voting has ended for this poll");
+  }
+
+  const roomId = poll.roomId;
+  const room = await Room.findById(roomId);
+  const isMember =
+    room.tenants.some((tenant) => tenant.equals(userId)) ||
+    room.landlord.equals(userId);
+
+  if (!isMember) {
+    throw new ApiError(403, "User is not a member of this room");
   }
 
   const userHasVoted = poll.options.some((option) =>

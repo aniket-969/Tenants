@@ -4,10 +4,12 @@ import { pollSchema } from "../zod/poll.schema.js";
 import { checkMember } from "../middleware/poll.middleware.js";
 import { castVote, createPoll } from "../controllers/poll.controllers.js";
 
-const router = Router()
+const router = Router();
 
-router.route("/create-poll").post(validate(pollSchema),checkMember,createPoll)
+router
+  .route("/create-poll")
+  .post(validate(pollSchema), checkMember, createPoll);
 
-router.route("/cast-vote").post(castVote)
+router.route("/cast-vote").post(checkMember, castVote);
 
-export default router
+export default router;
