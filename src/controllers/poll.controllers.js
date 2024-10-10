@@ -108,12 +108,20 @@ const updatePoll = asyncHandler(async (req, res) => {
   return res.json(new ApiResponse(200, poll, "Poll updated successfully"));
 });
 
+const getRoomPolls = asyncHandler(async (req, res) => {
+  const { roomId, status } = req.query;
 
-const listActivePolls = asyncHandler(async (req, res) => {
-  const polls = await Poll.find({ status: "active" });
+  const filters = { roomId };
+  if (status) {
+    filters.status = status;
+  }
 
-  return res.json(new ApiResponse(200, polls, "Active polls retrieved successfully"));
+  const polls = await Poll.find(filters);
+  if (!polls.length) throw new ApiError(404, "No polls found for this room");
+
+  return res.json(
+    new ApiResponse(200, polls, "Room polls fetched successfully")
+  );
 });
 
-
-export { createPoll, castVote,getPollResults,updatePoll,listActivePolls };
+export { createPoll, castVote, getPollResults, updatePoll, getRoomPolls };
