@@ -1,3 +1,4 @@
+import { AwardTemplate } from "../models/awards.model.js";
 import { Room } from "../models/rooms.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
@@ -9,7 +10,7 @@ const getRoomAwards = asyncHandler(async(req,res)=>{
    const room = await Room.findById(roomId).populate('tenants landlord')
    const roomUsers = [...room.tenants,room.landlord]
 
-   const awards = await Award.find({
+   const awards = await AwardTemplate.find({
     awardedTo:{$in:roomUsers},
    })
 
@@ -18,5 +19,19 @@ const getRoomAwards = asyncHandler(async(req,res)=>{
    }
    return res.json(new ApiResponse(200,awards,"Room awards fetched successfully"))
 })
+
+const createAwardTemplate = asyncHandler(async (req, res) => {
+    const { title, description, image, criteria } = req.body;
+  
+    const awardTemplate = await AwardTemplate.create({
+      title,
+      description,
+      image,
+      criteria,
+    });
+  
+    return res.json(new ApiResponse(201, awardTemplate, "Award template created successfully"));
+  });
+  
 
 export {getRoomAwards}

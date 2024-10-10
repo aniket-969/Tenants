@@ -19,4 +19,4 @@ const awardSchema = new Schema(
   { timestamps: true }
 );
 
-export default mongoose.model("Award", awardSchema);
+export const AwardTemplate = mongoose.model("Award", awardSchema);
