@@ -1,6 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 
-const voteSchema = new Schema(
+const pollSchema = new Schema(
   {
     title: {
       type: String,
@@ -12,7 +12,7 @@ const voteSchema = new Schema(
       required: true,
     },
     voteEndTime: {
-      type: string,
+      type: String,
       required: true,
     },
     options: [
@@ -36,16 +36,16 @@ const voteSchema = new Schema(
       enum: ["active", "completed", "closed"],
       default: "active",
     },
-    ,
+
     roomId: {
       type: Schema.Types.ObjectId,
       ref: "Room",
-      required: true, 
+      required: true,
     },
   },
   { timestamps: true }
 );
 
-voteSchema.index({ _id: 1, "votes.voter": 1 }, { unique: true });
+pollSchema.index({ _id: 1, "votes.voter": 1 }, { unique: true });
 
-export default mongoose.model("Vote", voteSchema);
+export const Poll = mongoose.model("Vote", pollSchema);

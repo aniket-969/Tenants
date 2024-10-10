@@ -1,7 +1,7 @@
 import { objectIdValidation, stringValidation } from "./customValidator.js";
 import { z } from "zod";
 
-export const voteSchema = z.object({
+export const pollSchema = z.object({
   title: stringValidation(1, 30, "title"),
   createdBy: objectIdValidation,
   roomId: objectIdValidation,

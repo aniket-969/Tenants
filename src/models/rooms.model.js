@@ -1,5 +1,4 @@
 import mongoose, { Schema } from "mongoose";
-import voteModels from "./vote.model";
 
 const roomSchema = new Schema(
   {
@@ -25,7 +24,6 @@ const roomSchema = new Schema(
         ref: "Task",
       },
     ],
-
     calendarEvents: [
       {
         type: Schema.Types.ObjectId,

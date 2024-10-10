@@ -1,6 +1,6 @@
-import { asyncHandler } from "../utils/asyncHandler";
-import Room from "../models/rooms.model"
-import { ApiError } from "../utils/ApiError";
+import { asyncHandler } from "../utils/asyncHandler.js";
+import Room from "../models/rooms.model.js"
+import { ApiError } from "../utils/ApiError.js";
 
 const checkMember = asyncHandler(async(req,res)=>{
     const {roomId, createdBy} = req.body
