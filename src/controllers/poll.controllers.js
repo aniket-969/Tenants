@@ -89,4 +89,25 @@ const getPollResults = asyncHandler(async (req, res) => {
   );
 });
 
-export { createPoll, castVote };
+const updatePoll = asyncHandler(async (req, res) => {
+  const { pollId } = req.params;
+  const { title, options } = req.body;
+
+  const poll = await Poll.findById(pollId);
+  if (!poll) throw new ApiError(404, "Poll not found");
+
+  if (poll.status !== "active") {
+    throw new ApiError(400, "Cannot update a completed or closed poll");
+  }
+
+  poll.title = title || poll.title;
+  poll.options = options || poll.options;
+
+  await poll.save();
+
+  return res.json(new ApiResponse(200, poll, "Poll updated successfully"));
+});
+
+
+
+export { createPoll, castVote,getPollResults,updatePoll };
