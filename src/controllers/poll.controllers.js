@@ -109,5 +109,11 @@ const updatePoll = asyncHandler(async (req, res) => {
 });
 
 
+const listActivePolls = asyncHandler(async (req, res) => {
+  const polls = await Poll.find({ status: "active" });
 
-export { createPoll, castVote,getPollResults,updatePoll };
+  return res.json(new ApiResponse(200, polls, "Active polls retrieved successfully"));
+});
+
+
+export { createPoll, castVote,getPollResults,updatePoll,listActivePolls };
