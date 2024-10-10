@@ -22,3 +22,8 @@ export const pollSchema = z.object({
     )
     .min(1, { message: "At least one option is required" }),
 });
+
+export const castVoteSchema = z.object({
+  pollId: objectIdValidation,
+  optionId: objectIdValidation,
+});
