@@ -76,4 +76,17 @@ const castVote = asyncHandler(async (req, res) => {
   return res.json(new ApiResponse(200, poll, "Vote cast successfully"));
 });
 
+const getPollResults = asyncHandler(async (req, res) => {
+  const { pollId } = req.params;
+  const poll = await Poll.findById(pollId);
+
+  if (poll.status != "completed")
+    throw new ApiError(404, "Poll is still active or closed");
+
+  if (!poll) throw new ApiError(404, "Poll not found");
+  return res.json(
+    new ApiResponse(200, poll.options, "Poll results retrieved successfully")
+  );
+});
+
 export { createPoll, castVote };
