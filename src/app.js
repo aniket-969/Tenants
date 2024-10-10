@@ -21,6 +21,6 @@ import userRouter from "./routes/user.routes.js"
 import voteRouter from "./routes/poll.routes.js"
 // user routes
 app.use("/api/v1/users",userRouter)
-app.use("/api/v1/votes",voteRouter)
+app.use("/api/v1/poll",voteRouter)
 
 export {app}

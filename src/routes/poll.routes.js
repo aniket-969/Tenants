@@ -13,10 +13,10 @@ router
 
 router.route("/cast-vote").post(validate(castVoteSchema), verifyJWT, castVote);
 
-router.route("/polls/:pollId").patch(verifyJWT, updatePoll);
+router.route("/:pollId").patch(verifyJWT, updatePoll);
 
-router.route("/polls").get(verifyJWT, getRoomPolls);
+router.route("/allPolls").get(verifyJWT, getRoomPolls);
 
-router.route("/polls/:pollId").delete(verifyJWT, deletePoll);
+router.route("/:pollId").delete(verifyJWT, deletePoll);
 
 export default router;
