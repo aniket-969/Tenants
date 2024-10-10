@@ -76,33 +76,6 @@ const castVote = asyncHandler(async (req, res) => {
   return res.json(new ApiResponse(200, poll, "Vote cast successfully"));
 });
 
-const getPollResults = asyncHandler(async (req, res) => {
-  const { pollId } = req.params;
-  const poll = await Poll.findById(pollId)
-    .populate({
-      path: 'options.votes.voter',  // Populating voters with their details
-      select: 'username avatar',  // Choose what to include (username, avatar, etc.)
-    });
-
-  if (!poll) throw new ApiError(404, "Poll not found");
-
-  // Build the response with title, options, and voter information
-  const pollResults = {
-    title: poll.title,
-    options: poll.options.map(option => ({
-      optionText: option.optionText,
-      voteCount: option.votes.length,  // Number of votes
-      voters: option.votes.map(vote => ({
-        username: vote.voter.username,
-        avatar: vote.voter.avatar,  // Assuming avatar exists in user schema
-      })),
-    })),
-    status: poll.status,
-  };
-
-  return res.json(new ApiResponse(200, pollResults, "Poll results fetched successfully"));
-});
-
 const updatePoll = asyncHandler(async (req, res) => {
   const { pollId } = req.params;
   const { title, options } = req.body;
@@ -127,43 +100,53 @@ const getRoomPolls = asyncHandler(async (req, res) => {
 
   const filters = { roomId };
   if (status) {
-    filters.status = status; // Filter by status if provided (active, completed, etc.)
+    filters.status = status; // Filter by poll status (active, completed, etc.)
   }
 
   // Fetch polls and populate the voters in each option
-  const polls = await Poll.find(filters)
-    .populate({
-      path: 'options.votes.voter', // Populate the voters' data
-      select: 'username avatar',   // Only select relevant fields
-    });
+  const polls = await Poll.find(filters).populate({
+    path: "options.votes.voter", // Populate the voters' data
+    select: "username avatar", // Only select relevant fields
+  });
 
   if (!polls.length) throw new ApiError(404, "No polls found for this room");
 
-  // Format the poll data to include title, status, options with votes and voters
-  const formattedPolls = polls.map(poll => ({
-    title: poll.title,
-    status: poll.status,  // Include poll status
-    options: poll.options.map(option => ({
-      optionText: option.optionText,
-      voteCount: option.votes.length,  // Number of votes per option
-      voters: option.votes.map(vote => ({
-        username: vote.voter.username,
-        avatar: vote.voter.avatar,
+  const formattedPolls = polls.map((poll) => {
+    return {
+      title: poll.title,
+      status: poll.status,
+      voteEndTime: poll.voteEndTime,
+      options: poll.options.map((option) => ({
+        optionText: option.optionText,
+        voteCount: option.votes.length,
+        voters: option.votes.map((vote) => ({
+          username: vote.voter.username,
+          avatar: vote.voter.avatar,
+        })),
+        userVote: option.votes.some(
+          (vote) => vote.voter._id.toString() === req.user._id.toString()
+        ),
       })),
-    })),
-  }));
+    };
+  });
 
   return res.json(
     new ApiResponse(200, formattedPolls, "Room polls fetched successfully")
   );
 });
 
-const deletePoll = asyncHandler(async(req,res)=>{
-  const{pollId} = req.params;
-  const poll = await Poll.findByIdAndDelete(pollId)
+const deletePoll = asyncHandler(async (req, res) => {
+  const { pollId } = req.params;
+  const poll = await Poll.findByIdAndDelete(pollId);
 
-  if(!poll) throw new ApiError(404,"Poll not found")
-return res.json(new ApiResponse(200,{},"Poll deleted successfully"))
-})
+  if (!poll) throw new ApiError(404, "Poll not found");
+  return res.json(new ApiResponse(200, {}, "Poll deleted successfully"));
+});
 
-export { createPoll, castVote, getPollResults, updatePoll, getRoomPolls,deletePoll };
+export {
+  createPoll,
+  castVote,
+  updatePoll,
+  getRoomPolls,
+  deletePoll,
+};
