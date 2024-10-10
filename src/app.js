@@ -18,7 +18,7 @@ app.use(express.static("public"))
 app.use(cookieParser())
 
 import userRouter from "./routes/user.routes.js"
-import voteRouter from "./routes/vote.routes.js"
+import voteRouter from "./routes/poll.routes.js"
 // user routes
 app.use("/api/v1/users",userRouter)
 app.use("/api/v1/votes",voteRouter)

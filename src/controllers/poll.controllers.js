@@ -3,6 +3,26 @@ import { Poll } from "../models/poll.model.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { ApiError } from "../utils/ApiError.js";
 import mongoose from "mongoose";
+import { Room } from "../models/rooms.model.js";
+
+const isRoomMember = async (roomId, userId) => {
+  const room = await Room.findById(roomId);
+  if (!room) throw new ApiError(404, "Room not found");
+
+  const isMember =
+    room.tenants.some((tenant) => tenant.equals(userId)) ||
+    room.landlord.equals(userId);
+
+  if (!isMember) throw new ApiError(403, "User is not a member of this room");
+
+  return room; // Return the room document
+};
+
+const hasUserVoted = (poll, userId) => {
+  return poll.options.some((option) =>
+    option.votes.some((vote) => vote.voter.toString() === userId.toString())
+  );
+};
 
 const createPoll = asyncHandler(async (req, res) => {
   const { title, roomId, status, voteEndTime, optionText } = req.body;
@@ -28,21 +48,16 @@ const createPoll = asyncHandler(async (req, res) => {
 const castVote = asyncHandler(async (req, res) => {
   const { pollId, optionId } = req.body;
   const userId = req.user?._id;
-  const poll = Poll.findById(pollId);
-  if (!poll) return new ApiError(404, "Poll not found");
+
+  const poll = await Poll.findById(pollId);
+  if (!poll) throw new ApiError(404, "Poll not found");
+
   if (new Date() > new Date(poll.voteEndTime)) {
     throw new ApiError(400, "Voting has ended for this poll");
   }
 
-  const roomId = poll.roomId;
-  const room = await Room.findById(roomId);
-  const isMember =
-    room.tenants.some((tenant) => tenant.equals(userId)) ||
-    room.landlord.equals(userId);
-
-  if (!isMember) {
-    throw new ApiError(403, "User is not a member of this room");
-  }
+  // Now we use the room object returned by isRoomMember
+  const room = await isRoomMember(poll.roomId, userId);
 
   const userHasVoted = poll.options.some((option) =>
     option.votes.some((vote) => vote.voter.toString() === userId.toString())

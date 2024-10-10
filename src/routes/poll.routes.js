@@ -3,13 +3,14 @@ import { validate } from "../middleware/validator.middleware.js";
 import { pollSchema } from "../zod/poll.schema.js";
 import { checkMember } from "../middleware/poll.middleware.js";
 import { castVote, createPoll } from "../controllers/poll.controllers.js";
+import { verifyJWT } from "../middleware/auth.middleware.js";
 
 const router = Router();
 
 router
   .route("/create-poll")
-  .post(validate(pollSchema), checkMember, createPoll);
+  .post(validate(pollSchema), verifyJWT, checkMember, createPoll);
 
-router.route("/cast-vote").post(checkMember, castVote);
+router.route("/cast-vote").post(verifyJWT, castVote);
 
 export default router;
