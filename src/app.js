@@ -22,9 +22,11 @@ app.use(cookieParser());
 import userRouter from "./routes/user.routes.js";
 import voteRouter from "./routes/poll.routes.js";
 import awardRouter from "./routes/awards.routes.js";
+import eventRouter from "./routes/event.routes.js"
 
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/poll", voteRouter);
 app.use("/api/v1/awards", awardRouter);
+app.use("/api/v1/event", eventRouter);
 
 export { app };

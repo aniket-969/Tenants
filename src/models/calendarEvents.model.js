@@ -3,9 +3,10 @@ import mongoose,{Schema} from "mongoose";
 const calendarEventSchema = new Schema({
   title: { type: String, required: true },
   description: { type: String },
+  createdBy: { type: Schema.Types.ObjectId, ref: 'User' },
   startDate: { type: Date, required: true },
   endDate: { type: Date },
-  roomId: { type: Schema.Types.ObjectId, ref: 'Room', required: true }, 
+  room: { type: Schema.Types.ObjectId, ref: 'Room', required: true }, 
   isRecurring: { type: Boolean, default: false },
   recurrencePattern: { type: String, default: null },
 }, { timestamps: true });
