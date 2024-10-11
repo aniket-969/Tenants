@@ -16,7 +16,6 @@ const roomSchema = new Schema(
         ref: "User",
       },
     ],
-
     tasks: [
       {
         type: Schema.Types.ObjectId,
