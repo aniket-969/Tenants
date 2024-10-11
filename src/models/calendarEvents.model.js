@@ -1,6 +1,6 @@
 import mongoose,{ Schema } from "mongoose";
 
-const calendarEventSchema = new Schema({
+export const calendarEventSchema = new Schema({
   title: {
     type: String,
     required: true, 
@@ -19,17 +19,6 @@ const calendarEventSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'User', 
   },
-  participants: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: 'User', 
-    }
-  ],
-  room: {
-    type: Schema.Types.ObjectId,
-    ref: 'Room', 
-    required: true,
-  },
   isRecurring: {
     type: Boolean,
     default: false, 
@@ -40,4 +29,3 @@ const calendarEventSchema = new Schema({
   }
 }, { timestamps: true });
 
-export default mongoose.model('CalendarEvent', calendarEventSchema);

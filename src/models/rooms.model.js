@@ -1,4 +1,5 @@
 import mongoose, { Schema } from "mongoose";
+import { calendarEventSchema } from "./calendarEvents.model.js";
 
 const roomSchema = new Schema(
   {
@@ -23,16 +24,11 @@ const roomSchema = new Schema(
         ref: "Task",
       },
     ],
-    calendarEvents: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "CalendarEvent",
-      },
-    ],
+    calendarEvents: [calendarEventSchema],
     awards: [
       {
-        awardTemplate: { type: Schema.Types.ObjectId, ref: 'Award' }, 
-        awardedTo: { type: Schema.Types.ObjectId, ref: 'User' },
+        awardTemplate: { type: Schema.Types.ObjectId, ref: "Award" },
+        awardedTo: { type: Schema.Types.ObjectId, ref: "User" },
       },
     ],
     expenses: [
