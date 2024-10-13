@@ -65,15 +65,10 @@ const roomSchema = new Schema(
         awardedTo: { type: Schema.Types.ObjectId, ref: 'User' },
       },
     ],
-    expenses: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "Expense",
-      },
-    ],
     maintenanceRequests: [
       [maintenanceSchema]
     ],
+    votes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Vote' }]
   },
   { timestamps: true }
 );
