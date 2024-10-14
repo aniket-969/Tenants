@@ -52,12 +52,6 @@ const roomSchema = new Schema(
         ref: "User",
       },
     ],
-    tasks: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "Task",
-      },
-    ],
     awards: [awardSchema],
     maintenanceRequests: [maintenanceSchema],
     votes: [{ type: mongoose.Schema.Types.ObjectId, ref: "Vote" }],
