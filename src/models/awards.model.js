@@ -1,6 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 
-const awardSchema = new Schema(
+export const awardSchema = new Schema(
   {
     title: {
       type: String,
@@ -18,5 +18,3 @@ const awardSchema = new Schema(
   },
   { timestamps: true }
 );
-
-export const AwardTemplate = mongoose.model("Award", awardSchema);
