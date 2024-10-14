@@ -22,13 +22,18 @@ const expenseSchema = new Schema(
     },
     splitAmount: {
       type: Number,
-      required: true,
+      required: true,  // Per participant split amount
+    },
+    imageUrl: {
+      type: String, // Link to uploaded bill image
+      default: null,
     },
     participants: [
       {
-        user: { type: Schema.Types.ObjectId, ref: "User" },
-        hasPaid: { type: Boolean, default: false },
-        paidDate: { type: Date, default: null },
+        user: { type: Schema.Types.ObjectId, ref: "User" },  // Participant's ID
+        hasPaid: { type: Boolean, default: false },           // Has participant paid?
+        paidDate: { type: Date, default: null },              // When did they pay?
+        amountOwed: { type: Number, required: true },         // Amount owed by the participant
       },
     ],
     dueDate: {
@@ -37,12 +42,11 @@ const expenseSchema = new Schema(
     },
     paymentHistory: [
       {
-        user: { type: Schema.Types.ObjectId, ref: "User" },
-        amount: { type: Number, required: true },
-        paymentDate: { type: Date, required: true },
+        user: { type: Schema.Types.ObjectId, ref: "User" },  // User who made a payment
+        amount: { type: Number, required: true },            // Amount paid
+        paymentDate: { type: Date, required: true },         // Date of payment
       },
     ],
-  
   },
   { timestamps: true }
 );
