@@ -36,6 +36,8 @@ const createCalendarEvent = asyncHandler(async (req, res) => {
     );
 });
 
-const updateEvent = asyncHandler()
+const updateEvent = asyncHandler(async(req,res)=>{
+  
+})
 
 export {createCalendarEvent}

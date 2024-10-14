@@ -128,7 +128,6 @@ const taskSchema = new Schema(
   { timestamps: true }
 );
 
-
 const roomSchema = new Schema(
   {
     name: {
@@ -147,7 +146,7 @@ const roomSchema = new Schema(
     ],
     awards: [awardSchema],
     maintenanceRequests: [maintenanceSchema],
-    tasks:[taskSchema],
+    tasks: [taskSchema],
     votes: [{ type: mongoose.Schema.Types.ObjectId, ref: "Vote" }],
   },
   { timestamps: true }
