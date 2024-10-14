@@ -55,6 +55,80 @@ const awardSchema = new Schema(
   { timestamps: true }
 );
 
+const taskSchema = new Schema(
+  {
+    title: {
+      type: String,
+      required: true,
+    },
+    description: {
+      type: String,
+    },
+    assignedTo: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+        required: true,
+      },
+    ],
+    createdBy: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    room: {
+      type: Schema.Types.ObjectId,
+      ref: "Room",
+      required: true,
+    },
+    dueDate: {
+      type: Date,
+      required: true,
+    },
+    completionDate: {
+      type: Date,
+    },
+    completed: {
+      type: Boolean,
+      default: false,
+    },
+    priority: {
+      type: String,
+      enum: ["low", "medium", "high"],
+      default: "medium",
+    },
+    switches: [
+      {
+        requestedBy: {
+          type: Schema.Types.ObjectId,
+          ref: "User",
+        },
+        acceptedBy: {
+          type: Schema.Types.ObjectId,
+          ref: "User",
+        },
+        switchDate: {
+          type: Date,
+        },
+      },
+    ],
+    switchesAccepted: {
+      type: Number,
+      default: 0,
+    },
+    recurring: {
+      type: Boolean,
+      default: false,
+    },
+    recurrencePattern: {
+      type: String,
+      default: null,
+    },
+  },
+  { timestamps: true }
+);
+
+
 const roomSchema = new Schema(
   {
     name: {
@@ -73,6 +147,7 @@ const roomSchema = new Schema(
     ],
     awards: [awardSchema],
     maintenanceRequests: [maintenanceSchema],
+    tasks:[taskSchema],
     votes: [{ type: mongoose.Schema.Types.ObjectId, ref: "Vote" }],
   },
   { timestamps: true }
