@@ -49,4 +49,17 @@ const deleteCalendarEvent = asyncHandler(async (req, res) => {
   );
 });
 
-export { createCalendarEvent };
+const getRoomCalendarEvent = asyncHandler(async (req, res) => {
+  const { roomId } = req.params;
+
+  const events = CalendarEvent.find({ room: roomId });
+
+  if (!events || events.length == 0) {
+    throw new ApiError(404, "No events found for this room");
+  }
+  return res.json(
+    new ApiResponse(200, events, "Room events fetched successfully")
+  );
+});
+
+export { createCalendarEvent, deleteCalendarEvent,getRoomCalendarEvent };
