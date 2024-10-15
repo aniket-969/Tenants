@@ -1,14 +1,15 @@
-import { Expense } from "../models/expense.model";
-import { asyncHandler } from "../utils/asyncHandler";
-import {ApiError} from "../utils/ApiError"
+import { Expense } from "../models/expense.model.js";
+import { asyncHandler } from "../utils/asyncHandler.js";
+import {ApiError} from "../utils/ApiError.js"
+import {ApiResponse} from "../utils/ApiResponse.js"
 
 const createExpense = asyncHandler(async (req, res) => {
   const { name, totalAmount, paidBy, room, imageUrl, userExpense, dueDate } =
     req.body;
 
   const participants = userExpense.map((user) => ({
-    user: userId,
-    amountOwned: user.amountOwed,
+    user: user.userId,
+    amountOwed: user.amountOwed,
   }));
 
   const expense = await Expense.create({

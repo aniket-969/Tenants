@@ -21,7 +21,7 @@ const expenseSchema = new Schema(
       required: true,
     },
     imageUrl: {
-      type: String,  image
+      type: String, 
       default: null,
     },
     participants: [
