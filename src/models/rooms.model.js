@@ -1,5 +1,4 @@
 import mongoose, { Schema } from "mongoose";
-import { awardSchema } from "./awards.model";
 
 const maintenanceSchema = new Schema({
   title: {

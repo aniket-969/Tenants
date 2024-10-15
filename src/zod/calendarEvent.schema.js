@@ -1,7 +1,5 @@
 import {z} from "zod"
 import { objectIdValidation, stringValidation } from "./customValidator.js"
-import { z } from "zod";
-import { objectIdValidation, stringValidation } from "./customValidator.js";
 
 export const createCalendarEventSchema = z.object({
   title: stringValidation(1, 10, "title"),
