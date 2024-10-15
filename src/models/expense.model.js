@@ -38,9 +38,14 @@ const expenseSchema = new Schema(
     },
     paymentHistory: [
       {
-        user: { type: Schema.Types.ObjectId, ref: "User" },  
+        user: { type: Schema.Types.ObjectId, ref: "User",
+          required:true
+         },  
         amount: { type: Number, required: true }, 
         paymentDate: { type: Date, required: true },  
+        description:{
+          type:String,
+        }
       },
     ],
   },
@@ -55,12 +60,7 @@ expenseSchema.index({ "participants.hasPaid": 1 });
 expenseSchema.index({ "paymentHistory.paymentDate": 1 })
 expenseSchema.index({ createdAt: 1 }
 )
-expenseSchema.index({ room: 1, "participants.hasPaid": 1 }
+expenseSchema.index({ room: 1, "participants.hasPaid": 1 })
 
-)
-
-
-
-
-export default mongoose.model("Expense", expenseSchema);
+export const Expense = mongoose.model("Expense", expenseSchema);
  
