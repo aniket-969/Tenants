@@ -71,4 +71,27 @@ const getSingleEvent = asyncHandler(async (req, res) => {
   return res.json(new ApiResponse(200, event, "Event fetched successfully"));
 });
 
-export { createCalendarEvent, deleteCalendarEvent, getRoomCalendarEvent };
+const getMonthlyEvents = asyncHandler(async (req, res) => {
+  const { roomId } = req.params;
+  const { month, year } = req.query;
+
+  const startOfMonth = new Date(year, month - 1, 1);
+  const endOfMonth = new Date(year, month, 0);
+
+  const events = await CalendarEvent.find({
+    room: roomId,
+    startDate: { $gte: startOfMonth, $lte: endOfMonth },
+  });
+
+  if (!events.length) {
+    return res
+      .status(200)
+      .json(new ApiResponse(200, [], "No events for this month"));
+  }
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, events, "Events fetched successfully"));
+});
+
+export { createCalendarEvent, deleteCalendarEvent, getRoomCalendarEvent,getMonthlyEvents };
