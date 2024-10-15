@@ -62,4 +62,15 @@ const getRoomCalendarEvent = asyncHandler(async (req, res) => {
   );
 });
 
+const getSingleEvent = asyncHandler(async(req,res)=>{
+  const {eventId} = req.body
+
+  const event = calendarEvent.findById(eventId)
+  if(!event) throw new ApiError(404,"Event doesn't exist")
+
+    return res.json(new ApiResponse(200,event,"Event fetched successfully"))
+})
+
+
+
 export { createCalendarEvent, deleteCalendarEvent,getRoomCalendarEvent };
