@@ -20,10 +20,6 @@ const expenseSchema = new Schema(
       ref: "Room",
       required: true,
     },
-    splitAmount: {
-      type: Number,
-      required: true,  // Per participant split amount
-    },
     imageUrl: {
       type: String,  image
       default: null,
@@ -51,4 +47,8 @@ const expenseSchema = new Schema(
   { timestamps: true }
 );
 
+expenseSchema.index({ room: 1 });
+expenseSchema.index({ 'participants.user': 1 });
+
 export default mongoose.model("Expense", expenseSchema);
+ 
