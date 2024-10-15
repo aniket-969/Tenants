@@ -36,8 +36,17 @@ const createCalendarEvent = asyncHandler(async (req, res) => {
     );
 });
 
-const updateEvent = asyncHandler(async(req,res)=>{
-  
-})
+const deleteCalendarEvent = asyncHandler(async (req, res) => {
+  const { eventId } = req.params;
+  const deletedEvent = await CalendarEvent.findByIdAndDelete(eventId);
 
-export {createCalendarEvent}
+  if (!deleteCalendarEvent) {
+    throw new ApiError(404, "Calendar event not found");
+  }
+
+  return res.json(
+    new ApiResponse(200, {}, "Calendar event deleted successfully")
+  );
+});
+
+export { createCalendarEvent };
