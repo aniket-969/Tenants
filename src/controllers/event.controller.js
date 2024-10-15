@@ -54,8 +54,14 @@ const getRoomCalendarEvent = asyncHandler(async (req, res) => {
 
   const events = CalendarEvent.find({ room: roomId });
 
-  if (!events || events.length == 0) {
+  if (!events) {
     throw new ApiError(404, "No events found for this room");
+  }
+
+  if (events.length == 0) {
+    return res
+      .status(200)
+      .json(new ApiResponse(200, [], "No events found"));
   }
   return res.json(
     new ApiResponse(200, events, "Room events fetched successfully")
@@ -94,4 +100,10 @@ const getMonthlyEvents = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, events, "Events fetched successfully"));
 });
 
-export { createCalendarEvent, deleteCalendarEvent, getRoomCalendarEvent,getMonthlyEvents };
+export {
+  createCalendarEvent,
+  deleteCalendarEvent,
+  getRoomCalendarEvent,
+  getMonthlyEvents,
+  getSingleEvent
+};
