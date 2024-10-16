@@ -126,5 +126,19 @@ const getExpenseDetails = asyncHandler(async (req, res) => {
     return res.json(new ApiResponse(200, expense, "Expense details fetched successfully"));
   });
   
+  const updateExpense = asyncHandler(async (req, res) => {
+    const { expenseId } = req.params;
+    const updates = req.body;
+    
+    const expense = await Expense.findByIdAndUpdate(expenseId, updates, { new: true });
+    
+    if (!expense) {
+      throw new ApiError(404, "Expense not found");
+    }
+  
+    return res.json(new ApiResponse(200, expense, "Expense updated successfully"));
+  });
+  
 
-export { createExpense, updatePayment, getUserExpenses, getPendingPayments ,deleteExpense,getExpenseDetails};
+
+export { createExpense, updatePayment, getUserExpenses, getPendingPayments ,deleteExpense,getExpenseDetails,updateExpense};
