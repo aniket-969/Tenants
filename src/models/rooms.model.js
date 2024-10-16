@@ -52,7 +52,7 @@ const awardSchema = new Schema(
     },
   },
   { timestamps: true }
-);
+); 
 
 const taskSchema = new Schema(
   {
@@ -73,11 +73,6 @@ const taskSchema = new Schema(
     createdBy: {
       type: Schema.Types.ObjectId,
       ref: "User",
-      required: true,
-    },
-    room: {
-      type: Schema.Types.ObjectId,
-      ref: "Room",
       required: true,
     },
     dueDate: {
