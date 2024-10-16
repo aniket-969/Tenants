@@ -31,7 +31,7 @@ const createExpense = asyncHandler(async (req, res) => {
 
 const updatePayment = asyncHandler(async (req, res) => {
   const userId = req.user?._id;
-  const { expenseId,paymentMode } = req.body;
+  const { expenseId, paymentMode } = req.body;
   const expense = await Expense.findById(expenseId);
 
   if (!expense) {
@@ -43,7 +43,7 @@ const updatePayment = asyncHandler(async (req, res) => {
   );
 
   if (!participant) {
-    throw new ApiError(403, "Your are not part of participant in this expense");
+    throw new ApiError(403, "You are not part of participant in this expense");
   }
 
   if (participant.hasPaid) {
@@ -55,7 +55,7 @@ const updatePayment = asyncHandler(async (req, res) => {
 
   expense.paymentHistory.push({
     user: userId,
-    amount: participant.amountOwed, 
+    amount: participant.amountOwed,
     paymentDate: new Date(),
     description: paymentMode,
   });
@@ -67,4 +67,21 @@ const updatePayment = asyncHandler(async (req, res) => {
   );
 });
 
-export { createExpense, updatePayment };
+const getUserExpenses = asyncHandler(async (req, res) => {
+  const userId = req.user?._id;
+
+  const expenses = await Expense.find({ "paraticipats.user": userId })
+    .populate("paidBy", "fullName avatar")
+    .populate("participants.user", "fullName avatar");
+
+  if (!expenses.length) {
+    return res.json(new ApiResponse(200, [], "No expenses found for the user"));
+  }
+
+  return res.json(
+    new ApiResponse(200, expense, "user expenses fetched successfully")
+  );
+});
+
+
+export { createExpense, updatePayment, getUserExpenses };
