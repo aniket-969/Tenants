@@ -113,4 +113,18 @@ const deleteExpense = asyncHandler(async(req,res)=>{
     return res.json(new ApiResponse(200,{},"Expense deleted successfully"))
 })
 
-export { createExpense, updatePayment, getUserExpenses, getPendingPayments ,deleteExpense};
+const getExpenseDetails = asyncHandler(async (req, res) => {
+    const { expenseId } = req.params;
+    const expense = await Expense.findById(expenseId)
+      .populate('paidBy', 'fullName avatar')
+      .populate('participants.user', 'fullName avatar');
+    
+    if (!expense) {
+      throw new ApiError(404, "Expense not found");
+    }
+  
+    return res.json(new ApiResponse(200, expense, "Expense details fetched successfully"));
+  });
+  
+
+export { createExpense, updatePayment, getUserExpenses, getPendingPayments ,deleteExpense,getExpenseDetails};
