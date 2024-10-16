@@ -17,7 +17,7 @@ const createCalendarEvent = asyncHandler(async (req, res) => {
   if (!room) {
     throw new ApiError(404, "Room not found");
   }
-
+ 
   const calendarEvent = await CalendarEvent.create({
     title,
     description,
