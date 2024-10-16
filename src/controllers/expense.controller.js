@@ -70,7 +70,7 @@ const updatePayment = asyncHandler(async (req, res) => {
 const getUserExpenses = asyncHandler(async (req, res) => {
   const userId = req.user?._id;
 
-  const expenses = await Expense.find({ "paraticipats.user": userId })
+  const expenses = await Expense.find({ "participants.user": userId })
     .populate("paidBy", "fullName avatar")
     .populate("participants.user", "fullName avatar");
 
@@ -83,5 +83,23 @@ const getUserExpenses = asyncHandler(async (req, res) => {
   );
 });
 
+const getPendingPayments = asyncHandler(async (req, res) => {
+  const userId = req.user?._id;
+  const pendingExpense = await Expense.find({ paidBy: userId })
+    .populate("paidBy", "fullName avatar")
+    .populate("participants.user", "fullName avatar");
 
-export { createExpense, updatePayment, getUserExpenses };
+  if (!pendingExpense.length) {
+    return res.json(new ApiResponse(200, [], "No user payment found"));
+  }
+
+  return res.json(
+    new ApiResponse(
+      200,
+      pendingExpense,
+      " Pending payments owed to user fetched successfully"
+    )
+  );
+});
+
+export { createExpense, updatePayment, getUserExpenses, getPendingPayments };
