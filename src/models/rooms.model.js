@@ -161,6 +161,9 @@ const roomSchema = new Schema(
 
 taskSchema.index({ dueDate: 1 });
 taskSchema.index({ currentAssignee: 1 });
-taskSchema.index({ completed: 1 });
+taskSchema.index({ dueDate: 1 });
+taskSchema.index({ recurring: 1, recurrencePattern: 1 });
+taskSchema.index({ createdBy: 1 });
+taskSchema.index({ participants: 1 });
 
 export const Room = mongoose.model("Room", roomSchema);
