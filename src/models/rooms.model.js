@@ -52,7 +52,7 @@ const awardSchema = new Schema(
     },
   },
   { timestamps: true }
-); 
+);
 
 const taskSchema = new Schema(
   {
@@ -63,13 +63,11 @@ const taskSchema = new Schema(
     description: {
       type: String,
     },
-    assignedTo: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "User",
-        required: true,
-      },
-    ],
+    currentAssignee: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
     createdBy: {
       type: Schema.Types.ObjectId,
       ref: "User",
@@ -79,8 +77,20 @@ const taskSchema = new Schema(
       type: Date,
       required: true,
     },
-    completionDate: {
+    participants: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "user",
+        required: true,
+      },
+    ],
+    rotationOrder: {
+      type: [Schema.Types.ObjectId],
+      ref: "User",
+    },
+    lastAssignedDate: {
       type: Date,
+      default: Date.now,
     },
     completed: {
       type: Boolean,
@@ -106,10 +116,6 @@ const taskSchema = new Schema(
         },
       },
     ],
-    switchesAccepted: {
-      type: Number,
-      default: 0,
-    },
     recurring: {
       type: Boolean,
       default: false,
