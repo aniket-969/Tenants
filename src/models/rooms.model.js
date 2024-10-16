@@ -88,10 +88,6 @@ const taskSchema = new Schema(
       type: [Schema.Types.ObjectId],
       ref: "User",
     },
-    lastAssignedDate: {
-      type: Date,
-      default: Date.now,
-    },
     completed: {
       type: Boolean,
       default: false,
@@ -111,18 +107,29 @@ const taskSchema = new Schema(
           type: Schema.Types.ObjectId,
           ref: "User",
         },
-        switchDate: {
-          type: Date,
-        },
       },
     ],
+    switchCountPerUser: [
+      {
+        user: { type: Schema.Types.ObjectId, ref: "User" },
+        requestCount: { type: Number, default: 0 },  
+        acceptCount: { type: Number, default: 0 },   
+      },
+    ],
+    completedBy: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
     recurring: {
       type: Boolean,
       default: false,
     },
     recurrencePattern: {
       type: String,
-      default: null,
+      enum: ["daily", "weekly", "monthly", "custom"],
+    },
+    customRecurrence: {
+      type: String,
     },
   },
   { timestamps: true }
@@ -151,5 +158,9 @@ const roomSchema = new Schema(
   },
   { timestamps: true }
 );
+
+taskSchema.index({ dueDate: 1 });
+taskSchema.index({ currentAssignee: 1 });
+taskSchema.index({ completed: 1 });
 
 export const Room = mongoose.model("Room", roomSchema);
