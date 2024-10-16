@@ -102,4 +102,15 @@ const getPendingPayments = asyncHandler(async (req, res) => {
   );
 });
 
-export { createExpense, updatePayment, getUserExpenses, getPendingPayments };
+const deleteExpense = asyncHandler(async(req,res)=>{
+    const {expenseId} = req.params
+
+    const deletedExpense =await Expense.findByIdAndDelete(expenseId)
+    if(!deletedExpense){
+        throw new ApiError(404,"Expense not find")
+    }
+
+    return res.json(new ApiResponse(200,{},"Expense deleted successfully"))
+})
+
+export { createExpense, updatePayment, getUserExpenses, getPendingPayments ,deleteExpense};
