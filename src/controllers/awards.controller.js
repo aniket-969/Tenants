@@ -24,5 +24,4 @@ const getRoomAwards = asyncHandler(async (req, res) => {
   );
 });
 
-
 export { getRoomAwards};
