@@ -35,6 +35,10 @@ const roomSchema = new Schema(
         criteria: {
           type: String,
         },
+        assignedTo: {
+          type: Schema.Types.ObjectId,
+          ref: "User",
+        },
       },
     ],
     maintenanceRequests: [
@@ -129,15 +133,14 @@ const roomSchema = new Schema(
             requestedBy: {
               type: Schema.Types.ObjectId,
               ref: "User",
-              required: true,  
+              required: true,
             },
             requestedTo: {
               userId: {
                 type: Schema.Types.ObjectId,
                 ref: "User",
-                required: true,  
+                required: true,
               },
-             
             },
           },
         ],
@@ -169,11 +172,11 @@ const roomSchema = new Schema(
   },
   { timestamps: true }
 );
-roomSchema.pre('save', function (next) {
+roomSchema.pre("save", function (next) {
   const room = this;
   room.tasks.forEach((task) => {
     if (task.isModified() && task.completed) {
-      next(new Error('Cannot modify a completed task'));
+      next(new Error("Cannot modify a completed task"));
     }
   });
   next();
