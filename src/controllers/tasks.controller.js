@@ -51,6 +51,7 @@ const updateRoomTask = asyncHandler(async (req, res) => {
           'tasks.$.dueDate': updates.dueDate,
           'tasks.$.priority': updates.priority,
           'tasks.$.completed': updates.completed,
+          'tasks.$.completedBy': req.user?._id,
         },
       },
       { new: true, runValidators: true } 

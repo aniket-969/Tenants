@@ -164,6 +164,17 @@ const roomSchema = new Schema(
   },
   { timestamps: true }
 );
+roomSchema.pre('save', function (next) {
+  const room = this;
+  room.tasks.forEach((task) => {
+    if (task.isModified() && task.completed) {
+      next(new Error('Cannot modify a completed task'));
+    }
+  });
+  next();
+});
+
+
 
 roomSchema.index({ "tasks.dueDate": 1 });
 roomSchema.index({ "tasks.currentAssignee": 1 });
