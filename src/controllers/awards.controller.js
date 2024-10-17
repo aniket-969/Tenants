@@ -1,4 +1,3 @@
-
 import { Room } from "../models/rooms.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
@@ -13,7 +12,7 @@ const getRoomAwards = asyncHandler(async (req, res) => {
 
   const awards = await AwardTemplate.find({
     awardedTo: { $in: roomUsers },
-  }).populate("awardTemplate awardedTo"); 
+  }).populate("awardTemplate awardedTo");
 
   if (!awards.length) {
     throw new ApiError(404, "No awards found");
@@ -24,20 +23,26 @@ const getRoomAwards = asyncHandler(async (req, res) => {
   );
 });
 
-const customRoomAward = asyncHandler(async(req,res)=>{
- const {roomId,title,description,image,criteria} = req.body
+const customRoomAward = asyncHandler(async (req, res) => {
+  const { roomId, title, description, image, criteria } = req.body;
 
-const room = Room.findById(roomId)
+  const room = Room.findById(roomId);
 
-const awards = {
-  title,description,image,criteria
-}
+  const awards = {
+    title,
+    description,
+    image,
+    criteria,
+  };
 
-room.awards.push(awards)
-await room.save()
+  room.awards.push(awards);
+  await room.save();
 
+  const newAward = room.awards[room.awards.length - 1];
 
+  return res.json(
+    new ApiResponse(200, newAward, "Custom award created successfully")
+  );
+});
 
-})
-
-export { getRoomAwards};
+export { getRoomAwards,customRoomAward };
