@@ -40,4 +40,8 @@ const createRoomTasks = asyncHandler(async (req, res) => {
 
 });
 
+const updateRoomTask = asyncHandler(async(req,res)=>{
+    
+})
+
 export {createRoomTasks}
