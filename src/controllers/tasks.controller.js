@@ -34,14 +34,35 @@ const createRoomTasks = asyncHandler(async (req, res) => {
   };
   room.tasks.push(task);
 
-  await room.save()
+  await room.save();
   const newTask = room.tasks[room.tasks.length - 1];
-  return res.json(new ApiResponse(200,newTask,"Task created successfully"))
-
+  return res.json(new ApiResponse(200, newTask, "Task created successfully"));
 });
+const updateRoomTask = asyncHandler(async (req, res) => {
+    const { roomId, taskId } = req.body;
+    const updates = req.body; 
+  
+    const updatedRoom = await Room.findOneAndUpdate(
+      { _id: roomId, 'tasks._id': taskId },  
+      {
+        $set: {
+          'tasks.$.title': updates.title,
+          'tasks.$.description': updates.description,
+          'tasks.$.dueDate': updates.dueDate,
+          'tasks.$.priority': updates.priority,
+          'tasks.$.completed': updates.completed,
+        },
+      },
+      { new: true, runValidators: true } 
+    );
+  
+    if (!updatedRoom) {
+      throw new ApiError(404, 'Task or Room not found');
+    }
+  
+    const updatedTask = updatedRoom.tasks.id(taskId);
+    return res.json(new ApiResponse(200, updatedTask, 'Task updated successfully'));
+  });
+  
 
-const updateRoomTask = asyncHandler(async(req,res)=>{
-    
-})
-
-export {createRoomTasks}
+export { createRoomTasks };
