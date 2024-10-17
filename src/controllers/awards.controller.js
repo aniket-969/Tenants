@@ -26,4 +26,22 @@ const customRoomAward = asyncHandler(async (req, res) => {
   );
 });
 
-export { customRoomAward };
+const deleteRoomAward = asyncHandler(async (req, res) => {
+  const { roomId, awardId } = req.body;
+
+  const room = await Room.findById(roomId);
+
+  const awardIndex = room.awards.findIndex(
+    (item) => item._id.toString() === awardId
+  );
+
+  if (awardIndex === -1) {
+    throw new ApiError(404, "Award not find");
+  }
+
+  room.awards.splice(awardIndex, 1);
+  await room.save();
+  return res.json(new ApiResponse(200, {}, "Awards deleted successfully"));
+});
+
+export { customRoomAward,deleteRoomAward };
