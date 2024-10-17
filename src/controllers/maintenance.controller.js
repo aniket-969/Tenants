@@ -26,7 +26,8 @@ const createMaintenance = asyncHandler(async (req, res) => {
   room.maintenanceRequests.push(maintenance);
   await room.save();
 
-  const newMaintenance = room.maintenanceRequests[room.maintenanceRequests.length - 1];
+  const newMaintenance =
+    room.maintenanceRequests[room.maintenanceRequests.length - 1];
 
   return res.json(
     new ApiResponse(
@@ -57,4 +58,40 @@ const deleteMaintenance = asyncHandler(async (req, res) => {
   return res.json(new ApiResponse(200, {}, "Maintenance deleted successfully"));
 });
 
-export { createMaintenance,deleteMaintenance };
+const updateMaintenance = asyncHandler(async (req, res) => {
+  const {
+    status,
+    roomId,
+    title,
+    description,
+    maintenanceProvider,
+    contactPhone,
+    costEstimate,
+    maintenanceId,
+    dateResolved,
+  } = req.body;
+
+  const updateMaintenace = await Room.findOneAndUpdate(
+    { _id: roomId, "maintenanceRequests._id": maintenanceId },
+    {
+      $set: {
+        "maintenanceRequests.$.title": title,
+        "maintenanceRequests.$.description": description,
+        "maintenanceRequests.$.dateResolved": dateResolved,
+        "maintenanceRequests.$.contactPhone": contactPhone,
+        "maintenanceRequests.$.costEstimate": costEstimate,
+        "maintenanceRequests.$.maintenaceProvider": maintenaceProvider,
+        "maintenanceRequests.$.status": status,
+      },
+    }
+  );
+
+  if (!updateMaintenance) {
+    throw new ApiError(400, "Error updating maintenance");
+  }
+  const updatedMaintenance =
+    updateMaintenace.maintenanceRequests.id(maintenanceId);
+  return res.json(200, updateMaintenace, "Maintenance updated successfully");
+});
+
+export { createMaintenance, deleteMaintenance,updateMaintenance };
