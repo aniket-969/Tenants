@@ -117,16 +117,34 @@ const switchRequestResponse = asyncHandler(async (req, res) => {
     },
     {
       $set: {
-        "tasks.switches.requestTo.accepted": true,
+        "tasks.$[task].switches.$[switch].requestedTo.accepted": true,
       },
     },
-    { new: true, runValidators: true }
+    {
+      arrayFilters: [
+        { "task._id": taskId }, 
+        {
+          "switch.requestedBy": requestedBy,
+          "switch.requestedTo.userId": req.user?._id,
+        }, 
+      ],
+      new: true,
+      runValidators: true,
+    }
   );
 
   if (!updatedSwitchResponse)
     throw new ApiError(400, "Either task or request not found");
 
-  return res.json(new ApiResponse(200, {}, "Task's status updated successfully"));
+  return res.json(
+    new ApiResponse(200, {}, "Task's status updated successfully")
+  );
 });
 
-export { createRoomTask, updateRoomTask, deleteRoomTask, createSwitchRequest,switchRequestResponse };
+export {
+  createRoomTask,
+  updateRoomTask,
+  deleteRoomTask,
+  createSwitchRequest,
+  switchRequestResponse,
+};
