@@ -142,7 +142,6 @@ const roomSchema = new Schema(
                 default: false, 
               },
             },
-           
           },
         ],
         switchCountPerUser: [
