@@ -14,8 +14,8 @@ const createMaintenance = asyncHandler(async (req, res) => {
   } = req.body;
 
   const room = await Room.findById(roomId);
-  if(room.maintenanceRequests.length >= 10){
-    throw new ApiError(404,"Maximum maintenance requests limit reached")
+  if (room.maintenanceRequests.length >= 10) {
+    throw new ApiError(404, "Maximum maintenance requests limit reached");
   }
   const maintenance = {
     title,
@@ -85,7 +85,8 @@ const updateMaintenance = asyncHandler(async (req, res) => {
         "maintenanceRequests.$.maintenaceProvider": maintenaceProvider,
         "maintenanceRequests.$.status": status,
       },
-    }
+    },
+    { new: true, runValidators: true }
   );
 
   if (!updateMaintenance) {
@@ -96,4 +97,4 @@ const updateMaintenance = asyncHandler(async (req, res) => {
   return res.json(200, updateMaintenace, "Maintenance updated successfully");
 });
 
-export { createMaintenance, deleteMaintenance,updateMaintenance };
+export { createMaintenance, deleteMaintenance, updateMaintenance };

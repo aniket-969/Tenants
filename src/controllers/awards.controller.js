@@ -44,4 +44,33 @@ const deleteRoomAward = asyncHandler(async (req, res) => {
   return res.json(new ApiResponse(200, {}, "Awards deleted successfully"));
 });
 
-export { customRoomAward,deleteRoomAward };
+const updateRoomAward = asyncHandler(async (req, res) => {
+  const { roomId, awardId, title, description, image, criteria, assignedTo } =
+    req.body;
+
+  const updateAward =await Room.findOneAndUpdate(
+    { _id: roomId, "awards._id": awardId },
+    {
+      $set: {
+        "awards.$.title": title,
+        "awards.$.description": description,
+        "awards.$.assignedTo": assignedTo,
+        "awards.$.criteria": criteria,
+        "awards.$.image": image,
+      },
+    },
+    { new: true, runValidators: true }
+  );
+
+  if (!updateAward) {
+    throw new ApiError(404, "Error updating awards");
+  }
+
+  const updatedAward = updateAward.awards.id(awardId);
+
+  return res.json(
+    new ApiResponse(200, updateAward, "Award updated successfully")
+  );
+});
+
+export { customRoomAward, deleteRoomAward ,updateRoomAward};
