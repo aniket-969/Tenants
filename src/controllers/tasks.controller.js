@@ -3,7 +3,7 @@ import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { Room } from "../models/rooms.model.js";
 
-const createRoomTasks = asyncHandler(async (req, res) => {
+const createRoomTask = asyncHandler(async (req, res) => {
   const createdBy = req.user?._id;
   const {
     title,
@@ -65,5 +65,21 @@ const updateRoomTask = asyncHandler(async (req, res) => {
     return res.json(new ApiResponse(200, updatedTask, 'Task updated successfully'));
   });
   
+  const deleteRoomTask = asyncHandler(async(req,res)=>{
+    const {roomId,taskId} = req.body
+    const room = await Room.findById(roomId)
+    const taskIndex = room.tasks.findIndex(task => task._id.toString() === taskId);
 
-export { createRoomTasks };
+    if (taskIndex === -1) {
+      throw new ApiError(404, "Task not found in the room");
+    }
+
+    room.tasks.splice(taskIndex,1)
+
+    await room.save()
+
+    return res.json(new ApiResponse(200,{},"Task deleted successfully"))
+    
+  })
+
+export { createRoomTask,updateRoomTask,deleteRoomTask };

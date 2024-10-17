@@ -174,8 +174,6 @@ roomSchema.pre('save', function (next) {
   next();
 });
 
-
-
 roomSchema.index({ "tasks.dueDate": 1 });
 roomSchema.index({ "tasks.currentAssignee": 1 });
 roomSchema.index({ "tasks.createdBy": 1 });
