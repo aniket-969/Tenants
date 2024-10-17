@@ -19,6 +19,9 @@ const createRoomTask = asyncHandler(async (req, res) => {
     customRecurrence,
   } = req.body;
   const room = await Room.findById(roomId);
+  if(room.tasks.length >= 40){
+    throw new ApiError(404,"Maximum tasks limit reached")
+  }
   const task = {
     title,
     description,
