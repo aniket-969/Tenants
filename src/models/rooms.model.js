@@ -8,8 +8,17 @@ const roomSchema = new Schema(
       type: String,
       required: true,
     },
+    description:{
+      type:String,
+      
+    },
     password:{
       type:String,
+      required:true,
+    },
+    admin:{
+      type: Schema.Types.ObjectId,
+      ref: "User",
       required:true,
     },
     landlord: {
