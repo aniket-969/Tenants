@@ -130,10 +130,16 @@ const roomSchema = new Schema(
               type: Schema.Types.ObjectId,
               ref: "User",
             },
-            acceptedBy: {
-              type: Schema.Types.ObjectId,
-              ref: "User",
+            requestedTo:{
+              userId:{
+              type:Schema.Types.ObjectId,
+              ref:"User"
             },
+              accepted:{
+                type:Boolean,
+              }
+            },
+           
           },
         ],
         switchCountPerUser: [
