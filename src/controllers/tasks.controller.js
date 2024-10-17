@@ -107,37 +107,47 @@ const createSwitchRequest = asyncHandler(async (req, res) => {
 });
 
 const switchRequestResponse = asyncHandler(async (req, res) => {
-  const { tasksId, roomId, requestedBy } = req.body;
-  const updatedSwitchResponse = Room.findOneAndUpdate(
+  const { taskId, roomId, requestedBy } = req.body;
+
+  const updatedSwitchResponse = await Room.findOneAndUpdate(
     {
       _id: roomId,
       "tasks._id": taskId,
-      "tasks.switches.requestTo.userId": req.user?._id,
       "tasks.switches.requestedBy": requestedBy,
+      "tasks.switches.requestedTo.userId": req.user?._id,
     },
     {
-      $set: {
-        "tasks.$[task].switches.$[switch].requestedTo.accepted": true,
+      $pull: {
+        "tasks.$.switches": {
+          requestedBy,
+          "requestedTo.userId": req.user?._id,
+        },
+      },
+      $inc: {
+        "tasks.$.switchCountPerUser.$[requestingUser].requestCount": 1,
+        "tasks.$.switchCountPerUser.$[acceptingUser].acceptCount": 1,
       },
     },
     {
       arrayFilters: [
-        { "task._id": taskId }, 
-        {
-          "switch.requestedBy": requestedBy,
-          "switch.requestedTo.userId": req.user?._id,
-        }, 
+        { "requestingUser.user": requestedBy },
+        { "acceptingUser.user": req.user?._id },
       ],
       new: true,
       runValidators: true,
     }
   );
 
-  if (!updatedSwitchResponse)
-    throw new ApiError(400, "Either task or request not found");
+  if (!updatedSwitchResponse) {
+    throw new ApiError(400, "Task, room or switch request not found");
+  }
 
   return res.json(
-    new ApiResponse(200, {}, "Task's status updated successfully")
+    new ApiResponse(
+      200,
+      {},
+      "Switch request accepted and task updated successfully"
+    )
   );
 });
 
