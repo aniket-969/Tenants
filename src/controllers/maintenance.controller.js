@@ -23,10 +23,10 @@ const createMaintenance = asyncHandler(async (req, res) => {
     costEstimate,
   };
 
-  room.maintenance.push(maintenance);
+  room.maintenanceRequests.push(maintenance);
   await room.save();
 
-  const newMaintenance = await room.maintenance[room.maintenance.length - 1];
+  const newMaintenance = room.maintenanceRequests[room.maintenanceRequests.length - 1];
 
   return res.json(
     new ApiResponse(
@@ -42,12 +42,12 @@ const deleteMaintenance = asyncHandler(async (req, res) => {
 
   const room = await Room.findById(roomId);
 
-  const maintenanceIndex = room.maintenance.findIndex(
+  const maintenanceIndex = room.maintenanceRequests.findIndex(
     (item) => item._id.toString() === maintenanceId
   );
 
   if (maintenanceIndex === -1) {
-    throw new ApiError(404, "Either room or maintenance is not find");
+    throw new ApiError(404, "Maintenance not find");
   }
 
   room.maintenance.splice(maintenanceIndex, 1);
