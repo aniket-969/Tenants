@@ -14,7 +14,9 @@ const createMaintenance = asyncHandler(async (req, res) => {
   } = req.body;
 
   const room = await Room.findById(roomId);
-
+  if(room.maintenanceRequests.length >= 10){
+    throw new ApiError(404,"Maximum maintenance requests limit reached")
+  }
   const maintenance = {
     title,
     description,
