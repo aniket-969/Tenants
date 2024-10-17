@@ -26,8 +26,10 @@ import eventRouter from "./routes/event.routes.js"
 import expenseRouter from "./routes/expense.routes.js"
 import taskRouter from "./routes/tasks.routes.js"
 import maintenanceRouter from "./routes/maintenance.routes.js"
+import roomRouter from "./routes/room.routes.js"
 
 app.use("/api/v1/users", userRouter);
+app.use("/api/v1/room",roomRouter );
 app.use("/api/v1/poll", voteRouter);
 app.use("/api/v1/awards", awardRouter);
 app.use("/api/v1/event", eventRouter);
