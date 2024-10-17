@@ -137,10 +137,7 @@ const roomSchema = new Schema(
                 ref: "User",
                 required: true,  
               },
-              accepted: {
-                type: Boolean,
-                default: false, 
-              },
+             
             },
           },
         ],
