@@ -86,13 +86,26 @@ const deleteRoomTask = asyncHandler(async (req, res) => {
 });
 
 const createSwitchRequest = asyncHandler(async (req, res) => {
-  const { taskId, roomId } = req.body;
- const updatedRoom = await Room.findOneAndUpdate({_id:roomId,"tasks._id":taskId},{
-    $set{
-        "tasks.createdBy":req.user?._id
-    }
- })
+  const { taskId, roomId,requestedTo } = req.body;
+  const updatedRoomTask = await Room.findOneAndUpdate(
+    { _id: roomId, "tasks._id": taskId }, 
+    {
+      $push: {
+        "tasks.$.switches": {
+          requestedBy: req.user?._id,
+          requestedTo: { userId: requestedTo, accepted: false },
+        },
+      },
+    },
+    { new: true }
+  );
+
+
+ if(!updateRoomTask){
+    throw new ApiError(400,"Task or room not found")
+ }
+ return new ApiResponse(200,{},"Switch request sent successfully")
 
 });
 
-export { createRoomTask, updateRoomTask, deleteRoomTask };
+export { createRoomTask, updateRoomTask, deleteRoomTask,createSwitchRequest };

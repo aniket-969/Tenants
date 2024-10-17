@@ -129,15 +129,18 @@ const roomSchema = new Schema(
             requestedBy: {
               type: Schema.Types.ObjectId,
               ref: "User",
+              required: true,  
             },
-            requestedTo:{
-              userId:{
-              type:Schema.Types.ObjectId,
-              ref:"User"
-            },
-              accepted:{
-                type:Boolean,
-              }
+            requestedTo: {
+              userId: {
+                type: Schema.Types.ObjectId,
+                ref: "User",
+                required: true,  
+              },
+              accepted: {
+                type: Boolean,
+                default: false, 
+              },
             },
            
           },
