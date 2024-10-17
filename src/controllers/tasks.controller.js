@@ -33,4 +33,11 @@ const createRoomTasks = asyncHandler(async (req, res) => {
     customRecurrence,
   };
   room.tasks.push(task);
+
+  await room.save()
+  const newTask = room.tasks[room.tasks.length - 1];
+  return res.json(new ApiResponse(200,newTask,"Task created successfully"))
+
 });
+
+export {createRoomTasks}
