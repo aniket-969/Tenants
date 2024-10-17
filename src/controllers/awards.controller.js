@@ -24,18 +24,19 @@ const getRoomAwards = asyncHandler(async (req, res) => {
 });
 
 const customRoomAward = asyncHandler(async (req, res) => {
-  const { roomId, title, description, image, criteria } = req.body;
+  const { roomId, title, description, image, criteria,assignedTo } = req.body;
 
-  const room = Room.findById(roomId);
+  const room =await Room.findById(roomId);
 
-  const awards = {
+  const award = {
     title,
     description,
     image,
     criteria,
+    assignedTo
   };
 
-  room.awards.push(awards);
+  room.awards.push(award);
   await room.save();
 
   const newAward = room.awards[room.awards.length - 1];
