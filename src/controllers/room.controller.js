@@ -56,13 +56,11 @@ const createRoom = asyncHandler(async (req, res) => {
   );
 });
 
-const updateRoomCode = asyncHandler(async(req,res)=>{
-
-})
+const updateRoomCode = asyncHandler(async (req, res) => {});
 
 const addUserRequest = asyncHandler(async (req, res) => {
   const userId = req.user?._id;
-  const { groupCode,role } = req.body;
+  const { groupCode, role } = req.body;
 
   const room = await Room.findOne({ groupCode });
 
@@ -79,7 +77,7 @@ const addUserRequest = asyncHandler(async (req, res) => {
       (request) => request.userId.toString() === userId.toString()
     )
   ) {
-    room.pendingRequests.push({ userId,role });
+    room.pendingRequests.push({ userId, role });
     await room.save();
   } else {
     return res.json(new ApiResponse(400, {}, "Request already sent"));
@@ -89,19 +87,28 @@ const addUserRequest = asyncHandler(async (req, res) => {
 });
 
 const adminResponse = asyncHandler(async (req, res) => {
-  const { roomId, userId, action } = req.body;
+  const { roomId, requestId, action } = req.body;
 
   const room = await Room.findById(roomId);
 
   const requestIndex = room.pendingRequests.findIndex(
-    (request) => request.userId.toString() === userId
+    (request) => request.id.toString() === requestId
   );
   if (requestIndex === -1) {
     throw new ApiError(400, "No such pending request");
   }
 
+  const { userId, role } = room.pendingRequests[requestIndex];
+
   if (action === "approve") {
-    room.members.push(userId);
+    if (role === "landlord") {
+      if (room.landlord) {
+        throw new ApiError(400, "Room already has a landlord");
+      }
+      room.landlord = userId;
+    } else if (role === "tenant") {
+      room.tenants.push(userId);
+    }
 
     room.pendingRequests.splice(requestIndex, 1);
 
@@ -109,29 +116,24 @@ const adminResponse = asyncHandler(async (req, res) => {
     if (!user) {
       throw new ApiError(404, "User not found");
     }
-
     if (!user.rooms.includes(roomId)) {
       user.rooms.push(roomId);
       await user.save();
     }
 
     await room.save();
+
     return res.json(
       new ApiResponse(200, {}, "User approved and added to the room")
     );
   } else {
     room.pendingRequests.splice(requestIndex, 1);
-
     await room.save();
 
     return res.json(
       new ApiResponse(200, {}, "User denied and removed from pending requests")
     );
   }
-
 });
 
-
-
-
-export { createRoom, addUserRequest,adminResponse };
+export { createRoom, addUserRequest, adminResponse };
