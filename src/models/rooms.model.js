@@ -8,20 +8,19 @@ const roomSchema = new Schema(
       type: String,
       required: true,
     },
-    description:{
-      type:String,
-      
+    description: {
+      type: String,
     },
-    groupCode:{
-      type:String,
-      required:true,
-      unique:true,
-      length:6,
+    groupCode: {
+      type: String,
+      required: true,
+      unique: true,
+      length: 6,
     },
-    admin:{
+    admin: {
       type: Schema.Types.ObjectId,
       ref: "User",
-      required:true,
+      required: true,
     },
     landlord: {
       type: Schema.Types.ObjectId,
@@ -33,12 +32,17 @@ const roomSchema = new Schema(
         ref: "User",
       },
     ],
-    pendingRequests: [{
-      id: { type: Schema.Types.ObjectId, default: new mongoose.Types.ObjectId },
-      userId: { type: Schema.Types.ObjectId, ref: 'User' },
-      role: { type: String, enum: ['tenant', 'landlord'], required: true },
-      requestedAt: { type: Date, default: Date.now }
-    }],
+    pendingRequests: [
+      {
+        id: {
+          type: Schema.Types.ObjectId,
+          default: new mongoose.Types.ObjectId(),
+        },
+        userId: { type: Schema.Types.ObjectId, ref: "User" },
+        role: { type: String, enum: ["tenant", "landlord"], required: true },
+        requestedAt: { type: Date, default: Date.now },
+      },
+    ],
     awards: [
       {
         _id: {

@@ -56,7 +56,24 @@ const createRoom = asyncHandler(async (req, res) => {
   );
 });
 
-const updateRoomCode = asyncHandler(async (req, res) => {});
+const updateRoom = asyncHandler(async (req, res) => {
+  const { roomId } = req.params;
+  const { name, description } = req.body;
+
+  const updatedRoom = await Room.findByIdAndUpdate(
+    roomId,
+    {$set:{ name, description }},
+    { new: true, runValidators: true }
+  );
+
+  if (!updatedRoom) {
+    throw new ApiError(404, "Room not found");
+  }
+
+  return res.json(
+    new ApiResponse(200, updatedRoom, "Room updated successfully")
+  );
+});
 
 const addUserRequest = asyncHandler(async (req, res) => {
   const userId = req.user?._id;
@@ -136,4 +153,4 @@ const adminResponse = asyncHandler(async (req, res) => {
   }
 });
 
-export { createRoom, addUserRequest, adminResponse };
+export { createRoom, addUserRequest, adminResponse,updateRoom };
