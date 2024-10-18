@@ -35,6 +35,7 @@ const roomSchema = new Schema(
     ],
     pendingRequests: [{
       userId: { type: Schema.Types.ObjectId, ref: 'User' },
+      role: { type: String, enum: ['tenant', 'landlord'], required: true },
       requestedAt: { type: Date, default: Date.now }
     }],
     awards: [

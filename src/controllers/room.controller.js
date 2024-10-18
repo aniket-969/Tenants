@@ -56,9 +56,13 @@ const createRoom = asyncHandler(async (req, res) => {
   );
 });
 
+const updateRoomCode = asyncHandler(async(req,res)=>{
+
+})
+
 const addUserRequest = asyncHandler(async (req, res) => {
   const userId = req.user?._id;
-  const { groupCode } = req.body;
+  const { groupCode,role } = req.body;
 
   const room = await Room.findOne({ groupCode });
 
@@ -75,7 +79,7 @@ const addUserRequest = asyncHandler(async (req, res) => {
       (request) => request.userId.toString() === userId.toString()
     )
   ) {
-    room.pendingRequests.push({ userId });
+    room.pendingRequests.push({ userId,role });
     await room.save();
   } else {
     return res.json(new ApiResponse(400, {}, "Request already sent"));
@@ -126,5 +130,8 @@ const adminResponse = asyncHandler(async (req, res) => {
   }
 
 });
+
+
+
 
 export { createRoom, addUserRequest,adminResponse };
