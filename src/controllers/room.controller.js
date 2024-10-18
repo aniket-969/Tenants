@@ -173,5 +173,15 @@ const deleteRoom = asyncHandler(async (req, res) => {
     return res.status(200).json(new ApiResponse(200, {}, "Room and related data deleted successfully"));
   });
   
+const getRoomData = asyncHandler(async(req,res)=>{
+    const {roomId} = req.params
+    const userId = req.user?._id
+    const room = Room.findById(roomId).select("-groupCode -pendingRequests")
 
-export { createRoom, addUserRequest, adminResponse, updateRoom, deleteRoom };
+    return res.json(new ApiResponse(200,room,"Room data fetched successfully"))
+
+    
+})
+
+
+export { createRoom, addUserRequest, adminResponse, updateRoom, deleteRoom ,getRoomData};
