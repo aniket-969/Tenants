@@ -1,7 +1,8 @@
+import { Router } from "express";
+import { addUserRequest, adminResponse, createRoom } from "../controllers/room.controller.js";
+const router = Router();
+router.route("/create").post(createRoom);
+router.route("/request").post(addUserRequest);
+router.route("/response").post(adminResponse);
 
-import { Router } from 'express';
-import { createRoom } from '../controllers/room.controller.js';
-const router = Router()
-router.route("/create").post(createRoom)
-
-export default router
+export default router;
