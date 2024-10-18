@@ -34,7 +34,7 @@ const createRoom = asyncHandler(async (req, res) => {
     name,
     description,
     admin,
-    groupCode
+    groupCode,
   };
 
   if (role === "landlord") {
@@ -55,8 +55,31 @@ const createRoom = asyncHandler(async (req, res) => {
   );
 });
 
-const addUser = asyncHandler(async (req, res) => {
-  const { roomId, password } = req.body;
+const addUserRequest = asyncHandler(async (req, res) => {
+  const userId = req.user?._id;
+  const { groupCode } = req.body;
+  
+  const room = await Room.findOne({groupCode})
+
+  if(!room){
+    throw new ApiError(404,"Room doesn't exist")
+  }
+
+  if(room.pendingRequests.length>50){
+    throw new ApiError(400,"Room has too many pending requests already")
+  }
+
+  if (!room.pendingRequests.some(request => request.userId.toString() === userId.toString())) {
+    room.pendingRequests.push({ userId });
+    await room.save();
+  } 
+  
+  else {
+    return res.json(new ApiResponse(400, {}, "Request already sent"));
+  }
+
+  return res.json(new ApiResponse(200,{},"Request sent successfully"))
+
 });
 
-export { createRoom };
+export { createRoom,addUserRequest };
