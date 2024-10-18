@@ -204,6 +204,28 @@ const leaveRoom = asyncHandler(async (req, res) => {
   return res.json(new ApiResponse(200, {}, "User has left the room"));
 });
 
+const transferAdminControl = asyncHandler(async (req, res) => {
+    const { roomId, newAdminId } = req.body;
+    const currentAdminId = req.user?._id;
+  
+    const room = await Room.findById(roomId);
+  
+    if (room.admin.toString() !== currentAdminId.toString()) {
+      throw new ApiError(403, "Only the current admin can transfer admin rights");
+    }
+  
+    
+    if (!room.tenants.includes(newAdminId)) {
+      throw new ApiError(400, "New admin must be a member of the room");
+    }
+  
+    room.admin = newAdminId;
+    await room.save();
+  
+    return res.status(200).json(new ApiResponse(200, room, "Admin rights transferred successfully"));
+  });
+  
+
 export {
   createRoom,
   addUserRequest,
@@ -212,4 +234,5 @@ export {
   deleteRoom,
   getRoomData,
   leaveRoom,
+  transferAdminControl
 };
