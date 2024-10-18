@@ -203,16 +203,30 @@ const roomSchema = new Schema(
   { timestamps: true }
 );
 
-roomSchema.pre('remove', async function (next) {
-  const roomId = this._id;
-  
-  await Expense.deleteMany({ room: roomId });
-  await CalendarEvent.deleteMany({ room: roomId });
-  await Poll.deleteMany({ room: roomId });
+roomSchema.pre(
+  "remove",
+  { document: true, query: false },
+  async function (next) {
+    const session = await mongoose.startSession();
+    session.startTransaction();
 
-  next();
-});
+    try {
+      const roomId = this._id;
 
+      await Expense.deleteMany({ room: roomId }).session(session);
+      await CalendarEvent.deleteMany({ room: roomId }).session(session);
+      await Poll.deleteMany({ room: roomId }).session(session);
+
+      await session.commitTransaction();
+      session.endSession();
+      next();
+    } catch (error) {
+      await session.abortTransaction();
+      session.endSession();
+      next(error);
+    }
+  }
+);
 
 roomSchema.index({ "tasks.dueDate": 1 });
 roomSchema.index({ "tasks.currentAssignee": 1 });

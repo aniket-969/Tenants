@@ -156,17 +156,22 @@ const adminResponse = asyncHandler(async (req, res) => {
 });
 
 const deleteRoom = asyncHandler(async (req, res) => {
-  const adminId = req.user?._id;
-  const { roomId } = req.params;
-  const room = await Room.findById(roomId);
-
-  if (adminId.toString() !== room.admin.toString()) {
-    throw new ApiError(400, "Only admin can delete rooms");
-  }
-
-  const deletedRoom = await Room.findByIdAndDelete(roomId);
-
-  return res.json(200, {}, "Room deleted successfully");
-});
+    const adminId = req.user?._id;
+    const { roomId } = req.params;
+  
+    const room = await Room.findById(roomId);
+    if (!room) {
+      throw new ApiError(404, "Room not found");
+    }
+  
+    if (adminId.toString() !== room.admin.toString()) {
+      throw new ApiError(400, "Only admin can delete rooms");
+    }
+  
+    await room.remove();
+  
+    return res.status(200).json(new ApiResponse(200, {}, "Room and related data deleted successfully"));
+  });
+  
 
 export { createRoom, addUserRequest, adminResponse, updateRoom, deleteRoom };
