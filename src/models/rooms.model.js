@@ -33,6 +33,10 @@ const roomSchema = new Schema(
         ref: "User",
       },
     ],
+    pendingRequests: [{
+      userId: { type: Schema.Types.ObjectId, ref: 'User' },
+      requestedAt: { type: Date, default: Date.now }
+    }],
     awards: [
       {
         _id: {
@@ -189,7 +193,6 @@ const roomSchema = new Schema(
   },
   { timestamps: true }
 );
-
 
 roomSchema.index({ "tasks.dueDate": 1 });
 roomSchema.index({ "tasks.currentAssignee": 1 });

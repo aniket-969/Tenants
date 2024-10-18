@@ -2,6 +2,31 @@ import { Room } from "../models/rooms.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
+import crypto from "crypto"
+
+
+function generateGroupCode() {
+    return crypto.randomBytes(6).toString('hex').slice(0, 6).toUpperCase();
+  }
+  
+  async function generateUniqueGroupCode() {
+    let isUnique = false;
+    let groupCode;
+  
+    while (!isUnique) {
+      groupCode = generateGroupCode();
+  
+      const existingRoom = await Room.findOne({ groupCode });
+      
+      if (!existingRoom) {
+        isUnique = true;
+      }
+    }
+  
+    return groupCode;
+  }
+  
+
 
 const createRoom = asyncHandler(async (req, res) => {
   const admin = req.user?._id;
@@ -34,7 +59,7 @@ const createRoom = asyncHandler(async (req, res) => {
 
 const addUser = asyncHandler(async (req, res) => {
   const { roomId,password } = req.body;
-  
+
 
 });
 
