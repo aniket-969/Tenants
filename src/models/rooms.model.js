@@ -12,9 +12,11 @@ const roomSchema = new Schema(
       type:String,
       
     },
-    password:{
+    groupCode:{
       type:String,
       required:true,
+      unique:true,
+      length:6,
     },
     admin:{
       type: Schema.Types.ObjectId,
@@ -188,24 +190,6 @@ const roomSchema = new Schema(
   { timestamps: true }
 );
 
-roomSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) return next();
-  this.password = await bcrypt.hash(this.password, 10);
-  next();
-});
-
-roomSchema.methods.isPasswordCorrect = async function (password) {
-  return await bcrypt.compare(password, this.password);
-};
-roomSchema.pre("save", function (next) {
-  const room = this;
-  room.tasks.forEach((task) => {
-    if (task.isModified() && task.completed) {
-      next(new Error("Cannot modify a completed task"));
-    }
-  });
-  next();
-});
 
 roomSchema.index({ "tasks.dueDate": 1 });
 roomSchema.index({ "tasks.currentAssignee": 1 });

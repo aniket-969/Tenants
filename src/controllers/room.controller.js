@@ -27,7 +27,15 @@ const createRoom = asyncHandler(async (req, res) => {
     throw new ApiError(400, "Error creating room");
   }
 
-  return res.json(new ApiResponse(201, createdRoom, "Room created successfully"));
+  return res.json(
+    new ApiResponse(201, createdRoom, "Room created successfully")
+  );
+});
+
+const addUser = asyncHandler(async (req, res) => {
+  const { roomId,password } = req.body;
+  
+
 });
 
 export { createRoom };
