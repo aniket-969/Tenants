@@ -5,5 +5,6 @@ router.route("/create").post(createRoom);
 router.route("/request").post(addUserRequest);
 router.route("/response").post(adminResponse);
 router.route("/update/:roomId").patch(updateRoom);
+router.route("/delete/:roomId").delete(updateRoom);
 
 export default router;

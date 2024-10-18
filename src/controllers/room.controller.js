@@ -62,7 +62,7 @@ const updateRoom = asyncHandler(async (req, res) => {
 
   const updatedRoom = await Room.findByIdAndUpdate(
     roomId,
-    {$set:{ name, description }},
+    { $set: { name, description } },
     { new: true, runValidators: true }
   );
 
@@ -153,4 +153,19 @@ const adminResponse = asyncHandler(async (req, res) => {
   }
 });
 
-export { createRoom, addUserRequest, adminResponse,updateRoom };
+const deleteRoom = asyncHandler(async (req, res) => {
+  const adminId = req.user?._id;
+  const { roomId } = req.params;
+  const room = await Room.findById(roomId);
+
+  if (adminId != room.admin) {
+    throw new ApiError(400, "Only admin can delete rooms");
+  }
+
+  const deletedRoom = await Room.findByIdAndDelete(roomId);
+  if (!deleteRoom) throw new ApiError(404, "Error deleting room");
+
+  return res.json(200, {}, "Room deleted successfully");
+});
+
+export { createRoom, addUserRequest, adminResponse, updateRoom,deleteRoom };
