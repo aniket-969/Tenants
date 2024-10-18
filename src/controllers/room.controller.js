@@ -4,6 +4,8 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import crypto from "crypto";
 import { User } from "../models/user.model.js";
+import { Poll } from "../models/poll.model.js";
+import { Expense } from "../models/expense.model.js";
 
 function generateGroupCode() {
   return crypto.randomBytes(6).toString("hex").slice(0, 6).toUpperCase();
@@ -158,14 +160,13 @@ const deleteRoom = asyncHandler(async (req, res) => {
   const { roomId } = req.params;
   const room = await Room.findById(roomId);
 
-  if (adminId != room.admin) {
+  if (adminId.toString() !== room.admin.toString()) {
     throw new ApiError(400, "Only admin can delete rooms");
   }
 
   const deletedRoom = await Room.findByIdAndDelete(roomId);
-  if (!deleteRoom) throw new ApiError(404, "Error deleting room");
 
   return res.json(200, {}, "Room deleted successfully");
 });
 
-export { createRoom, addUserRequest, adminResponse, updateRoom,deleteRoom };
+export { createRoom, addUserRequest, adminResponse, updateRoom, deleteRoom };

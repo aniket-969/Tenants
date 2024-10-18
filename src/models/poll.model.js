@@ -37,7 +37,7 @@ const pollSchema = new Schema(
       default: "active",
     },
 
-    roomId: {
+    room: {
       type: Schema.Types.ObjectId,
       ref: "Room",
       required: true,

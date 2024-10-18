@@ -1,6 +1,9 @@
 import mongoose, { Schema } from "mongoose";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { Expense } from "./expense.model.js";
+import { CalendarEvent } from "./calendarEvents.model.js";
+import { Poll } from "./poll.model.js";
 
 const roomSchema = new Schema(
   {
@@ -199,6 +202,17 @@ const roomSchema = new Schema(
   },
   { timestamps: true }
 );
+
+roomSchema.pre('remove', async function (next) {
+  const roomId = this._id;
+  
+  await Expense.deleteMany({ room: roomId });
+  await CalendarEvent.deleteMany({ room: roomId });
+  await Poll.deleteMany({ room: roomId });
+
+  next();
+});
+
 
 roomSchema.index({ "tasks.dueDate": 1 });
 roomSchema.index({ "tasks.currentAssignee": 1 });

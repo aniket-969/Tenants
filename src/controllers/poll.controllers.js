@@ -38,7 +38,7 @@ const createPoll = asyncHandler(async (req, res) => {
     title,
     status,
     voteEndTime,
-    roomId,
+    room:roomId,
     options,
   });
 
@@ -57,7 +57,7 @@ const castVote = asyncHandler(async (req, res) => {
   }
 
   // Now we use the room object returned by isRoomMember
-  const room = await isRoomMember(poll.roomId, userId);
+  const room = await isRoomMember(poll.room, userId);
 
   const userHasVoted = poll.options.some((option) =>
     option.votes.some((vote) => vote.voter.toString() === userId.toString())
@@ -98,15 +98,14 @@ const updatePoll = asyncHandler(async (req, res) => {
 const getRoomPolls = asyncHandler(async (req, res) => {
   const { roomId, status } = req.query;
 
-  const filters = { roomId };
+  const filters = { room:roomId };
   if (status) {
-    filters.status = status; // Filter by poll status (active, completed, etc.)
+    filters.status = status; 
   }
 
-  // Fetch polls and populate the voters in each option
   const polls = await Poll.find(filters).populate({
-    path: "options.votes.voter", // Populate the voters' data
-    select: "username avatar", // Only select relevant fields
+    path: "options.votes.voter", 
+    select: "username avatar",
   });
 
   if (!polls.length) throw new ApiError(404, "No polls found for this room");
