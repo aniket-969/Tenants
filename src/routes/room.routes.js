@@ -11,5 +11,6 @@ router.route("/response").post(verifyJWT,adminResponse);
 router.route("/update/:roomId").patch(verifyJWT,updateRoom);
 router.route("/delete/:roomId").delete(verifyJWT,deleteRoom);
 router.route("/:roomId").get(verifyJWT,checkMember,getRoomData);
+router.route("/leave/:roomId").patch(verifyJWT,checkMember,getRoomData);
 
 export default router;

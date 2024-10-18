@@ -156,32 +156,60 @@ const adminResponse = asyncHandler(async (req, res) => {
 });
 
 const deleteRoom = asyncHandler(async (req, res) => {
-    const adminId = req.user?._id;
-    const { roomId } = req.params;
-  
-    const room = await Room.findById(roomId);
-    if (!room) {
-      throw new ApiError(404, "Room not found");
-    }
-  
-    if (adminId.toString() !== room.admin.toString()) {
-      throw new ApiError(400, "Only admin can delete rooms");
-    }
-  
-    await room.remove();
-  
-    return res.status(200).json(new ApiResponse(200, {}, "Room and related data deleted successfully"));
-  });
-  
-const getRoomData = asyncHandler(async(req,res)=>{
-    const {roomId} = req.params
-    const userId = req.user?._id
-    const room = Room.findById(roomId).select("-groupCode -pendingRequests")
+  const adminId = req.user?._id;
+  const { roomId } = req.params;
 
-    return res.json(new ApiResponse(200,room,"Room data fetched successfully"))
+  const room = await Room.findById(roomId);
+  if (!room) {
+    throw new ApiError(404, "Room not found");
+  }
 
-    
-})
+  if (adminId.toString() !== room.admin.toString()) {
+    throw new ApiError(400, "Only admin can delete rooms");
+  }
 
+  await room.remove();
 
-export { createRoom, addUserRequest, adminResponse, updateRoom, deleteRoom ,getRoomData};
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(200, {}, "Room and related data deleted successfully")
+    );
+});
+
+const getRoomData = asyncHandler(async (req, res) => {
+  const { roomId } = req.params;
+  const userId = req.user?._id;
+  const room = await Room.findById(roomId).select(
+    "-groupCode -pendingRequests"
+  );
+
+  return res.json(new ApiResponse(200, room, "Room data fetched successfully"));
+});
+
+const leaveRoom = asyncHandler(async (req, res) => {
+  const userId = req.user?._id;
+  const { roomId } = req.params;
+
+  const room = await Room.findById(roomId);
+
+  room.tenants = room.tenants.filter(
+    (tenant) => tenant.toString() !== userId.toString()
+  );
+  await room.save();
+
+  user.rooms = user.rooms.filter((room) => room.toString() !== roomId);
+  await user.save();
+
+  return res.json(new ApiResponse(200, {}, "User has left the room"));
+});
+
+export {
+  createRoom,
+  addUserRequest,
+  adminResponse,
+  updateRoom,
+  deleteRoom,
+  getRoomData,
+  leaveRoom,
+};
