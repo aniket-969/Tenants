@@ -11,14 +11,26 @@ dotenv.config({
 connectDB()
   .then(() => {
     const port = process.env.PORT || 3000;
-    const server = http.createServer(app);
 
-    server.listen(port, () => {
-      console.log(`Server is running on port ${port}`);
+    const httpServer = http.createServer(app);
+
+    const io = new Server(httpServer, {
+      cors: {
+        origin: `http://localhost:${process.env.CORS_ORIGIN}`,
+        credentials: true,
+      },
     });
+ 
+    io.on("connection", (socket) => {
+      console.log("A user connected:", socket.id);
 
-    server.on("error", (err) => {
-      console.error(`Failed to start the server on port ${port}`, err);
+      socket.on("disconnect", () => {
+        console.log("A user disconnected:", socket.id);
+      });
+    }); 
+
+    httpServer.listen(port, () => {
+      console.log(`Server is running on port ${port}`);
     });
   })
   .catch((err) => {

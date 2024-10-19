@@ -6,20 +6,24 @@ import path from "path";
 const app = express();
 
 app.use(express.static(path.resolve("./public")));
+
 app.use(
-  cors({
+  cors({ 
     origin: process.env.CORS_ORIGIN,
     credentials: true,
   })
 );
-app.get("/", (req, res) => { 
-  return res.sendFile("/public/index.html");
-});
+
 app.use(express.json({ limit: "16kb" }));
 
 app.use(express.urlencoded({ extended: true, limit: "16kb" }));
 
 app.use(cookieParser());
+
+app.get("/",(req,res)=>{
+  res.send("Hello world")
+})
+
 
 import userRouter from "./routes/user.routes.js";
 import voteRouter from "./routes/poll.routes.js";
