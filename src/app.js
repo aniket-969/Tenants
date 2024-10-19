@@ -24,7 +24,6 @@ app.get("/",(req,res)=>{
   res.send("Hello world")
 })
 
-
 import userRouter from "./routes/user.routes.js";
 import voteRouter from "./routes/poll.routes.js";
 import awardRouter from "./routes/awards.routes.js";
