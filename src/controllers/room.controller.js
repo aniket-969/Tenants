@@ -32,7 +32,7 @@ const createRoom = asyncHandler(async (req, res) => {
   const admin = req.user?._id;
   const { name, description, role } = req.body;
 
-  const groupCode = await generateUniqueGroupCode();
+  const groupCode = await generateUniqueGroupCode(); 
   let roomData = {
     name,
     description,

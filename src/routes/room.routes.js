@@ -2,10 +2,12 @@ import { Router } from "express";
 import { addUserRequest, adminResponse, createRoom, deleteRoom, getRoomData, transferAdminControl, updateRoom } from "../controllers/room.controller.js";
 import { verifyJWT } from './../middleware/auth.middleware.js';
 import { checkMember } from "../middleware/poll.middleware.js";
+import { creatRoomSchema } from "../zod/room.schema.js";
+import { validate } from './../middleware/validator.middleware.js';
 
 const router = Router();
 
-router.route("/create").post(verifyJWT,createRoom);
+router.route("/create").post(verifyJWT,validate(creatRoomSchema),createRoom);
 router.route("/request").post(verifyJWT,addUserRequest);
 router.route("/response").post(verifyJWT,adminResponse);
 router.route("/update/:roomId").patch(verifyJWT,updateRoom);
