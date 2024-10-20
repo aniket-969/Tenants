@@ -23,7 +23,10 @@ connectDB()
 
     io.on("connection", (socket) => {
       console.log("A user connected:", socket.id);
-      socket.broadcast.emit("Welcome", `Welcome to server ${socket.id}` );
+      socket.on("message",(data)=>{
+        console.log(data)
+        io.emit("message",data)
+      })
       socket.on("disconnect", () => {
         console.log("A user disconnected:", socket.id);
       });
