@@ -115,7 +115,7 @@ const adminResponse = asyncHandler(async (req, res) => {
   );
   if (requestIndex === -1) {
     throw new ApiError(400, "No such pending request");
-  }
+  } 
 
   const { userId, role } = room.pendingRequests[requestIndex];
 
@@ -165,7 +165,7 @@ const deleteRoom = asyncHandler(async (req, res) => {
   }
 
   if (adminId.toString() !== room.admin.toString()) {
-    throw new ApiError(400, "Only admin can delete rooms");
+    throw new ApiError(403, "Only admin can delete rooms");
   }
 
   await room.remove();
@@ -214,7 +214,6 @@ const transferAdminControl = asyncHandler(async (req, res) => {
       throw new ApiError(403, "Only the current admin can transfer admin rights");
     }
   
-    
     if (!room.tenants.includes(newAdminId)) {
       throw new ApiError(400, "New admin must be a member of the room");
     }
@@ -224,8 +223,7 @@ const transferAdminControl = asyncHandler(async (req, res) => {
   
     return res.status(200).json(new ApiResponse(200, room, "Admin rights transferred successfully"));
   });
-  
-
+ 
 export {
   createRoom,
   addUserRequest,
