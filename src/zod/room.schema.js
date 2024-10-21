@@ -19,3 +19,8 @@ export const adminResponseSchema = z.object({
     action:z.enum(["approved","denined"]),
 
 })
+
+export const transferRoleSchema = z.object({
+    roomId:objectIdValidation,
+    newAdminId:objectIdValidation
+})
