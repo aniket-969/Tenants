@@ -13,11 +13,11 @@ import {
 const router = Router();
 
 router
-  .route("/create-event")
+  .route("/create")
   .post(verifyJWT, validate(createCalendarEventSchema), createCalendarEvent);
 router.route("/:eventId").delete(verifyJWT, deleteCalendarEvent);
-router.route("/events").get(verifyJWT, getRoomCalendarEvent);
+router.route("/:roomId").get(verifyJWT, getRoomCalendarEvent);
 router.route("/:eventId").get(verifyJWT,getSingleEvent)
 router.route("/room/:roomId/events/monthly").get(getMonthlyEvents)
-
+ 
 export default router;
