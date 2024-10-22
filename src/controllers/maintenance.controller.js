@@ -7,7 +7,7 @@ const createMaintenance = asyncHandler(async (req, res) => {
   const {
     roomId,
     title,
-    description,
+    description, 
     maintenanceProvider,
     contactPhone,
     costEstimate,

@@ -92,15 +92,12 @@ const roomSchema = new Schema(
         },
         maintenanceProvider: {
           type: String,
-          default: null,
         },
         contactPhone: {
           type: String,
-          default: null,
         },
         costEstimate: {
           type: Number,
-          default: 0,
         },
         dateReported: {
           type: Date,
