@@ -8,14 +8,14 @@ import { verifyJWT } from "../middleware/auth.middleware.js";
 const router = Router();
 
 router
-  .route("/create-poll")
+  .route("/create")
   .post(validate(pollSchema), verifyJWT, checkMember, createPoll);
 
 router.route("/cast-vote").post(validate(castVoteSchema), verifyJWT, castVote);
 
 router.route("/:pollId").patch(verifyJWT, updatePoll);
 
-router.route("/allPolls").get(verifyJWT, getRoomPolls);
+router.route("/").get(verifyJWT, getRoomPolls);
 
 router.route("/:pollId").delete(verifyJWT, deletePoll);
 
