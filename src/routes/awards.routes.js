@@ -10,7 +10,7 @@ import { checkMember } from "../middleware/poll.middleware.js";
 const router = Router();
 
 router.route("/create").post(verifyJWT, checkMember, customRoomAward);
-router.route("/create").delete(verifyJWT, checkMember, deleteRoomAward);
-router.route("/create").patch(verifyJWT, checkMember, updateRoomAward);
+router.route("/delete").delete(verifyJWT, checkMember, deleteRoomAward);
+router.route("/update").patch(verifyJWT, checkMember, updateRoomAward);
 
 export default router;
