@@ -9,15 +9,16 @@ import {
   getRoomCalendarEvent,
   getSingleEvent,
 } from "../controllers/event.controller.js";
+import { checkMember } from "../middleware/poll.middleware.js";
 
 const router = Router();
 
 router
-  .route("/create")
+  .route("/create") 
   .post(verifyJWT, validate(createCalendarEventSchema), createCalendarEvent);
-router.route("/:eventId").delete(verifyJWT, deleteCalendarEvent);
-router.route("/:roomId").get(verifyJWT, getRoomCalendarEvent);
-router.route("/:eventId").get(verifyJWT,getSingleEvent)
-router.route("/room/:roomId/events/monthly").get(getMonthlyEvents)
+router.route("/:eventId").delete(verifyJWT,checkMember, deleteCalendarEvent);
+router.route("/:roomId").get(verifyJWT,checkMember, getRoomCalendarEvent);
+router.route("/:eventId").get(verifyJWT,checkMember,getSingleEvent)
+router.route("/room/:roomId/events/monthly").get(verifyJWT,checkMember,getMonthlyEvents)
  
 export default router;
