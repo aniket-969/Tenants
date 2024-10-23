@@ -12,7 +12,7 @@ export const addUserRequestSchema = z.object({
     role:z.enum(["tenants","landlord"]),
     
 })
-
+ 
 export const adminResponseSchema = z.object({
     roomId:objectIdValidation,
     requestId:objectIdValidation,

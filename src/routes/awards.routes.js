@@ -12,5 +12,5 @@ const router = Router();
 router.route("/create").post(verifyJWT, checkMember, customRoomAward);
 router.route("/delete").delete(verifyJWT, checkMember, deleteRoomAward);
 router.route("/update").patch(verifyJWT, checkMember, updateRoomAward);
-
+ 
 export default router;

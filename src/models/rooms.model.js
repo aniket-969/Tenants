@@ -61,6 +61,7 @@ const roomSchema = new Schema(
         },
         image: {
           type: String,
+          required:true,
         },
         criteria: {
           type: String,
@@ -68,6 +69,7 @@ const roomSchema = new Schema(
         assignedTo: {
           type: Schema.Types.ObjectId,
           ref: "User",
+          required:true,
         },
       },
     ],
@@ -84,7 +86,7 @@ const roomSchema = new Schema(
         description: {
           type: String,
           required: true,
-        },
+        }, 
         status: {
           type: String,
           enum: ["pending", "in_progress", "resolved", "cancelled"],
