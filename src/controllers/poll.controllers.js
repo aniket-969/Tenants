@@ -15,7 +15,7 @@ const isRoomMember = async (roomId, userId) => {
 
   if (!isMember) throw new ApiError(403, "User is not a member of this room");
 
-  return room; // Return the room document
+  return room; 
 };
 
 const hasUserVoted = (poll, userId) => {
@@ -56,7 +56,6 @@ const castVote = asyncHandler(async (req, res) => {
     throw new ApiError(400, "Voting has ended for this poll");
   }
 
-  // Now we use the room object returned by isRoomMember
   const room = await isRoomMember(poll.room, userId);
 
   const userHasVoted = poll.options.some((option) =>
