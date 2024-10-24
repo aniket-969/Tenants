@@ -131,7 +131,18 @@ const getExpenseDetails = asyncHandler(async (req, res) => {
 
 const updateExpense = asyncHandler(async (req, res) => {
   const { expenseId } = req.params;
-  const updates = req.body;
+  const { name, totalAmount, paidBy, room, imageUrl, participants, dueDate, paymentHistory } = req.body;
+
+  const updates = {
+    ...(name && { name }),
+    ...(totalAmount && { totalAmount }),
+    ...(paidBy && { paidBy }),
+    ...(room && { room }),
+    ...(imageUrl && { imageUrl }),
+    ...(participants && { participants }),
+    ...(dueDate && { dueDate }),
+    ...(paymentHistory && { paymentHistory }),
+  };
 
   const expense = await Expense.findByIdAndUpdate(expenseId, updates, {
     new: true,
