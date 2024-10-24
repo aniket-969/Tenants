@@ -7,9 +7,9 @@ import { validate } from './../middleware/validator.middleware.js';
 import { createExpenseSchema, updatePaymentSchema } from '../zod/expense.schema.js';
 
 const router = Router() 
-router.route("/create-expense").post(verifyJWT,validate(createExpenseSchema),checkMember,createExpense)
-router.route("/update-expense").patch(verifyJWT,validate(updatePaymentSchema),checkMember,updatePayment)
-router.route("/user-expense").get(verifyJWT,getUserExpenses)
+router.route("/create").post(verifyJWT,validate(createExpenseSchema),checkMember,createExpense)
+router.route("/update").patch(verifyJWT,validate(updatePaymentSchema),checkMember,updatePayment)
+router.route("/user").get(verifyJWT,getUserExpenses)
 router.route("/pending").get(verifyJWT,getPendingPayments)
 router.route("/:expenseId").get(verifyJWT,getExpenseDetails)
 router.route("/:expenseId").patch(verifyJWT,updateExpense)
