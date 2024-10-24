@@ -100,6 +100,7 @@ const getMonthlyEvents = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, events, "Events fetched successfully"));
 });
 
+
 export {
   createCalendarEvent,
   deleteCalendarEvent,

@@ -3,6 +3,7 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 
+
 const createExpense = asyncHandler(async (req, res) => {
   const { name, totalAmount, paidBy, room, imageUrl, userExpense, dueDate } =
     req.body;
@@ -102,43 +103,55 @@ const getPendingPayments = asyncHandler(async (req, res) => {
   );
 });
 
-const deleteExpense = asyncHandler(async(req,res)=>{
-    const {expenseId} = req.params
+const deleteExpense = asyncHandler(async (req, res) => {
+  const { expenseId } = req.params;
 
-    const deletedExpense =await Expense.findByIdAndDelete(expenseId)
-    if(!deletedExpense){
-        throw new ApiError(404,"Expense not find")
-    }
+  const deletedExpense = await Expense.findByIdAndDelete(expenseId);
+  if (!deletedExpense) {
+    throw new ApiError(404, "Expense not find");
+  }
 
-    return res.json(new ApiResponse(200,{},"Expense deleted successfully"))
-})
+  return res.json(new ApiResponse(200, {}, "Expense deleted successfully"));
+});
 
 const getExpenseDetails = asyncHandler(async (req, res) => {
-    const { expenseId } = req.params;
-    const expense = await Expense.findById(expenseId)
-      .populate('paidBy', 'fullName avatar')
-      .populate('participants.user', 'fullName avatar');
-    
-    if (!expense) {
-      throw new ApiError(404, "Expense not found");
-    }
-  
-    return res.json(new ApiResponse(200, expense, "Expense details fetched successfully"));
-  });
-  
-  const updateExpense = asyncHandler(async (req, res) => {
-    const { expenseId } = req.params;
-    const updates = req.body;
-    
-    const expense = await Expense.findByIdAndUpdate(expenseId, updates, { new: true });
-    
-    if (!expense) {
-      throw new ApiError(404, "Expense not found");
-    }
-  
-    return res.json(new ApiResponse(200, expense, "Expense updated successfully"));
-  });
-  
+  const { expenseId } = req.params;
+  const expense = await Expense.findById(expenseId)
+    .populate("paidBy", "fullName avatar")
+    .populate("participants.user", "fullName avatar");
 
+  if (!expense) {
+    throw new ApiError(404, "Expense not found");
+  }
 
-export { createExpense, updatePayment, getUserExpenses, getPendingPayments ,deleteExpense,getExpenseDetails,updateExpense};
+  return res.json(
+    new ApiResponse(200, expense, "Expense details fetched successfully")
+  );
+});
+
+const updateExpense = asyncHandler(async (req, res) => {
+  const { expenseId } = req.params;
+  const updates = req.body;
+
+  const expense = await Expense.findByIdAndUpdate(expenseId, updates, {
+    new: true,
+  });
+
+  if (!expense) {
+    throw new ApiError(404, "Expense not found");
+  }
+
+  return res.json(
+    new ApiResponse(200, expense, "Expense updated successfully")
+  );
+});
+
+export {
+  createExpense,
+  updatePayment,
+  getUserExpenses,
+  getPendingPayments,
+  deleteExpense,
+  getExpenseDetails,
+  updateExpense,
+};

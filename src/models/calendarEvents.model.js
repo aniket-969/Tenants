@@ -14,3 +14,4 @@ const calendarEventSchema = new Schema({
 calendarEventSchema.index({ startDate: 1 });
 
 export const CalendarEvent = mongoose.model('CalendarEvent', calendarEventSchema);
+ 
