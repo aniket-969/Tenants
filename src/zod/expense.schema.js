@@ -19,3 +19,8 @@ export const createExpenseSchema = z.object({
   userExpense: z.array(participantSchema),
   dueDate: z.string().date().optional(),
 });
+
+export const updatePaymentSchema = z.object({
+    expenseId:objectIdValidation,
+    paymentMode:stringValidation(1,20,"Payment mode").optional()
+})
