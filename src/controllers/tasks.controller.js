@@ -40,6 +40,7 @@ const createRoomTask = asyncHandler(async (req, res) => {
   const newTask = room.tasks[room.tasks.length - 1];
   return res.json(new ApiResponse(200, newTask, "Task created successfully"));
 });
+
 const updateRoomTask = asyncHandler(async (req, res) => {
   const { roomId, taskId } = req.body;
   const updates = req.body;
