@@ -1,17 +1,19 @@
 import { Router } from "express";
 import { verifyJWT } from "./../middleware/auth.middleware.js";
 import { checkMember } from "../middleware/poll.middleware.js";
-import {
+import { createRoomTaskSchema } from "../zod/tasks.schema.js";
+import { validate } from "../middleware/validator.middleware.js"; 
+import{
   createRoomTask,
-  createSwitchRequest,
+  createSwitchRequest, 
   deleteRoomTask,
   switchRequestResponse,
   updateRoomTask,
 } from "../controllers/tasks.controller.js";
 
 const router = Router();
-
-router.route("/create").post(verifyJWT, checkMember, createRoomTask);
+ 
+router.route("/create").post(verifyJWT,validate(createRoomTaskSchema), checkMember, createRoomTask);
 router.route("/update").patch(verifyJWT, checkMember, updateRoomTask);
 router.route("/delete").delete(verifyJWT, checkMember, deleteRoomTask);
 router.route("/taskSwitch").post(verifyJWT, checkMember, createSwitchRequest);

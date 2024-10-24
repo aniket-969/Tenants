@@ -12,7 +12,6 @@ const createRoomTask = asyncHandler(async (req, res) => {
     dueDate,
     participants,
     rotationOrder,
-    completed,
     priority,
     recurring,
     recurrencePattern,
