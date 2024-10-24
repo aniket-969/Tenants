@@ -24,3 +24,32 @@ export const updatePaymentSchema = z.object({
     expenseId:objectIdValidation,
     paymentMode:stringValidation(1,20,"Payment mode").optional()
 })
+
+export const updateExpenseSchema = z.object({
+    name: z.string().optional(),
+    totalAmount: z.number().positive().optional(),
+    paidBy: z.string().optional(),
+    room: z.string().optional(),
+    imageUrl: z.string().url().optional(),
+    participants: z
+      .array(
+        z.object({
+          user: z.string(),
+          hasPaid: z.boolean().optional(),
+          paidDate: z.date().optional(),
+          amountOwed: z.number().positive(),
+        })
+      )
+      .optional(),
+    dueDate: z.date().optional(),
+    paymentHistory: z
+      .array(
+        z.object({
+          user: z.string(),
+          amount: z.number().positive(),
+          paymentDate: z.date(),
+          description: z.string().optional(),
+        })
+      )
+      .optional(),
+  });
