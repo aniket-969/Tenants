@@ -27,3 +27,21 @@ export const castVoteSchema = z.object({
   pollId: objectIdValidation,
   optionId: objectIdValidation,
 });
+
+export const updatePollSchema = z.object({
+  title: stringValidation(1, 15, "title").optional(),
+  options: z
+    .array(
+      z.object({
+        optionText: stringValidation(1, 100, "option text"), 
+        votes: z
+          .array(
+            z.object({
+              voter: objectIdValidation.optional(),
+            })
+          )
+          .optional(),
+      })
+    )
+    .optional(),
+});
