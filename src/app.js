@@ -1,8 +1,12 @@
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import {createServer} from "http"
+import {Server} from "socket.io"
 
 const app = express();
+
+const httpServer = createServer(app)
 
 app.use(
   cors({
@@ -10,6 +14,16 @@ app.use(
     credentials: true,
   })
 );
+
+const io = new Server(httpServer, {
+  pingTimeout: 60000,
+  cors: {
+    origin: process.env.CORS_ORIGIN,
+    credentials: true,
+  },
+});
+
+app.set("io", io);
 
 app.use(express.json({ limit: "16kb" }));
 
