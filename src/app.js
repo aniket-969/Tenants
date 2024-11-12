@@ -3,6 +3,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import {createServer} from "http"
 import {Server} from "socket.io"
+import { rateLimit } from "express-rate-limit";
 
 const app = express();
 
@@ -32,6 +33,25 @@ app.use(express.urlencoded({ extended: true, limit: "16kb" }));
 app.use(express.static("public"));
 
 app.use(cookieParser());
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, 
+  standardHeaders: true, 
+  legacyHeaders: false, 
+  keyGenerator: (req, res) => {
+    return req.clientIp; 
+  },
+  handler: (_, __, ___, options) => {
+    throw new ApiError(
+      options.statusCode || 500,
+      `There are too many requests. You are only allowed ${
+        options.max
+      } requests per ${options.windowMs / 60000} minutes`
+    );
+  },
+});
+
+app.use(limiter);
 
 import userRouter from "./routes/user.routes.js";
 import voteRouter from "./routes/poll.routes.js";
