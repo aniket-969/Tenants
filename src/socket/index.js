@@ -11,6 +11,14 @@ const mountJoinChatEvent = (socket) => {
   });
 };
 
+const mountParticipantTypingEvent = (socket) => {
+  socket.on(ChatEventEnum.TYPING_EVENT, (chatId) => {
+    socket.in(chatId).emit(ChatEventEnum.TYPING_EVENT, chatId);
+  });
+};
+
+
+
 const initializeSocketIO = (io) => {
     return io.on("connection", async (socket) => {
       try {
