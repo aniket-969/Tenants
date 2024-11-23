@@ -3,6 +3,14 @@ import { User } from './../models/user.model.js';
 import jwt from 'jsonwebtoken';
 import {ApiError} from "../utils/ApiError.js"
 
+const mountJoinChatEvent = (socket) => {
+  socket.on(ChatEventEnum.JOIN_CHAT_EVENT, (chatId) => {
+    console.log(`User joined the chat 🤝. chatId: `, chatId);
+   
+    socket.join(chatId);
+  });
+};
+
 const initializeSocketIO = (io) => {
     return io.on("connection", async (socket) => {
       try {

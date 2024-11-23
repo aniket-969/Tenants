@@ -4,6 +4,7 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { emitSocketEvent } from "../socket/index.js";
+import { ChatEventEnum } from "../constants.js";
 
 const sendMessage = asyncHandler(async (req, res) => {
   const { chatId } = req.params;
