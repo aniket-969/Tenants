@@ -162,4 +162,4 @@ const getAllMessages = asyncHandler(async (req, res) => {
     );
 });
 
-export { sendMessage };
+export { sendMessage,deleteMessage,getAllMessages };
