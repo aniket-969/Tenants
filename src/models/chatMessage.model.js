@@ -34,4 +34,7 @@ const chatMessageSchema = new Schema(
   { timestamps: true }
 );
 
+chatMessageSchema.index({ chat: 1 });
+chatMessageSchema.index({ content: "text" });
+
 export const ChatMessage = mongoose.model("ChatMessage", chatMessageSchema);
