@@ -70,3 +70,74 @@ const sendMessage = asyncHandler(async (req, res) => {
     .status(201)
     .json(new ApiResponse(201, receivedMessage, "Message saved successfully"));
 });
+
+const deleteMessage = asyncHandler(async (req, res) => {
+  
+    const { chatId, messageId } = req.params;
+  
+    const chat = await Chat.findOne({
+      _id: new mongoose.Types.ObjectId(chatId),
+      participants: req.user?._id,
+    });
+  
+    if (!chat) {
+      throw new ApiError(404, "Chat does not exist");
+    }
+  
+    const message = await ChatMessage.findOne({
+      _id: new mongoose.Types.ObjectId(messageId),
+    });
+  
+    if (!message) {
+      throw new ApiError(404, "Message does not exist");
+    }
+  
+    if (message.sender.toString() !== req.user._id.toString()) {
+      throw new ApiError(
+        403,
+        "You are not the authorised to delete the message, you are not the sender"
+      );
+    }
+    
+    // if (message.attachments.length > 0) {
+      
+    //     message.attachments.forEach((attachment) => {
+           
+    //         deleteFileFromCloud(attachment.url); 
+    //       });
+    // }
+    
+    await ChatMessage.deleteOne({
+      _id: new mongoose.Types.ObjectId(messageId),
+    });
+  
+    if (chat.lastMessage.toString() === message._id.toString()) {
+      const lastMessage = await ChatMessage.findOne(
+        { chat: chatId },
+        {},
+        { sort: { createdAt: -1 } }
+      );
+  
+      await Chat.findByIdAndUpdate(chatId, {
+        lastMessage: lastMessage ? lastMessage?._id : null,
+      });
+    }
+    
+    chat.participants.forEach((participantObjectId) => {
+     
+      if (participantObjectId.toString() === req.user._id.toString()) return;
+      
+      emitSocketEvent(
+        req,
+        participantObjectId.toString(),
+        ChatEventEnum.MESSAGE_DELETE_EVENT,
+        message
+      );
+    });
+  
+    return res
+      .status(200)
+      .json(new ApiResponse(200, message, "Message deleted successfully"));
+  });
+
+export {sendMessage}
