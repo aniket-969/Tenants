@@ -3,6 +3,7 @@ import { ChatMessage } from "../models/chatMessage.model.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
+import { emitSocketEvent } from "../socket/index.js";
 
 const sendMessage = asyncHandler(async (req, res) => {
   const { chatId } = req.params;
