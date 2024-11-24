@@ -36,5 +36,7 @@ const chatMessageSchema = new Schema(
 
 chatMessageSchema.index({ chat: 1 });
 chatMessageSchema.index({ content: "text" });
+chatMessageSchema.index({ chat: 1, createdAt: -1 });
+
 
 export const ChatMessage = mongoose.model("ChatMessage", chatMessageSchema);

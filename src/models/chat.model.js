@@ -37,6 +37,5 @@ chatSchema.pre("save", function (next) {
   next();
 });
 chatSchema.index({ room: 1 });
-chatMessageSchema.index({ chat: 1, createdAt: -1 });
 
 export const Chat = mongoose.model("Chat", chatSchema);

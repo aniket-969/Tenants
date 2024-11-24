@@ -74,6 +74,6 @@ app.use("/api/v1/tasks",taskRouter)
 app.use("/api/v1/maintenance",maintenanceRouter)
 app.use("/api/v1/chat",chatRouter)
 
-initializeSocketIO(io)
+initializeSocketIO(io) 
 
 export { app,httpServer };

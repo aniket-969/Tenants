@@ -26,13 +26,10 @@ const mountParticipantStoppedTypingEvent = (socket) => {
 const initializeSocketIO = (io) => {
   return io.on("connection", async (socket) => {
     try {
-      const cookies = cookie.parse(socket.handshake.headers?.cookie || "");
+      
+      const token = socket.handshake.headers?.cookie?.accessToken;
 
-      let token = cookies?.accessToken;
-
-      if (!token) {
-        token = socket.handshake.auth?.token;
-      }
+      console.log("Reached at init");
 
       if (!token) {
         throw new ApiError(401, "Un-authorized handshake. Token is missing");
@@ -65,6 +62,7 @@ const initializeSocketIO = (io) => {
         }
       });
     } catch (error) {
+      console.log("error in inti", error);
       socket.emit(
         ChatEventEnum.SOCKET_ERROR_EVENT,
         error?.message || "Something went wrong while connecting to the socket."
