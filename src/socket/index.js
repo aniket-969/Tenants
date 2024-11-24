@@ -50,7 +50,20 @@ const initializeSocketIO = (io) => {
       socket.user = user;
       socket.join(user._id.toString());
 
+      socket.emit(ChatEventEnum.CONNECTED_EVENT);
+
       console.log("User connected 🗼. userId: ", user._id.toString());
+      // Common events that needs to be mounted on the initialization
+      mountJoinChatEvent(socket);
+      mountParticipantTypingEvent(socket);
+      mountParticipantStoppedTypingEvent(socket);
+
+      socket.on(ChatEventEnum.DISCONNECT_EVENT, () => {
+        console.log("user has disconnected 🚫. userId: " + socket.user?._id);
+        if (socket.user?._id) {
+          socket.leave(socket.user._id);
+        }
+      });
     } catch (error) {
       socket.emit(
         ChatEventEnum.SOCKET_ERROR_EVENT,
