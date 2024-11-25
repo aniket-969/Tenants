@@ -197,6 +197,8 @@ const roomSchema = new Schema(
         },
       },
     ],
+    chatParticipants: [{ type: Schema.Types.ObjectId, ref: "User" }], 
+    lastMessage: { type: Schema.Types.ObjectId, ref: "ChatMessage" },
     votes: [{ type: mongoose.Schema.Types.ObjectId, ref: "Vote" }],
   },
   { timestamps: true }
