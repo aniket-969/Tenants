@@ -1,4 +1,4 @@
-import { Chat } from "../models/chat.model.js";
+import { Room } from "../models/rooms.model.js";
 import { ChatMessage } from "../models/chatMessage.model.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
@@ -37,8 +37,8 @@ const sendMessage = asyncHandler(async (req, res) => {
     attachments: messageFiles,
   });
 
-  const chat = await Chat.findByIdAndUpdate(
-    chatId,
+  const chat = await Room.findByIdAndUpdate(
+    roomId,
     {
       $set: {
         lastMessage: message._id,
