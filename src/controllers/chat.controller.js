@@ -127,17 +127,22 @@ const deleteMessage = asyncHandler(async (req, res) => {
       lastMessage: lastMessage ? lastMessage?._id : null,
     });
   }
+  const recipients = [...chat.tenants];
+  if (chat.landlord) {
+    recipients.push(chat.landlord);
+  }
 
-  chat.participants.forEach((participantObjectId) => {
-    if (participantObjectId.toString() === req.user._id.toString()) return;
+  recipients.forEach((participantId) => {
+    if (participantId.toString() === req.user._id.toString()) return;
 
     emitSocketEvent(
       req,
-      participantObjectId.toString(),
+      participantId.toString(),
       ChatEventEnum.MESSAGE_DELETE_EVENT,
       message
     );
   });
+
 
   return res
     .status(200)
