@@ -14,7 +14,7 @@ const sendMessage = asyncHandler(async (req, res) => {
     throw new ApiError(400, "Message content or attachment is required");
   }
 
-  const selectedChat = await Chat.findById(roomId);
+  const selectedChat = await Room.findById(roomId);
 
   if (!selectedChat) {
     throw new ApiError(404, "Chat does not exist");
@@ -55,16 +55,22 @@ const sendMessage = asyncHandler(async (req, res) => {
     throw new ApiError(500, "Internal server error");
   }
 
-  chat.participants.forEach((participantObjectId) => {
-    if (participantObjectId.toString() === req.user._id.toString()) return;
+  const recipients = [...selectedRoom.tenants];
+  if (selectedRoom.landlord) {
+    recipients.push(selectedRoom.landlord);
+  }
+
+  recipients.forEach((participantId) => {
+    if (participantId.toString() === req.user._id.toString()) return;
 
     emitSocketEvent(
       req,
-      participantObjectId.toString(),
+      participantId.toString(),
       ChatEventEnum.MESSAGE_RECEIVED_EVENT,
       receivedMessage
     );
   });
+
 
   return res
     .status(201)
