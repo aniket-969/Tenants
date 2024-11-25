@@ -7,14 +7,14 @@ import { emitSocketEvent } from "../socket/index.js";
 import { ChatEventEnum } from "../constants.js";
 
 const sendMessage = asyncHandler(async (req, res) => {
-  const { chatId } = req.params;
+  const { roomId } = req.params;
   const { content } = req.body;
 
   if (!content && !req.files?.attachments?.length) {
     throw new ApiError(400, "Message content or attachment is required");
   }
 
-  const selectedChat = await Chat.findById(chatId);
+  const selectedChat = await Chat.findById(roomId);
 
   if (!selectedChat) {
     throw new ApiError(404, "Chat does not exist");
@@ -33,7 +33,7 @@ const sendMessage = asyncHandler(async (req, res) => {
   const message = await ChatMessage.create({
     sender: new mongoose.Types.ObjectId(req.user._id),
     content: content || "",
-    chat: new mongoose.Types.ObjectId(chatId),
+    chat: new mongoose.Types.ObjectId(roomId),
     attachments: messageFiles,
   });
 
@@ -72,10 +72,10 @@ const sendMessage = asyncHandler(async (req, res) => {
 });
 
 const deleteMessage = asyncHandler(async (req, res) => {
-  const { chatId, messageId } = req.params;
+  const { roomId, messageId } = req.params;
 
-  const chat = await Chat.findOne({
-    _id: new mongoose.Types.ObjectId(chatId),
+  const chat = await Room.findOne({
+    _id: new mongoose.Types.ObjectId(roomId),
     participants: req.user?._id,
   });
 
@@ -112,12 +112,12 @@ const deleteMessage = asyncHandler(async (req, res) => {
 
   if (chat.lastMessage.toString() === message._id.toString()) {
     const lastMessage = await ChatMessage.findOne(
-      { chat: chatId },
+      { chat: roomId },
       {},
       { sort: { createdAt: -1 } }
     );
 
-    await Chat.findByIdAndUpdate(chatId, {
+    await Chat.findByIdAndUpdate(roomId, {
       lastMessage: lastMessage ? lastMessage?._id : null,
     });
   }
@@ -139,9 +139,9 @@ const deleteMessage = asyncHandler(async (req, res) => {
 });
 
 const getAllMessages = asyncHandler(async (req, res) => {
-  const { chatId } = req.params;
+  const { roomId } = req.params;
 
-  const selectedChat = await Chat.findById(chatId);
+  const selectedChat = await Chat.findById(roomId);
 
   if (!selectedChat) {
     throw new ApiError(404, "Chat does not exist");
@@ -151,7 +151,7 @@ const getAllMessages = asyncHandler(async (req, res) => {
     throw new ApiError(400, "User is not a part of this chat");
   }
 
-  const messages = await ChatMessage.find({ chat: chatId })
+  const messages = await ChatMessage.find({ chat: roomId })
   .populate("sender", "name email avatar") 
   .sort({ createdAt: -1 }) 
 
