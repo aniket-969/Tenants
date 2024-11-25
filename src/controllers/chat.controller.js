@@ -152,19 +152,22 @@ const deleteMessage = asyncHandler(async (req, res) => {
 const getAllMessages = asyncHandler(async (req, res) => {
   const { roomId } = req.params;
 
-  const selectedChat = await Chat.findById(roomId);
+  const selectedRoom = await Room.findById(roomId);
 
-  if (!selectedChat) {
-    throw new ApiError(404, "Chat does not exist");
+  if (!selectedRoom) {
+    throw new ApiError(404, "Room does not exist");
   }
 
-  if (!selectedChat.participants?.includes(req.user?._id)) {
-    throw new ApiError(400, "User is not a part of this chat");
+  if (
+    !selectedRoom.tenants.includes(req.user._id) &&
+    (!selectedRoom.landlord || selectedRoom.landlord.toString() !== req.user._id.toString())
+  ) {
+    throw new ApiError(403, "You are not authorized to view this chat");
   }
 
   const messages = await ChatMessage.find({ chat: roomId })
-  .populate("sender", "name email avatar") 
-  .sort({ createdAt: -1 }) 
+    .populate("sender", "name email avatar")
+    .sort({ createdAt: -1 });
 
   return res
     .status(200)
@@ -172,5 +175,6 @@ const getAllMessages = asyncHandler(async (req, res) => {
       new ApiResponse(200, messages || [], "Messages fetched successfully")
     );
 });
+
 
 export { sendMessage,deleteMessage,getAllMessages };
