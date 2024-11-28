@@ -3,6 +3,7 @@ import { createBrowserRouter, createRoutesFromElements, RouterProvider, Route} f
 import Layout from '@/layouts/Layout.jsx'
 import AuthLayout from '@/layouts/AuthLayout.jsx'
 import React from 'react';
+import { NotFound } from '../NotFound.jsx';
 
 const LandingPage = React.lazy(() => import('../LandingPage.jsx'));
 const Login = React.lazy(() => import('../auth/Login.jsx'));
@@ -19,6 +20,7 @@ const router = createBrowserRouter(
   <Route path="/login" element={<Login />} />
   <Route path="/register" element={<Register />} />
 </Route>
+<Route path="*" element={<NotFound />} />
         </>
         
         

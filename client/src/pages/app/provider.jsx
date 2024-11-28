@@ -9,9 +9,16 @@ export const AppProvider = ({children})=>{
               <Spinner size="xl" />
             </div>
           }>
-            <ErrorBoundary>
-{children}
-            </ErrorBoundary>
+            <ErrorBoundary FallbackComponent={({ error, resetErrorBoundary }) => (
+    <div>
+        <p>Something went wrong: {error.message}</p>
+        <button onClick={resetErrorBoundary}>Retry</button>
+    </div>
+)}>
+    {children}
+</ErrorBoundary>
         </React.Suspense>
     )
 }
+
+
