@@ -1,10 +1,13 @@
 
-import { createBrowserRouter, createRoutesFromElements, RouterProvider, Route, Navigate} from 'react-router-dom'
+import { createBrowserRouter, createRoutesFromElements, RouterProvider, Route} from 'react-router-dom'
 import Layout from '@/layouts/Layout.jsx'
-import LandingPage from '../LandingPage.jsx'
 import AuthLayout from '@/layouts/AuthLayout.jsx'
-import Register from '../auth/Register.jsx'
-import Login from '../auth/Login.jsx'
+import React from 'react';
+
+const LandingPage = React.lazy(() => import('../LandingPage.jsx'));
+const Login = React.lazy(() => import('../auth/Login.jsx'));
+const Register = React.lazy(() => import('../auth/Register.jsx'));
+
 
 const router = createBrowserRouter(
     createRoutesFromElements(
