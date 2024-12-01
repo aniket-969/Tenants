@@ -23,7 +23,7 @@ const Register = () => {
           }
         };
     
-       register()
+    //    register()
       }, []);
     
 
