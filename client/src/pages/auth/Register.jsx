@@ -1,6 +1,7 @@
 import React from 'react'
 import { registerUser } from '@/api/queries/auth';
 import { useEffect } from 'react';
+import { Bounce, toast } from 'react-toastify';
 
 const Register = () => {
 
@@ -12,7 +13,7 @@ const Register = () => {
         role: "tenant",
         password: "qwerty123@",
       };
-    
+      const notify = () => toast('🦄 Wow so easy!');
       useEffect(() => {
         const register = async () => {
           try {
@@ -28,7 +29,11 @@ const Register = () => {
     
 
   return (
+    <>
     <div>Register</div>
+    <button onClick={notify}>Notify !</button>
+    </>
+    
   )
 }
 

@@ -23,6 +23,7 @@ export const AppProvider = ({ children }) => {
       <ErrorBoundary
         FallbackComponent={({ error, resetErrorBoundary }) => (
           <div>
+            
             <p>Something went wrong: {error.message}</p>
             <button onClick={resetErrorBoundary}>Retry</button>
           </div>
