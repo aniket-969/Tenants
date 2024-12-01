@@ -13,7 +13,7 @@ const Register = () => {
         role: "tenant",
         password: "qwerty123@",
       };
-      const notify = () => toast('🦄 Wow so easy!');
+      const notify = () => toast('Wow so easy!');
       useEffect(() => {
         const register = async () => {
           try {
