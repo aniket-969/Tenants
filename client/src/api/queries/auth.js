@@ -23,5 +23,5 @@ export const updateUser = async (data) => {
 };
 
 export const changePassword = async (data) => {
-  return axiosClient.patch(`/${baseAuth}/change-password`, data);
+  return axiosClient.post(`/${baseAuth}/change-password`, data);
 };
