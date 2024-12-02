@@ -10,7 +10,7 @@ export const deleteMaintenance = async((roomId,maintenanceId)=>{
     return axiosClient.delete(`/${maintenanceId}/${roomId}`)
 })
 
-export const updateMaintenance = async((roomId,maintenanceId)=>{
-    return axiosClient.patch(`/${maintenanceId}/${roomId}`)
+export const updateMaintenance = async((roomId,maintenanceId,data)=>{
+    return axiosClient.patch(`/${maintenanceId}/${roomId}`,data)
 })
 

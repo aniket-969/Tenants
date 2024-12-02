@@ -10,8 +10,8 @@ export const deleteExpense = async((expenseId) => {
   return axiosClient.delete(`/${baseExpense}/${expenseId}`);
 });
 
-export const updateExpense = async((expenseId) => {
-  return axiosClient.patch(`/${baseExpense}/${expenseId}`);
+export const updateExpense = async((expenseId,data) => {
+  return axiosClient.patch(`/${baseExpense}/${expenseId}`,data);
 });
 
 export const getExpenseDetails = async((expenseId) => {
