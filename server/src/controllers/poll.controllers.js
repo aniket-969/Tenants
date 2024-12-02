@@ -25,7 +25,8 @@ const hasUserVoted = (poll, userId) => {
 };
 
 const createPoll = asyncHandler(async (req, res) => {
-  const { title, roomId, status, voteEndTime, optionText } = req.body;
+  const {roomId} = req.params
+  const { title, status, voteEndTime, optionText } = req.body;
   const createdBy = req.user?._id;
 
   const options = optionText.map((text) => ({
@@ -46,7 +47,7 @@ const createPoll = asyncHandler(async (req, res) => {
 });
 
 const castVote = asyncHandler(async (req, res) => {
-  const { pollId, optionId } = req.body;
+  const { pollId, optionId } = req.params;
   const userId = req.user?._id;
 
   const poll = await Poll.findById(pollId);
@@ -95,7 +96,8 @@ const updatePoll = asyncHandler(async (req, res) => {
 });
 
 const getRoomPolls = asyncHandler(async (req, res) => {
-  const { roomId, status } = req.query;
+  const{roomId} = req.params
+  const {  status } = req.query;
 
   const filters = { room:roomId };
   if (status) {
