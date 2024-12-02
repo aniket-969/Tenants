@@ -4,7 +4,8 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 
 const customRoomAward = asyncHandler(async (req, res) => {
-  const { roomId, title, description, image, criteria, assignedTo } = req.body;
+  const{roomId} = req.params
+  const {  title, description, image, criteria, assignedTo } = req.body;
 
   const room = await Room.findById(roomId);
 
@@ -27,7 +28,7 @@ const customRoomAward = asyncHandler(async (req, res) => {
 });
 
 const deleteRoomAward = asyncHandler(async (req, res) => {
-  const { roomId, awardId } = req.body;
+  const { roomId, awardId } = req.params;
 
   const room = await Room.findById(roomId);
 
@@ -45,7 +46,8 @@ const deleteRoomAward = asyncHandler(async (req, res) => {
 });
 
 const updateRoomAward = asyncHandler(async (req, res) => {
-  const { roomId, awardId, title, description, image, criteria, assignedTo } =
+  const {roomId, awardId} = req.params
+  const {  title, description, image, criteria, assignedTo } =
     req.body;
 
   const updateAward =await Room.findOneAndUpdate(

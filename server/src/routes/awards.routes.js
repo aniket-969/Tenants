@@ -11,8 +11,8 @@ import { createCustomAwardSchema, updateAwardSchema } from "../zod/awards.schema
 
 const router = Router();
 
-router.route("/create").post(verifyJWT, validate(createCustomAwardSchema),checkMember, customRoomAward);
-router.route("/delete").delete(verifyJWT, checkMember, deleteRoomAward);
-router.route("/update").patch(verifyJWT,validate(updateAwardSchema), checkMember, updateRoomAward);
+router.route("/roomId").post(verifyJWT, validate(createCustomAwardSchema),checkMember, customRoomAward);
+router.route("/roomId/awardId").delete(verifyJWT, checkMember, deleteRoomAward);
+router.route("/roomId/awardId").patch(verifyJWT,validate(updateAwardSchema), checkMember, updateRoomAward);
  
 export default router;
