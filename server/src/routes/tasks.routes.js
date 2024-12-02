@@ -14,8 +14,8 @@ import{
 const router = Router();
  
 router.route("/:roomId").post(verifyJWT,validate(createRoomTaskSchema), checkMember, createRoomTask);
-router.route("/:roomId").patch(verifyJWT,validate(updateRoomTaskSchema), checkMember, updateRoomTask);
-router.route("/:roomId").delete(verifyJWT, checkMember, deleteRoomTask);
+router.route("/:taskId/:roomId").patch(verifyJWT,validate(updateRoomTaskSchema), checkMember, updateRoomTask);
+router.route("/:taskId/:roomId").delete(verifyJWT, checkMember, deleteRoomTask);
 router.route("/taskSwitch/:taskId/:roomId").post(verifyJWT, checkMember, createSwitchRequest);
 router
   .route("/taskSwitchResponse/:taskId/:roomId")
