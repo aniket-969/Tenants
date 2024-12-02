@@ -1,23 +1,23 @@
 import axiosClient from "../axiosClient";
 
-const baseMaintenance = "tasks"
+const baseTask = "tasks"
 
 export const createRoomTask = async((roomId)=>{
-    return axiosClient.post(`/${roomId}`)
+    return axiosClient.post(`/${baseTask}/${roomId}`)
 })
 
 export const deleteRoomTask = async((roomId,taskId)=>{
-    return axiosClient.delete(`/${taskId}/${roomId}`)
+    return axiosClient.delete(`/${baseTask}/${taskId}/${roomId}`)
 })
 
 export const updateRoomTask = async((roomId,taskId,data)=>{
-    return axiosClient.patch(`/${taskId}/${roomId}`,data)
+    return axiosClient.patch(`/${baseTask}/${taskId}/${roomId}`,data)
 })
 
 export const createSwitchRequest = async((roomId,taskId,data)=>{
-    return axiosClient.post(`/taskSwitch/${taskId}/${roomId}`,data)
+    return axiosClient.post(`/${baseTask}/taskSwitch/${taskId}/${roomId}`,data)
 })
 
 export const createSwitchResponse = async((roomId,taskId,data)=>{
-    return axiosClient.post(`/taskSwitchResponse/${taskId}/${roomId}`,data)
+    return axiosClient.post(`/${baseTask}/taskSwitchResponse/${taskId}/${roomId}`,data)
 })
