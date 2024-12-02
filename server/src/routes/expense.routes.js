@@ -19,10 +19,10 @@ import {
 
 const router = Router();
 router
-  .route("/create")
+  .route("/")
   .post(verifyJWT, validate(createExpenseSchema), checkMember, createExpense);
 router
-  .route("/update")
+  .route("/")
   .patch(verifyJWT, validate(updatePaymentSchema), checkMember, updatePayment);
 router.route("/user").get(verifyJWT, getUserExpenses);
 router.route("/pending").get(verifyJWT, getPendingPayments);
