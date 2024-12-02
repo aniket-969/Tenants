@@ -10,14 +10,16 @@ export const deleteCalendarEvent = async((eventId)=>{
     return axiosClient.delete(`/${baseEvent}/${eventId}`)
 })
 
-export const getRoomCalendarEvent = async((roomId)=>{
-    return axiosClient.get(`/${baseEvent}/room/${roomId}`)
-})
-
 export const getSingleCalendarEvent = async((eventId)=>{
     return axiosClient.get(`/${baseEvent}/${eventId}`)
 })
 
+export const getRoomCalendarEvent = async((roomId)=>{
+    return axiosClient.get(`/${baseEvent}/room/${roomId}`)
+})
+
+
+
 export const getMonthlyCalendarEvent = async((roomId)=>{
-    return axiosClient.get(`/${baseEvent}/${roomId}/monthly`)
+    return axiosClient.get(`/${baseEvent}/room/${roomId}/monthly`)
 })
