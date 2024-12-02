@@ -4,8 +4,8 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import { Room } from "../models/rooms.model.js";
 
 const createMaintenance = asyncHandler(async (req, res) => {
+const {roomId} = req.params
   const {
-    roomId,
     title,
     description, 
     maintenanceProvider,
@@ -41,7 +41,7 @@ const createMaintenance = asyncHandler(async (req, res) => {
 });
 
 const deleteMaintenance = asyncHandler(async (req, res) => {
-  const { maintenanceId, roomId } = req.body;
+  const { maintenanceId, roomId } = req.params;
 
   const room = await Room.findById(roomId);
 
@@ -61,15 +61,14 @@ const deleteMaintenance = asyncHandler(async (req, res) => {
 });
 
 const updateMaintenance = asyncHandler(async (req, res) => {
+  const { maintenanceId, roomId } = req.params;
   const {
     status,
-    roomId,
     title,
     description,
     maintenanceProvider,
     contactPhone,
     costEstimate,
-    maintenanceId,
     dateResolved,
   } = req.body;
 

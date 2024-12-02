@@ -13,12 +13,12 @@ import{
 
 const router = Router();
  
-router.route("/create").post(verifyJWT,validate(createRoomTaskSchema), checkMember, createRoomTask);
-router.route("/update").patch(verifyJWT,validate(updateRoomTaskSchema), checkMember, updateRoomTask);
-router.route("/delete").delete(verifyJWT, checkMember, deleteRoomTask);
-router.route("/taskSwitch").post(verifyJWT, checkMember, createSwitchRequest);
+router.route("/:roomId").post(verifyJWT,validate(createRoomTaskSchema), checkMember, createRoomTask);
+router.route("/:roomId").patch(verifyJWT,validate(updateRoomTaskSchema), checkMember, updateRoomTask);
+router.route("/:roomId").delete(verifyJWT, checkMember, deleteRoomTask);
+router.route("/taskSwitch/:taskId/:roomId").post(verifyJWT, checkMember, createSwitchRequest);
 router
-  .route("/taskSwitchResponse")
+  .route("/taskSwitchResponse/:taskId/:roomId")
   .post(verifyJWT, checkMember, switchRequestResponse);
 
 export default router;

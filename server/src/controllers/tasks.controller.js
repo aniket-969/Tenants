@@ -5,6 +5,7 @@ import { Room } from "../models/rooms.model.js";
 
 const createRoomTask = asyncHandler(async (req, res) => {
   const createdBy = req.user?._id;
+  const {roomId} = req.params
   const {
     title,
     description,
@@ -42,7 +43,7 @@ const createRoomTask = asyncHandler(async (req, res) => {
 });
 
 const updateRoomTask = asyncHandler(async (req, res) => {
-  const { roomId, taskId } = req.body;
+  const { roomId, taskId } = req.params;
   const updates = req.body;
 
   const updatedRoom = await Room.findOneAndUpdate(
