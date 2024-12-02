@@ -43,7 +43,7 @@ const createRoomTask = asyncHandler(async (req, res) => {
 });
 
 const updateRoomTask = asyncHandler(async (req, res) => {
-  const { roomId, taskId } = req.params;
+  const {  taskId,roomId } = req.params;
   const updates = req.body;
 
   const updatedRoom = await Room.findOneAndUpdate(
@@ -72,7 +72,7 @@ const updateRoomTask = asyncHandler(async (req, res) => {
 });
 
 const deleteRoomTask = asyncHandler(async (req, res) => {
-  const { roomId, taskId } = req.body;
+  const {  taskId,roomId } = req.params;
   const room = await Room.findById(roomId);
   const taskIndex = room.tasks.findIndex(
     (task) => task._id.toString() === taskId
@@ -90,7 +90,8 @@ const deleteRoomTask = asyncHandler(async (req, res) => {
 });
 
 const createSwitchRequest = asyncHandler(async (req, res) => {
-  const { taskId, roomId, requestedTo } = req.body;
+  const { taskId, roomId } = req.params;
+  const {  requestedTo } = req.body;
   const updatedRoomTask = await Room.findOneAndUpdate(
     { _id: roomId, "tasks._id": taskId },
     {
@@ -111,7 +112,8 @@ const createSwitchRequest = asyncHandler(async (req, res) => {
 });
 
 const switchRequestResponse = asyncHandler(async (req, res) => {
-  const { taskId, roomId, requestedBy } = req.body;
+  const { taskId, roomId } = req.params;
+  const { requestedBy } = req.body;
 
   const updatedSwitchResponse = await Room.findOneAndUpdate(
     {
