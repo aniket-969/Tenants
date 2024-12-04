@@ -13,15 +13,18 @@ export const AvatarSelector = ({ onSelect }) => {
   const handleConfirm = () => {
     if (selectedAvatar) {
       onSelect(selectedAvatar);
-      setIsDialogOpen(false); // Close the dialog
+      setIsDialogOpen(false); 
     }
   };
 
   return (
+    
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+
       <DialogTrigger asChild>
         <Button onClick={() => setIsDialogOpen(true)}>Select Avatar</Button>
       </DialogTrigger>
+
       <DialogContent>
         <DialogTitle>
           <VisuallyHidden>Choose an avatar</VisuallyHidden>
@@ -43,6 +46,8 @@ export const AvatarSelector = ({ onSelect }) => {
           <Button onClick={handleConfirm}>Confirm</Button>
         </div>
       </DialogContent>
+      
     </Dialog>
+    
   );
 };

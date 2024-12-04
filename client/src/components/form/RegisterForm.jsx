@@ -97,7 +97,7 @@ export const SignUp = () => {
           control={form.control}
           name="avatar"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="flex items-center gap-4">
               <FormLabel>Avatar</FormLabel>
               <AvatarSelector onSelect={(url) => field.onChange(url)} />
               <FormMessage />
