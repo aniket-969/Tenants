@@ -40,7 +40,7 @@ export const SignUp = () => {
             <FormItem>
               <FormLabel>Username</FormLabel>
               <FormControl>
-                <Input placeholder="username" {...field} />
+                <Input placeholder="Enter your username" {...field} />
               </FormControl>
 
               <FormMessage />
@@ -55,7 +55,7 @@ export const SignUp = () => {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input placeholder="email" {...field} />
+                <Input placeholder="Enter your email" {...field} />
               </FormControl>
 
               <FormMessage />
@@ -85,7 +85,7 @@ export const SignUp = () => {
             <FormItem>
               <FormLabel>Password</FormLabel>
               <FormControl>
-                <Input placeholder="password" {...field} />
+                <Input placeholder="Enter your password" {...field} />
               </FormControl>
 
               <FormMessage />
@@ -105,7 +105,7 @@ export const SignUp = () => {
           )}
         />
 
-        <Button type="submit">Submit</Button>
+        <Button type="submit" borderRadius="lg">Submit</Button>
       </form>
     </Form>
   );
