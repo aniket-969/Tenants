@@ -1,18 +1,12 @@
 import React from 'react'
 import { registerUser } from '@/api/queries/auth';
 import { useEffect } from 'react';
-import { Bounce, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
+import { SignUp } from '@/components/form/RegisterForm';
 
 const Register = () => {
 
-    const data = {
-        username: "me21",
-        fullName: "me2",
-        email: "me23@gmail.com",
-        avatar: "sdfiwefserew",
-        role: "tenant",
-        password: "qwerty123@",
-      };
+   
       const notify = () => toast('Wow so easy!');
       useEffect(() => {
         const register = async () => {
@@ -31,7 +25,7 @@ const Register = () => {
   return (
     <>
     <div>Register</div>
-    <button onClick={notify}>Notify !</button>
+    <SignUp/>
     </>
     
   )
