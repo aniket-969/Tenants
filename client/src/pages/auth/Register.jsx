@@ -6,7 +6,6 @@ import { SignUp } from '@/components/form/RegisterForm';
 
 const Register = () => {
 
-   
       const notify = () => toast('Wow so easy!');
       useEffect(() => {
         const register = async () => {
@@ -21,7 +20,6 @@ const Register = () => {
     //    register()
       }, []);
     
-
   return (
     <>
     <div>Register</div>

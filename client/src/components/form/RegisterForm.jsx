@@ -12,9 +12,9 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "../ui/button";
+import { AvatarSelector } from "../AvatarSelector";
 
 export const SignUp = () => {
-
   const onSubmit = (values) => {
     console.log(values);
   };
@@ -24,16 +24,15 @@ export const SignUp = () => {
     defaultValues: {
       username: "",
       password: "",
-      fullName:"",
-      avatar:"",
-      email:"",
+      fullName: "",
+      avatar: "",
+      email: "",
     },
   });
 
   return (
-    <Form {...form} >
+    <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
-
         <FormField
           control={form.control}
           name="username"
@@ -89,6 +88,18 @@ export const SignUp = () => {
                 <Input placeholder="password" {...field} />
               </FormControl>
 
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="avatar"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Avatar</FormLabel>
+              <AvatarSelector onSelect={(url) => field.onChange(url)} />
               <FormMessage />
             </FormItem>
           )}

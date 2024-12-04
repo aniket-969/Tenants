@@ -36,7 +36,7 @@ export const SignIn = () => {
           name="identifier"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Username/Email</FormLabel>
+              <FormLabel>Username / Email</FormLabel>
               <FormControl>
                 <Input placeholder="username or email" {...field} />
               </FormControl>
