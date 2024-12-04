@@ -9,7 +9,9 @@ export const useAuth = () => {
   });
 
   const registerMutation = useMutation(registerUser, {
-    onSuccess: () => queryClient.invalidateQueries(["auth", "session"]),
+    onSuccess: (data) => {
+        console.log(data)
+        queryClient.invalidateQueries(["auth", "session"])},
     onError: (error) => {
       console.error("Registration failed:", error);
     },
