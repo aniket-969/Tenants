@@ -6,13 +6,21 @@ import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 
 export const AvatarSelector = ({ onSelect }) => {
   const [selectedAvatar, setSelectedAvatar] = useState(null);
-  console.log(selectedAvatar)
-  const avatars = Array.from({ length: 50 }, (_, i) => `https://avatar.iran.liara.run/public/${2*i+1}`);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  const avatars = Array.from({ length: 50 }, (_, i) => `https://avatar.iran.liara.run/public/${2 * i + 1}`);
+
+  const handleConfirm = () => {
+    if (selectedAvatar) {
+      onSelect(selectedAvatar);
+      setIsDialogOpen(false); // Close the dialog
+    }
+  };
 
   return (
-    <Dialog>
+    <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
-        <Button>Select Avatar</Button>
+        <Button onClick={() => setIsDialogOpen(true)}>Select Avatar</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogTitle>
@@ -32,7 +40,7 @@ export const AvatarSelector = ({ onSelect }) => {
           ))}
         </div>
         <div className="mt-4 flex justify-end">
-          <Button onClick={() => onSelect(selectedAvatar)}>Confirm</Button>
+          <Button onClick={handleConfirm}>Confirm</Button>
         </div>
       </DialogContent>
     </Dialog>
