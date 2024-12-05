@@ -26,8 +26,11 @@ const Register = () => {
 
   return (
     <>
-      <div>Register</div>
-      <SignUp />
+      <h1>Register</h1>
+      <div className="w-full max-w-[20rem] ">
+         <SignUp />
+      </div>
+     
       <div className="flex gap-4 items-center">
         <p>Already have an account?</p>
         <Link to="/login" className="text-muted-foreground text-bold ">

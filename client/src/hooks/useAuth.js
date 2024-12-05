@@ -1,21 +1,30 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { changePassword, fetchSession, loginUser, logOut, refreshTokens, registerUser, updateUser } from "@/api/queries/auth";
+import {
+  changePassword,
+  fetchSession,
+  loginUser,
+  logOut,
+  refreshTokens,
+  registerUser,
+  updateUser,
+} from "@/api/queries/auth";
 
 export const useAuth = () => {
   const queryClient = useQueryClient();
 
   const sessionQuery = useQuery(["auth", "session"], fetchSession, {
-    enabled: false, 
+    enabled: false,
     refetchOnWindowFocus: false, // Refetch when window regains focus
-    staleTime: 5 * 60 * 1000, 
-    cacheTime: 10 * 60 * 1000, 
-    retry: 1
+    staleTime: 5 * 60 * 1000,
+    cacheTime: 10 * 60 * 1000,
+    retry: 1,
   });
 
   const registerMutation = useMutation(registerUser, {
     onSuccess: (data) => {
-        console.log(data)
-        queryClient.invalidateQueries(["auth", "session"])},
+      console.log(data);
+      queryClient.invalidateQueries(["auth", "session"]);
+    },
     onError: (error) => {
       console.error("Registration failed:", error);
     },
@@ -24,7 +33,7 @@ export const useAuth = () => {
   // Login User Mutation
   const loginMutation = useMutation(loginUser, {
     onSuccess: (data) => {
-        console.log(data)
+      console.log(data);
       queryClient.invalidateQueries(["auth", "session"]);
       sessionQuery.refetch();
     },

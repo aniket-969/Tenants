@@ -39,7 +39,7 @@ export const CreateRoomForm = () => {
             <FormItem>
               <FormLabel>Name</FormLabel>
               <FormControl>
-                <Input placeholder="Enter name of room" {...field} />
+                <Input placeholder="Enter room name" {...field} />
               </FormControl>
 
               <FormMessage />
@@ -54,7 +54,7 @@ export const CreateRoomForm = () => {
             <FormItem>
               <FormLabel>Description</FormLabel>
               <FormControl>
-                <Textarea placeholder="Enter description of room" {...field} />
+                <Textarea placeholder="Enter room description" {...field} />
               </FormControl>
 
               <FormMessage />

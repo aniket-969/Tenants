@@ -6,7 +6,10 @@ const Login = () => {
   return (
     <>
      <div>Login</div>
-     <SignIn/>
+     <div className="w-full max-w-[20rem] ">
+         <SignIn />
+      </div>
+     
      <div className="flex gap-4 items-center">
         <p>Don't have an account?</p>
         <Link to="/register" className="text-muted-foreground text-bold ">

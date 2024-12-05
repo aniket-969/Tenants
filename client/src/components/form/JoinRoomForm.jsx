@@ -37,7 +37,7 @@ export const JoinRoomForm = () => {
             <FormItem>
               <FormLabel>Room Code</FormLabel>
               <FormControl>
-                <Input placeholder="Enter name of room" {...field} />
+                <Input placeholder="Enter room code " {...field} />
               </FormControl>
 
               <FormMessage />
