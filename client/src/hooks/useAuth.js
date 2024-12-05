@@ -1,11 +1,15 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { loginUser, registerUser } from "@/api/queries/auth";
+import { changePassword, fetchSession, loginUser, logOut, refreshTokens, registerUser, updateUser } from "@/api/queries/auth";
 
 export const useAuth = () => {
   const queryClient = useQueryClient();
 
-  const sessionQuery = useQuery(["auth", "session"], registerUser, {
-    enabled: false,
+  const sessionQuery = useQuery(["auth", "session"], fetchSession, {
+    enabled: false, 
+    refetchOnWindowFocus: false, // Refetch when window regains focus
+    staleTime: 5 * 60 * 1000, 
+    cacheTime: 10 * 60 * 1000, 
+    retry: 1
   });
 
   const registerMutation = useMutation(registerUser, {

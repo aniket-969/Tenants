@@ -2,6 +2,10 @@ import axiosClient from "../axiosClient";
 
 const baseAuth = "users";
 
+export const fetchSession = async () => {
+  return axiosClient.get(`/${baseAuth}/session`);
+};
+
 export const registerUser = async (data) => {
   return axiosClient.post(`/${baseAuth}/register`, data);
 };
