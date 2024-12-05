@@ -7,9 +7,11 @@ import {
 } from "react-router-dom";
 import Layout from "@/layouts/Layout.jsx";
 import AuthLayout from "@/layouts/AuthLayout.jsx";
-import { useQueryClient } from "@tanstack/react-query"; 
+import { useQueryClient } from "@tanstack/react-query";
 import { NotFound } from "../NotFound.jsx";
 import RoomDetails from "../room/RoomDetails.jsx";
+import { RoomLayout } from "@/layouts/RoomLayout.jsx";
+import CreateRoom from "../room/CreateRoom.jsx";
 
 const LandingPage = React.lazy(() => import("../LandingPage.jsx"));
 const Login = React.lazy(() => import("../auth/Login.jsx"));
@@ -33,13 +35,15 @@ export const AppRouter = () => {
               </Route>
 
               {/* Conditional routes for rooms */}
-              <Route path="room/:roomId">
-                <Route index element={<RoomDetails />} />
-                {/* <Route path="awards" element={<RoomAwards />} />
-                <Route path="tasks" element={<RoomTasks />} />
-                <Route path="calendar" element={<RoomCalendar />} /> */}
+              <Route path="room">
+                <Route path="create" element={<CreateRoom />} />
+                <Route path=":roomId" element={<RoomLayout />}>
+                  <Route index element={<RoomDetails />} />
+                  {/* <Route path="awards" element={<RoomAwards />} /> */}
+                  {/* <Route path="tasks" element={<RoomTasks />} /> */}
+                  {/* <Route path="calendar" element={<RoomCalendar />} /> */}
+                </Route>
               </Route>
-
               <Route path="*" element={<NotFound />} />
             </Route>
           </>
