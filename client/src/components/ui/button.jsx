@@ -41,8 +41,7 @@ const buttonVariants = cva(
 
 const Button = React.forwardRef(({ className, borderRadius, variant, size, asChild = false, ...props }, ref) => {
   const Comp = asChild ? Slot : "button";
-  
-  // Pass borderRadius to the cva function to apply the styles correctly
+ 
   return (
     <Comp
       className={cn(buttonVariants({ variant, size, className, borderRadius }))}

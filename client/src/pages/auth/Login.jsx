@@ -1,11 +1,18 @@
 import { SignIn } from '@/components/form/LoginForm'
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 const Login = () => {
   return (
     <>
      <div>Login</div>
      <SignIn/>
+     <div className="flex gap-4 items-center">
+        <p>Don't have an account?</p>
+        <Link to="/register" className="text-muted-foreground text-bold ">
+          Register
+        </Link>
+      </div>
     </>
    
   )

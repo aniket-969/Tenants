@@ -7,15 +7,16 @@ import {
 } from "react-router-dom";
 import Layout from "@/layouts/Layout.jsx";
 import AuthLayout from "@/layouts/AuthLayout.jsx";
-import { useQueryClient } from "@tanstack/react-query"; // Import queryClient hook
+import { useQueryClient } from "@tanstack/react-query"; 
 import { NotFound } from "../NotFound.jsx";
+import RoomDetails from "../room/RoomDetails.jsx";
 
 const LandingPage = React.lazy(() => import("../LandingPage.jsx"));
 const Login = React.lazy(() => import("../auth/Login.jsx"));
 const Register = React.lazy(() => import("../auth/Register.jsx"));
 
 export const AppRouter = () => {
-  const queryClient = useQueryClient(); // Get the queryClient instance
+  const queryClient = useQueryClient();
 
   // Use useMemo to avoid recreating the router on every render
   const router = useMemo(
@@ -24,17 +25,27 @@ export const AppRouter = () => {
         createRoutesFromElements(
           <>
             <Route path="/" element={<Layout />}>
-              <Route path="" element={<LandingPage />} />
+              {/* Public routes */}
+              <Route index element={<LandingPage />} />
+              <Route element={<AuthLayout />}>
+                <Route path="login" element={<Login />} />
+                <Route path="register" element={<Register />} />
+              </Route>
+
+              {/* Conditional routes for rooms */}
+              <Route path="room/:roomId">
+                <Route index element={<RoomDetails />} />
+                {/* <Route path="awards" element={<RoomAwards />} />
+                <Route path="tasks" element={<RoomTasks />} />
+                <Route path="calendar" element={<RoomCalendar />} /> */}
+              </Route>
+
+              <Route path="*" element={<NotFound />} />
             </Route>
-            <Route element={<AuthLayout />}>
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-            </Route>
-            <Route path="*" element={<NotFound />} />
           </>
         )
       ),
-    [queryClient] 
+    [queryClient]
   );
 
   return <RouterProvider router={router} />;
