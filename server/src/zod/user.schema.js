@@ -21,7 +21,6 @@ export const registerSchema = z.object({
   password: passwordSchema,
   avatar: stringValidation(5, 300, "avatar"),
   role: z.enum(["tenant", "landlord"]),
-  room: objectIdValidation.optional(),
 });
 
 export const loginSchema = z.object({
