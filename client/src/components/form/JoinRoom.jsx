@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { createRoomSchema } from "@/schema/roomSchema";
+import { addUserRequestSchema } from "@/schema/roomSchema.js";
 import { zodResolver } from "@hookform/resolvers/zod/src/zod";
 import {
   Form,
@@ -12,19 +12,17 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "../ui/button";
-import { Textarea } from "../ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
-export const RoomForm = () => {
+export const JoinRoom = () => {
   const onSubmit = (values) => {
     console.log(values);
   };
 
   const form = useForm({
-    resolver: zodResolver(createRoomSchema),
+    resolver: zodResolver(addUserRequestSchema),
     defaultValues: {
-      name: "",
-      description: "",
+      groupCode:"",
       role: "",
     },
   });
@@ -34,10 +32,10 @@ export const RoomForm = () => {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
         <FormField
           control={form.control}
-          name="name"
+          name="groupCode"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Name</FormLabel>
+              <FormLabel>Room Code</FormLabel>
               <FormControl>
                 <Input placeholder="Enter name of room" {...field} />
               </FormControl>
@@ -47,27 +45,13 @@ export const RoomForm = () => {
           )}
         />
 
-        <FormField
-          control={form.control}
-          name="description"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Description</FormLabel>
-              <FormControl>
-                <Textarea placeholder="Enter description of room" {...field} />
-              </FormControl>
-
-              <FormMessage />
-            </FormItem>
-          )}
-        />
 
         <FormField
           control={form.control}
           name="role"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Role</FormLabel>
+              <FormLabel>Join as</FormLabel>
               <FormControl>
                 <RadioGroup
                   onValueChange={field.onChange}
