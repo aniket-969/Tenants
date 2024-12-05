@@ -42,7 +42,7 @@ export default {
           foreground: "#040404", // Hex value for destructive foreground
         },
         border: "#040404", // Hex value for border
-        input: "#040404", // Hex value for input
+        input: "#fe2858", // Hex value for input
         ring: "#fe2858", // Hex value for ring
         chart: {
           1: "#fe2858", // Hex value for chart 1

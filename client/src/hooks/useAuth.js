@@ -24,7 +24,9 @@ export const useAuth = () => {
   // Login User Mutation
   const loginMutation = useMutation(loginUser, {
     onSuccess: (data) => {
+        console.log(data)
       queryClient.invalidateQueries(["auth", "session"]);
+      sessionQuery.refetch();
     },
     onError: (error) => {
       console.error("Login error:", error);
