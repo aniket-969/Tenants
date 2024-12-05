@@ -13,9 +13,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 export const RoomForm = () => {
- 
   const onSubmit = (values) => {
     console.log(values);
   };
@@ -30,9 +30,8 @@ export const RoomForm = () => {
   });
 
   return (
-    <Form {...form} >
+    <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
-
         <FormField
           control={form.control}
           name="name"
@@ -63,7 +62,6 @@ export const RoomForm = () => {
           )}
         />
 
-        
         <FormField
           control={form.control}
           name="role"
@@ -71,18 +69,32 @@ export const RoomForm = () => {
             <FormItem>
               <FormLabel>Role</FormLabel>
               <FormControl>
-                <Input placeholder="Enter description of room" {...field} />
+                <RadioGroup
+                  onValueChange={field.onChange}
+                  value={field.value}
+                  className="flex gap-4"
+                >
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="tenant" id="tenant" />
+                    <label htmlFor="tenant" className="text-sm">
+                      Tenant
+                    </label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="landlord" id="landlord" />
+                    <label htmlFor="landlord" className="text-sm">
+                      Landlord
+                    </label>
+                  </div>
+                </RadioGroup>
               </FormControl>
-
               <FormMessage />
             </FormItem>
           )}
         />
 
-
-
         <Button type="submit">Submit</Button>
       </form>
     </Form>
   );
-}
+};
