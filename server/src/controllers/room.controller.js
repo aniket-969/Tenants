@@ -32,7 +32,7 @@ const createRoom = asyncHandler(async (req, res) => {
   const admin = req.user?._id;
   const { name, description, role } = req.body;
 
-  const groupCode = await generateUniqueGroupCode(); 
+  const groupCode = await generateUniqueGroupCode();
   let roomData = {
     name,
     description,
@@ -115,7 +115,7 @@ const adminResponse = asyncHandler(async (req, res) => {
   );
   if (requestIndex === -1) {
     throw new ApiError(400, "No such pending request");
-  } 
+  }
 
   const { userId, role } = room.pendingRequests[requestIndex];
 
@@ -176,13 +176,26 @@ const deleteRoom = asyncHandler(async (req, res) => {
       new ApiResponse(200, {}, "Room and related data deleted successfully")
     );
 });
-
 const getRoomData = asyncHandler(async (req, res) => {
   const { roomId } = req.params;
   const userId = req.user?._id;
-  const room = await Room.findById(roomId).select(
-    "-groupCode -pendingRequests"
-  );
+
+  let roomQuery = Room.findById(roomId).select("-groupCode -pendingRequests");
+
+  const room = await roomQuery.populate("admin tenants landlord awards");
+
+  if (!room) {
+    throw new ApiError(404, "Room not found");
+  }
+
+  if (room.admin.toString() === userId.toString()) {
+    const roomWithRequests = await Room.findById(roomId)
+      .select("-groupCode")
+      .populate("admin tenants landlord awards pendingRequests.userId");
+    return res.json(
+      new ApiResponse(200, roomWithRequests, "Room data fetched successfully")
+    );
+  }
 
   return res.json(new ApiResponse(200, room, "Room data fetched successfully"));
 });
@@ -205,25 +218,27 @@ const leaveRoom = asyncHandler(async (req, res) => {
 });
 
 const transferAdminControl = asyncHandler(async (req, res) => {
-    const { roomId, newAdminId } = req.body;
-    const currentAdminId = req.user?._id;
-  
-    const room = await Room.findById(roomId);
-  
-    if (room.admin.toString() !== currentAdminId.toString()) {
-      throw new ApiError(403, "Only the current admin can transfer admin rights");
-    }
-  
-    if (!room.tenants.includes(newAdminId)) {
-      throw new ApiError(400, "New admin must be a member of the room");
-    }
-  
-    room.admin = newAdminId;
-    await room.save();
-  
-    return res.status(200).json(new ApiResponse(200, room, "Admin rights transferred successfully"));
-  });
- 
+  const { roomId, newAdminId } = req.body;
+  const currentAdminId = req.user?._id;
+
+  const room = await Room.findById(roomId);
+
+  if (room.admin.toString() !== currentAdminId.toString()) {
+    throw new ApiError(403, "Only the current admin can transfer admin rights");
+  }
+
+  if (!room.tenants.includes(newAdminId)) {
+    throw new ApiError(400, "New admin must be a member of the room");
+  }
+
+  room.admin = newAdminId;
+  await room.save();
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, room, "Admin rights transferred successfully"));
+});
+
 export {
   createRoom,
   addUserRequest,
@@ -232,5 +247,5 @@ export {
   deleteRoom,
   getRoomData,
   leaveRoom,
-  transferAdminControl
+  transferAdminControl,
 };
