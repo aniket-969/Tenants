@@ -1,13 +1,38 @@
 import { CreateRoomForm } from "@/components/form/CreateRoomForm";
-import { JoinRoom } from "@/components/form/JoinRoom";
+import { JoinRoomForm } from "@/components/form/JoinRoomForm";
+import { useState } from "react";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 
 const CreateRoom = () => {
+
+    const [isCreateRoom,setIsCreateRoom] = useState(true)
   return (
-    <div className="flex items-center justify-center flex-col ">
-      <h1>Create/Join Room</h1>
-     {/* <CreateRoomForm/> */}
-     <JoinRoom/>
+    <div className="flex items-center justify-center flex-col gap-4">
+    <h1 className="text-2xl font-bold">
+      {isCreateRoom ? "Create Room" : "Join Room"}
+    </h1>
+
+    {/* Toggle Between Create and Join */}
+    <div className="flex items-center gap-4">
+      <Label htmlFor="room-toggle" className="text-sm">
+        Join Room
+      </Label>
+      <Switch
+        id="room-toggle"
+        checked={isCreateRoom}
+        onCheckedChange={setIsCreateRoom}
+      />
+      <Label htmlFor="room-toggle" className="text-sm">
+        Create Room
+      </Label>
     </div>
+
+    {/* Conditional Rendering */}
+    <div className="w-full max-w-md mt-4">
+      {isCreateRoom ? <CreateRoomForm /> : <JoinRoomForm />}
+    </div>
+  </div>
   );
 };
 

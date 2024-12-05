@@ -14,7 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "../ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
-export const JoinRoom = () => {
+export const JoinRoomForm = () => {
   const onSubmit = (values) => {
     console.log(values);
   };
