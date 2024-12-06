@@ -3,7 +3,8 @@ import axiosClient from "../axiosClient";
 const baseAuth = "users";
 
 export const fetchSession = async () => {
-  return axiosClient.get(`/${baseAuth}/session`);
+  const response = axiosClient.get(`/${baseAuth}/session`);
+  return response.data?.data;
 };
 
 export const registerUser = async (data) => {

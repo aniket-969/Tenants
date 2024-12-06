@@ -12,6 +12,7 @@ import { NotFound } from "../NotFound.jsx";
 import RoomDetails from "../room/RoomDetails.jsx";
 import { RoomLayout } from "@/layouts/RoomLayout.jsx";
 import CreateRoom from "../room/CreateRoom.jsx";
+import Room from "../room/Room.jsx";
 
 const LandingPage = React.lazy(() => import("../LandingPage.jsx"));
 const Login = React.lazy(() => import("../auth/Login.jsx"));
@@ -36,6 +37,7 @@ export const AppRouter = () => {
 
               {/* Conditional routes for rooms */}
               <Route path="room">
+                <Route path="" element={<Room/>}/>
                 <Route path="create" element={<CreateRoom />} />
                 <Route path=":roomId" element={<RoomLayout />}>
                   <Route index element={<RoomDetails />} />

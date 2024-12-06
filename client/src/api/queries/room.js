@@ -3,11 +3,13 @@ import axiosClient from "../axiosClient";
 const baseRoom = "room";
 
 export const createRoom = async (data) => {
-  return axiosClient.post(`/${baseRoom}`, data);
+  const response = await axiosClient.post(`/${baseRoom}`, data);
+
+  return response.data?.data?._id;
 };
 
 export const addUserRequest = async (data, roomId) => {
-  return axiosClient.post(`/${baseRoom}/${roomId}/request`, data);
+  return axiosClient.post(`/${baseRoom}/request`, data);
 };
 
 export const adminResponse = async (data, roomId) => {
@@ -15,15 +17,17 @@ export const adminResponse = async (data, roomId) => {
 };
 
 export const updateRoom = async (roomId, data) => {
-  return axiosClient.patch(`/${baseRoom}/${roomId}`, data);
+  const response = axiosClient.patch(`/${baseRoom}/${roomId}`, data);
+  return response.data?.data?._id;
 };
 
 export const deleteRoom = async (data, roomId) => {
   return axiosClient.delete(`/${baseRoom}/${roomId}`, data);
 };
 
-export const getRoomData = async (data, roomId) => {
-  return axiosClient.get(`/${baseRoom}/${roomId}`, data);
+export const getRoomData = async (roomId) => {
+  const response = axiosClient.get(`/${baseRoom}/${roomId}`);
+  return response.data?.data;
 };
 
 export const leaveRoom = async (data, roomId) => {

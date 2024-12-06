@@ -5,9 +5,11 @@ import {
   adminResponse,
 } from "@/api/queries/room";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 
 export const useRoom = () => {
   const queryClient = useQueryClient();
+const navigate = useNavigate()
 
   const roomQuery = useQuery(["room", roomId], () => getRoomData(roomId), {
     enabled: !!roomId, 
@@ -19,13 +21,29 @@ export const useRoom = () => {
 
   const createRoomMutation = useMutation(createRoom, {
     onSuccess: (newRoomId) => {
-      queryClient.invalidateQueries(["room", newRoomId]);
+      queryClient.invalidateQueries(["auth", "session"]);
+    },
+    navigate("/room")
+  });
+
+  const updateRoomMutation = useMutation(updateRoom, {
+    onSuccess: (roomId) => {
+      queryClient.invalidateQueries(["room", roomId]);
+    },
+  });
+
+  const deleteRoomMutation = useMutation(deleteRoom, {
+    onSuccess: () => {
+      console.log("Room deleted successfully")
+      queryClient.invalidateQueries(["auth", "session"]);
+      navigate("/room")
     },
   });
 
   const joinRoomMutation = useMutation(addUserRequest, {
     onSuccess: () => {
         console.log("Join request sent successfully");
+        navigate("/room")
     },
     onError: (error) => {
       console.error("Failed to send join request", error);
@@ -40,6 +58,7 @@ export const useRoom = () => {
       console.error("Failed to send admin response", error);
     },
   });
+
   return {
     roomQuery,
     createRoomMutation,
