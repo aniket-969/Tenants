@@ -14,13 +14,13 @@ export const addUserRequestSchema = z.object({
 })
  
 export const adminResponseSchema = z.object({
-    roomId:objectIdValidation,
+   
     requestId:objectIdValidation,
     action:z.enum(["approved","denined"]),
 
 })
 
 export const transferRoleSchema = z.object({
-    roomId:objectIdValidation,
+    
     newAdminId:objectIdValidation
 })

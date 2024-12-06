@@ -110,10 +110,13 @@ const addUserRequest = asyncHandler(async (req, res) => {
 });
 
 const adminResponse = asyncHandler(async (req, res) => {
-  const { roomId, requestId, action } = req.body;
+  const {roomId} = req.params
+  const {  requestId, action } = req.body;
 
   const room = await Room.findById(roomId);
-
+if(!room){
+  throw new ApiError(404,"Room not found")
+}
   const requestIndex = room.pendingRequests.findIndex(
     (request) => request.id.toString() === requestId
   );
@@ -123,7 +126,7 @@ const adminResponse = asyncHandler(async (req, res) => {
 
   const { userId, role } = room.pendingRequests[requestIndex];
 
-  if (action === "approve") {
+  if (action === "approved") {
     if (role === "landlord") {
       if (room.landlord) {
         throw new ApiError(400, "Room already has a landlord");
