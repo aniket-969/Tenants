@@ -53,6 +53,12 @@ const createRoom = asyncHandler(async (req, res) => {
     throw new ApiError(400, "Error creating room");
   }
 
+  const user = await User.findById(admin);
+  if (user) {
+    user.rooms.push({ id: createdRoom._id, name: createdRoom.name });
+    await user.save();
+  }
+
   return res.json(
     new ApiResponse(201, createdRoom, "Room created successfully")
   );
@@ -142,10 +148,8 @@ const adminResponse = asyncHandler(async (req, res) => {
     if (!user) {
       throw new ApiError(404, "User not found");
     }
-    if (!user.rooms.includes(roomId)) {
-      user.rooms.push(roomId);
-      await user.save();
-    }
+
+    user.rooms.push({ id: room._id, name: room.name });
 
     await room.save();
 
@@ -216,14 +220,14 @@ const leaveRoom = asyncHandler(async (req, res) => {
 
   if (room.admin.toString() === userId.toString()) {
     throw new ApiError(400, "Admin can't leave the room");
-  } 
-  const user = req.user;
+  }
+
   room.tenants = room.tenants.filter(
     (tenant) => tenant.toString() !== userId.toString()
   );
   await room.save();
-
-  user.rooms = user.rooms.filter((room) => room.toString() !== roomId);
+  const user = req.user;
+  user.rooms = user.rooms.filter((room) => room.id.toString() !== roomId.toString());
   await user.save();
 
   return res.json(new ApiResponse(200, {}, "User has left the room"));

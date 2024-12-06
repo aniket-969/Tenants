@@ -201,7 +201,7 @@ const fetchSession = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, user, "Session retrieved successfully"));
 });
 
-const getUSerRooms = asyncHandler(async (req, res) => {
+const getUserRooms = asyncHandler(async (req, res) => {
   const userId = req.user?._id;
 
   if (!userId) {
@@ -231,5 +231,5 @@ export {
   changePassword,
   updateAccountDetails,
   fetchSession,
-  getUSerRooms
+  getUserRooms
 };
