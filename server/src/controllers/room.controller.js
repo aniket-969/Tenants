@@ -87,6 +87,10 @@ const addUserRequest = asyncHandler(async (req, res) => {
     throw new ApiError(404, "Room doesn't exist");
   }
 
+  if(room.admin.toString() === userId.toString()){
+    throw new ApiError(400,"Admin can't send request to their own room")
+  }
+
   if (room.pendingRequests.length > 50) {
     throw new ApiError(400, "Room has too many pending requests already");
   }
