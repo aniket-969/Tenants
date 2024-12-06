@@ -25,7 +25,7 @@ export const useRoom = () => {
 
   const joinRoomMutation = useMutation(addUserRequest, {
     onSuccess: () => {
-      queryClient.invalidateQueries(["room", roomId]);
+        console.log("Join request sent successfully");
     },
     onError: (error) => {
       console.error("Failed to send join request", error);
