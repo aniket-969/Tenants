@@ -192,7 +192,7 @@ const updateAccountDetails = asyncHandler(async (req, res) => {
 });
 
 const fetchSession = asyncHandler(async (req, res) => {
-  const user = req.user;
+  const user = user.findById(req.user?._id).select("-password -refreshToken");
   if (!user) {
     throw new ApiError(401, "Session not found");
   }
@@ -201,27 +201,6 @@ const fetchSession = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, user, "Session retrieved successfully"));
 });
 
-const getUserRooms = asyncHandler(async (req, res) => {
-  const userId = req.user?._id;
-
-  if (!userId) {
-    return res
-      .status(400)
-      .json(new ApiResponse(400, null, "User ID is required."));
-  }
-
-  const user = await User.findById(userId).select("rooms");
-
-  if (!user) {
-    return res.status(404).json(new ApiResponse(404, null, "User not found."));
-  }
-
-  const rooms = user.rooms;
-
-  return res
-    .status(200)
-    .json(new ApiResponse(200, rooms, "User rooms retrieved successfully"));
-});
 
 export {
   registerUser,
@@ -230,6 +209,5 @@ export {
   refreshTokens,
   changePassword,
   updateAccountDetails,
-  fetchSession,
-  getUserRooms
+  fetchSession
 };

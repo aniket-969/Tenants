@@ -9,7 +9,6 @@ import { validate } from "../middleware/validator.middleware.js";
 import {
   changePassword,
   fetchSession,
-  getUserRooms,
   loginUser,
   logoutUser,
   refreshTokens,
@@ -34,6 +33,5 @@ router
 router
   .route("/update-user")
   .patch(validate(updateUserSchema), verifyJWT, updateAccountDetails);
-  router.route("/rooms").get(verifyJWT,getUserRooms)
 
 export default router;
