@@ -87,8 +87,8 @@ const addUserRequest = asyncHandler(async (req, res) => {
     throw new ApiError(404, "Room doesn't exist");
   }
 
-  if(room.admin.toString() === userId.toString()){
-    throw new ApiError(400,"Admin can't send request to their own room")
+  if (room.admin.toString() === userId.toString()) {
+    throw new ApiError(400, "Admin can't send request to their own room");
   }
 
   if (room.pendingRequests.length > 50) {
@@ -110,13 +110,13 @@ const addUserRequest = asyncHandler(async (req, res) => {
 });
 
 const adminResponse = asyncHandler(async (req, res) => {
-  const {roomId} = req.params
-  const {  requestId, action } = req.body;
+  const { roomId } = req.params;
+  const { requestId, action } = req.body;
 
   const room = await Room.findById(roomId);
-if(!room){
-  throw new ApiError(404,"Room not found")
-}
+  if (!room) {
+    throw new ApiError(404, "Room not found");
+  }
   const requestIndex = room.pendingRequests.findIndex(
     (request) => request.id.toString() === requestId
   );
@@ -208,15 +208,16 @@ const getRoomData = asyncHandler(async (req, res) => {
 });
 
 const leaveRoom = asyncHandler(async (req, res) => {
+  console.log("This is user", req.user);
   const userId = req.user?._id;
   const { roomId } = req.params;
 
   const room = await Room.findById(roomId);
 
-if(room.admin.toString() === userId.toString()){
-  throw new ApiError(400,"Admin can't leave the room")
-}
-
+  if (room.admin.toString() === userId.toString()) {
+    throw new ApiError(400, "Admin can't leave the room");
+  } 
+  const user = req.user;
   room.tenants = room.tenants.filter(
     (tenant) => tenant.toString() !== userId.toString()
   );
@@ -229,10 +230,15 @@ if(room.admin.toString() === userId.toString()){
 });
 
 const transferAdminControl = asyncHandler(async (req, res) => {
-  const { roomId, newAdminId } = req.body;
+  const { roomId } = req.params;
+  const { newAdminId } = req.body;
   const currentAdminId = req.user?._id;
 
   const room = await Room.findById(roomId);
+
+  if (!room) {
+    throw new ApiError(404, "Room not found");
+  }
 
   if (room.admin.toString() !== currentAdminId.toString()) {
     throw new ApiError(403, "Only the current admin can transfer admin rights");

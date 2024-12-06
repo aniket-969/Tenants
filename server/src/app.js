@@ -53,7 +53,7 @@ const limiter = rateLimit({
   },
 });
 
-app.use(limiter);
+// app.use(limiter);
 
 import userRouter from "./routes/user.routes.js";
 import voteRouter from "./routes/poll.routes.js";
