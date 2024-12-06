@@ -9,7 +9,7 @@ export const creatRoomSchema = z.object({
  
 export const addUserRequestSchema = z.object({
     groupCode:z.string().length(6),
-    role:z.enum(["tenants","landlord"]),
+    role:z.enum(["tenant","landlord"]),
     
 })
  

@@ -5,6 +5,7 @@ import {createServer} from "http"
 import {Server} from "socket.io"
 import { rateLimit } from "express-rate-limit";
 import { initializeSocketIO } from "./socket/index.js";
+import { ApiError } from "./utils/ApiError.js";
 
 const app = express();
 
