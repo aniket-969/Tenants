@@ -4,14 +4,13 @@ import jwt from "jsonwebtoken";
 
 const userSchema = new Schema(
   {
-   
     username: {
       type: String,
       required: true,
       unique: true,
       lowercase: true,
       trim: true,
-      index:true,
+      index: true,
     },
     email: {
       type: String,
@@ -21,11 +20,11 @@ const userSchema = new Schema(
       trim: true,
     },
     fullName: {
-        type: String,
-        required:true,
-        trim: true,
-        index: true,
-      },
+      type: String,
+      required: true,
+      trim: true,
+      index: true,
+    },
     avatar: {
       type: String,
       required: true,
@@ -36,12 +35,18 @@ const userSchema = new Schema(
     },
     role: {
       type: String,
-      enum: [ "tenant", "landlord"],
+      enum: ["tenant", "landlord"],
     },
     rooms: [
       {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Room",
+        id: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Room",
+        },
+        name: {
+          type: String,
+          required: true,
+        },
       },
     ],
     refreshToken: {
@@ -89,7 +94,7 @@ userSchema.methods.generateRefreshToken = function () {
       expiresIn: process.env.REFRESH_TOKEN_EXPIRY,
     }
   );
-  return refreshToken
+  return refreshToken;
 };
 
 export const User = mongoose.model("User", userSchema);
