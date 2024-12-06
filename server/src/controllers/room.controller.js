@@ -210,6 +210,10 @@ const leaveRoom = asyncHandler(async (req, res) => {
 
   const room = await Room.findById(roomId);
 
+if(room.admin.toString() === userId.toString()){
+  throw new ApiError(400,"Admin can't leave the room")
+}
+
   room.tenants = room.tenants.filter(
     (tenant) => tenant.toString() !== userId.toString()
   );
