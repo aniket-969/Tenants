@@ -123,6 +123,11 @@ const adminResponse = asyncHandler(async (req, res) => {
   if (!room) {
     throw new ApiError(404, "Room not found");
   }
+
+if(room.admin.toString() !== req.user._id.toString()){
+ throw new ApiError(401,"Only admin can respond to requests")
+}
+
   const requestIndex = room.pendingRequests.findIndex(
     (request) => request.id.toString() === requestId
   );
@@ -150,7 +155,7 @@ const adminResponse = asyncHandler(async (req, res) => {
     }
 
     user.rooms.push({ id: room._id, name: room.name });
-
+    await user.save();
     await room.save();
 
     return res.json(
@@ -227,7 +232,9 @@ const leaveRoom = asyncHandler(async (req, res) => {
   );
   await room.save();
   const user = req.user;
-  user.rooms = user.rooms.filter((room) => room.id.toString() !== roomId.toString());
+  user.rooms = user.rooms.filter(
+    (room) => room.id.toString() !== roomId.toString()
+  );
   await user.save();
 
   return res.json(new ApiResponse(200, {}, "User has left the room"));
