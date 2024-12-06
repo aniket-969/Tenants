@@ -8,7 +8,7 @@ import { validate } from './../middleware/validator.middleware.js';
 const router = Router();
 
 router.route("/").post(verifyJWT,validate(creatRoomSchema),createRoom);
-router.route("/:roomId/requests").post(verifyJWT,validate(addUserRequestSchema),addUserRequest);
+router.route("/request").post(verifyJWT,validate(addUserRequestSchema),addUserRequest);
 router.route("/:roomId/responses").post(verifyJWT,validate(adminResponseSchema),adminResponse);
 router.route("/:roomId").patch(verifyJWT,updateRoom);
 router.route("/:roomId").delete(verifyJWT,deleteRoom);
