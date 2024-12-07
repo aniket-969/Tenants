@@ -22,9 +22,9 @@ const Awards = () => {
       ];
 
   return (
-    <div className="awards-page p-6">
+    <div className=" p-6">
       <h1 className="text-2xl font-bold mb-6">Awards</h1>
-      <div className="awards-grid grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {awardsData.map((award) => (
           <AwardCard
             key={award._id}
