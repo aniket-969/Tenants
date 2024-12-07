@@ -1,4 +1,4 @@
-import AwardCard from "./../../components/awardCard";
+import AwardCard from "../../components/awardCard";
 
 const Awards = () => {
 
@@ -30,9 +30,11 @@ const Awards = () => {
       ];
 
   return (
-    <div className=" p-6">
+    <div className=" p-6 bgr">
+        {/* Award heading */}
       <h1 className="text-2xl font-bold mb-6">Awards</h1>
-      <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      {/* Awards grid */}
+      <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 lg:gap-10 content-center ">
         {awardsData.map((award) => (
           <AwardCard
             key={award._id}

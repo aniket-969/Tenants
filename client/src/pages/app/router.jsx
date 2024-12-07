@@ -13,7 +13,7 @@ import RoomDetails from "../room/RoomDetails.jsx";
 import { RoomLayout } from "@/layouts/RoomLayout.jsx";
 import CreateRoom from "../room/CreateRoom.jsx";
 import Room from "../room/Room.jsx";
-import Awards from "../awards/Awards.jsx";
+import Awards from "../room/Awards.jsx";
 
 const LandingPage = React.lazy(() => import("../LandingPage.jsx"));
 const Login = React.lazy(() => import("../auth/Login.jsx"));
