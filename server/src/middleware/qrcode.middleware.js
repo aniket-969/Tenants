@@ -1,7 +1,7 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
-import { User } from "../models/user.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { isApplePayValid, isBankTransferValid, isCashAppValid, isPayPalValid, isStripeValid, isUPIValid, isWeChatPayValid } from "../utils/validation.js";
+
 export const validateQRCodeData = (req, res, next) => {
   const { paymentMethod } = req.body;
 

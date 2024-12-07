@@ -38,3 +38,23 @@ export const updateUserSchema = z.object({
     fullName:stringValidation(1,20,"fullName").optional(),
     avatar:stringValidation(1,20,"avatar").optional(),
 })
+
+export const paymentMethodSchema = z.object({
+  appName: stringValidation(1,100, "App name is required").optional(),
+  paymentId: stringValidation(1, 100,"Payment ID is required").optional(),
+  type: z.enum(['UPI', 'PayPal', 'Stripe', 'BankTransfer', 'ApplePay', 'CashApp', 'WeChatPay']).optional(),
+  qrCodeData: z.string().min(1,"qrCodeData should be atleast 1 character long")
+    .optional()
+    .refine((val, ctx) => {
+      if (ctx.parent.type === 'UPI' && !val.startsWith('upi://pay')) {
+        return false;
+      }
+      if (ctx.parent.type === 'PayPal' && !val.includes('paypal.com')) {
+        return false;
+      }
+      return true;
+    }, { message: "Invalid QR code data for the given payment type" }),
+}).refine((data) => data.paymentId || data.qrCodeData, {
+  message: "Either paymentId or qrCodeData must be provided",
+  path: ['paymentId', 'qrCodeData'],
+});;

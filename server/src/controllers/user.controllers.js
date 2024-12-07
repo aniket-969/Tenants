@@ -201,6 +201,9 @@ const fetchSession = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, user, "Session retrieved successfully"));
 });
 
+const addPaymentMethod = asyncHandler(async(req,res)=>{
+  
+})
 
 export {
   registerUser,
