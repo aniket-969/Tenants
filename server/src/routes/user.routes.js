@@ -41,3 +41,4 @@ router
   .patch(validate(paymentMethodSchema), verifyJWT, validateQRCodeData,addPaymentMethod);
 
 export default router;
+ 

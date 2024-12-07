@@ -88,6 +88,10 @@ userSchema.methods.isPasswordCorrect = async function (password) {
   return await bcrypt.compare(password, this.password);
 };
 
+userSchema.path('paymentMethod').validate(function (value) {
+  return value.length <= 3; // Ensures the paymentMethods array has at most 3 elements
+}, 'You can only have up to 3 payment methods.');
+
 userSchema.methods.generateAccessToken = function () {
   return jwt.sign(
     {

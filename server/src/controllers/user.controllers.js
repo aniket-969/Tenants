@@ -201,36 +201,38 @@ const fetchSession = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, user, "Session retrieved successfully"));
 });
 
-const addPaymentMethod = asyncHandler(async(req,res)=>{
-  const { userId } = req.user?._id; 
-  const { paymentMethod} = req.body;
-
+const addPaymentMethod = asyncHandler(async (req, res) => {
+  const userId  = req.user?._id;
+  const { paymentMethod } = req.body;
   // Find the user by ID
   const user = await User.findById(userId);
-
+if(!user) throw new ApiError(400,"can't find the user")
   // Add each payment method to the user's paymentMethod array
-  paymentMethod.forEach(method => {
+
+  paymentMethod.forEach((method) => {
     //  check if the payment method already exists for the user (optional check)
-    const paymentMethodExists = user.paymentMethod.some(
+    console.log("re");
+
+   const paymentMethodExists = user.paymentMethod.some(
       (existingMethod) =>
-        existingMethod.appName === method.appName && existingMethod.type === method.type
+        existingMethod.appName === method.appName &&
+        existingMethod.type === method.type
     );
 
     if (paymentMethodExists) {
-      return; 
+      return; // Skip adding this method if it already exists
     }
-
+    console.log("sfad");
     user.paymentMethod.push(method);
   });
 
   // Save the updated user document
   await user.save();
 
-  // Send success response
   res.status(201).json({
-    message: "Payment methods added successfully"
+    message: "Payment methods added successfully",
   });
-})
+});
 
 export {
   registerUser,
@@ -240,5 +242,5 @@ export {
   changePassword,
   updateAccountDetails,
   fetchSession,
-  addPaymentMethod
+  addPaymentMethod,
 };
