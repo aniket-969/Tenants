@@ -13,6 +13,7 @@ import RoomDetails from "../room/RoomDetails.jsx";
 import { RoomLayout } from "@/layouts/RoomLayout.jsx";
 import CreateRoom from "../room/CreateRoom.jsx";
 import Room from "../room/Room.jsx";
+import Awards from "../awards/Awards.jsx";
 
 const LandingPage = React.lazy(() => import("../LandingPage.jsx"));
 const Login = React.lazy(() => import("../auth/Login.jsx"));
@@ -41,7 +42,7 @@ export const AppRouter = () => {
                 <Route path="create" element={<CreateRoom />} />
                 <Route path=":roomId" element={<RoomLayout />}>
                   <Route index element={<RoomDetails />} />
-                  {/* <Route path="awards" element={<RoomAwards />} /> */}
+                  <Route path="awards" element={<Awards />} />
                   {/* <Route path="tasks" element={<RoomTasks />} /> */}
                   {/* <Route path="calendar" element={<RoomCalendar />} /> */}
                 </Route>
