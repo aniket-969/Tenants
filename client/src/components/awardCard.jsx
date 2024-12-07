@@ -2,10 +2,10 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "./ui/
 
 const AwardCard = ({title,description,image,criteria,assignedTo})=>{
     return(
-        <Card className="w-full relative overflow-hidden bg-white group">
+        <Card className="w-full relative overflow-hidden bg-white group br">
       {/* Image */}
-      <div className="relative">
-        <img src={image} alt={title} className="h-40 w-full object-cover rounded-t-md" />
+      <div className="relative flex justify-center ">
+        <img src={image} alt={title} className="  object-cover rounded-t-md max-w-[50rem] h-[15rem] bb" />
       </div>
 
       {/* Star Sparkle Effect */}

@@ -122,7 +122,7 @@
     opacity: 0;
   }
   50% {
-    transform: scale(1.5);
+    transform: scale(1.4);
     opacity: 1;
   }
   100% {
@@ -130,3 +130,19 @@
     opacity: 0;
   }
 }
+
+.bb{
+  border: 2px solid blue;
+}
+
+.bgr{
+  border: 2px solid green;
+}
+
+.by{
+  border: 2px solid yellow;
+}
+.br{
+  border: 2px solid red;
+}
+
