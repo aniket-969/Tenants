@@ -202,7 +202,34 @@ const fetchSession = asyncHandler(async (req, res) => {
 });
 
 const addPaymentMethod = asyncHandler(async(req,res)=>{
-  
+  const { userId } = req.user?._id; 
+  const { paymentMethod} = req.body;
+
+  // Find the user by ID
+  const user = await User.findById(userId);
+
+  // Add each payment method to the user's paymentMethod array
+  paymentMethod.forEach(method => {
+    //  check if the payment method already exists for the user (optional check)
+    const paymentMethodExists = user.paymentMethod.some(
+      (existingMethod) =>
+        existingMethod.appName === method.appName && existingMethod.type === method.type
+    );
+
+    if (paymentMethodExists) {
+      return; 
+    }
+
+    user.paymentMethod.push(method);
+  });
+
+  // Save the updated user document
+  await user.save();
+
+  // Send success response
+  res.status(201).json({
+    message: "Payment methods added successfully"
+  });
 })
 
 export {
@@ -212,5 +239,6 @@ export {
   refreshTokens,
   changePassword,
   updateAccountDetails,
-  fetchSession
+  fetchSession,
+  addPaymentMethod
 };

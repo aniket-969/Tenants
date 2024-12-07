@@ -53,19 +53,15 @@ const userSchema = new Schema(
       {
         appName: {
           type: String,
-          required: true,
           trim: true,
         },
         paymentId: {
           type: String,
-          required: true,
           trim: true,
-          required:true,
         },
         type: {
           type: String,
           enum: ['UPI', 'PayPal', 'Stripe', 'BankTransfer', 'Other']
-          required: true,
         },
         qrCodeData: {
           type: String, 

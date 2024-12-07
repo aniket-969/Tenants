@@ -2,11 +2,13 @@ import { Router } from "express";
 import {
   changePasswordSchema,
   loginSchema,
+  paymentMethodSchema,
   registerSchema,
   updateUserSchema,
 } from "./../zod/user.schema.js";
 import { validate } from "../middleware/validator.middleware.js";
 import {
+  addPaymentMethod,
   changePassword,
   fetchSession,
   loginUser,
@@ -16,6 +18,7 @@ import {
   updateAccountDetails,
 } from "../controllers/user.controllers.js";
 import { verifyJWT } from "../middleware/auth.middleware.js";
+import { validateQRCodeData } from "../middleware/qrcode.middleware.js";
 
 const router = Router();
 
@@ -33,5 +36,8 @@ router
 router
   .route("/update-user")
   .patch(validate(updateUserSchema), verifyJWT, updateAccountDetails);
+router
+  .route("/payment")
+  .patch(validate(paymentMethodSchema), verifyJWT, validateQRCodeData,addPaymentMethod);
 
 export default router;
