@@ -47,7 +47,7 @@ const registerUser = asyncHandler(async (req, res) => {
 });
 
 const loginUser = asyncHandler(async (req, res) => {
-  console.log(req.body);
+  console.log("Login",req.body);
   const { identifier, password } = req.body;
 
   const existedUser = await User.findOne({
@@ -60,6 +60,7 @@ const loginUser = asyncHandler(async (req, res) => {
   const isPasswordValid = await existedUser.isPasswordCorrect(password);
 
   if (!isPasswordValid) {
+    console.log("Password not valid")
     throw new ApiError(401, "Invalid user credentials");
   }
 
@@ -192,7 +193,8 @@ const updateAccountDetails = asyncHandler(async (req, res) => {
 });
 
 const fetchSession = asyncHandler(async (req, res) => {
-  const user = user.findById(req.user?._id).select("-password -refreshToken");
+  const user = await User.findById(req.user?._id).select("-password -refreshToken");
+  console.log(user,"From session")
   if (!user) {
     throw new ApiError(401, "Session not found");
   }
