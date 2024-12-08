@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { registerSchema } from "@/schema/authSchema";
-import { zodResolver } from "./../../../node_modules/@hookform/resolvers/zod/src/zod";
+
 import {
   Form,
   FormItem,
@@ -13,10 +13,28 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "../ui/button";
 import { AvatarSelector } from "../AvatarSelector";
+import { registerUser } from "@/api/queries/auth";
+import { useEffect } from "react";
+import { toast } from "react-toastify";
+import { zodResolver } from "./../../../node_modules/@hookform/resolvers/zod/src/zod";
+import { useNavigate } from "react-router-dom";
 
 export const SignUp = () => {
-  const onSubmit = (values) => {
+  const navigate = useNavigate();
+  const onSubmit = async (values) => {
     console.log(values);
+
+    try {
+      const response = await registerUser(values);
+      console.log(response);
+      toast("User registered successfully");
+      navigate("/login");
+    } catch (error) {
+      console.error(
+        "Registration failed:",
+        error.response?.data || error.message
+      );
+    }
   };
 
   const form = useForm({
@@ -105,7 +123,9 @@ export const SignUp = () => {
           )}
         />
 
-        <Button type="submit" borderRadius="lg">Submit</Button>
+        <Button type="submit" borderRadius="lg">
+          Submit
+        </Button>
       </form>
     </Form>
   );
