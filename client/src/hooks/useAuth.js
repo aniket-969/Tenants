@@ -8,21 +8,26 @@ import {
   registerUser,
   updateUser,
 } from "@/api/queries/auth";
+import { useNavigate } from "react-router-dom";
 
 export const useAuth = () => {
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
-
-  const sessionQuery = useQuery(["auth", "session"], fetchSession, {
+  const sessionQuery = useQuery({
+    queryKey: ["auth", "session"],
+    queryFn: fetchSession,
     enabled: false,
-    refetchOnWindowFocus: false, // Refetch when window regains focus
+    refetchOnWindowFocus: false,
     staleTime: 5 * 60 * 1000,
     cacheTime: 10 * 60 * 1000,
     retry: 1,
   });
 
-  const registerMutation = useMutation(registerUser, {
+  const registerMutation = useMutation({
+    mutationFn: registerUser,
     onSuccess: (data) => {
       console.log(data);
+      navigate("/login");
     },
     onError: (error) => {
       console.error("Registration failed:", error);
@@ -30,7 +35,8 @@ export const useAuth = () => {
   });
 
   // Login User Mutation
-  const loginMutation = useMutation(loginUser, {
+  const loginMutation = useMutation({
+    mutationFn: loginUser,
     onSuccess: (data) => {
       console.log(data);
       queryClient.invalidateQueries(["auth", "session"]);
@@ -42,7 +48,8 @@ export const useAuth = () => {
   });
 
   // Logout Mutation
-  const logoutMutation = useMutation(logOut, {
+  const logoutMutation = useMutation({
+    mutationFn: logOut,
     onSuccess: () => {
       queryClient.invalidateQueries(["auth", "session"]);
     },
@@ -52,7 +59,8 @@ export const useAuth = () => {
   });
 
   // Refresh Tokens Mutation
-  const refreshTokensMutation = useMutation(refreshTokens, {
+  const refreshTokensMutation = useMutation({
+    mutationFn: refreshTokens,
     onSuccess: (data) => {
       //  refreshing tokens
     },
@@ -62,7 +70,8 @@ export const useAuth = () => {
   });
 
   // Update User Mutation
-  const updateUserMutation = useMutation(updateUser, {
+  const updateUserMutation = useMutation({
+    mutationFn: updateUser,
     onSuccess: () => {
       queryClient.invalidateQueries(["auth", "profile"]);
     },
@@ -72,7 +81,8 @@ export const useAuth = () => {
   });
 
   // Change Password Mutation
-  const changePasswordMutation = useMutation(changePassword, {
+  const changePasswordMutation = useMutation({
+    mutationFn: changePassword,
     onSuccess: () => {
       queryClient.invalidateQueries(["auth", "profile"]);
     },
@@ -88,7 +98,6 @@ export const useAuth = () => {
     changePasswordMutation,
     refreshTokensMutation,
     logoutMutation,
-    changePasswordMutation,
     updateUserMutation,
   };
 };

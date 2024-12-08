@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { registerSchema } from "@/schema/authSchema";
-
+import {useAuth} from "@/hooks/useAuth"
 import {
   Form,
   FormItem,
@@ -13,27 +13,20 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "../ui/button";
 import { AvatarSelector } from "../AvatarSelector";
-import { registerUser } from "@/api/queries/auth";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
 import { zodResolver } from "./../../../node_modules/@hookform/resolvers/zod/src/zod";
-import { useNavigate } from "react-router-dom";
 
 export const SignUp = () => {
-  const navigate = useNavigate();
-  const onSubmit = async (values) => {
-    console.log(values);
+ 
+const {registerMutation} = useAuth()
 
+  const onSubmit = async (values) => {
+    console.log(values)
     try {
-      const response = await registerUser(values);
-      console.log(response);
-      toast("User registered successfully");
-      navigate("/login");
+      await registerMutation.mutateAsync(values); 
     } catch (error) {
-      console.error(
-        "Registration failed:",
-        error.response?.data || error.message
-      );
+      console.error("Error during registration:", error); 
     }
   };
 
