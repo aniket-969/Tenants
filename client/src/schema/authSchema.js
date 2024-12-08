@@ -37,3 +37,18 @@ export const updateUserSchema = z.object({
     fullName:stringValidation(1,20,"fullName").optional(),
     avatar:stringValidation(1,20,"avatar").optional(),
 })
+
+export const paymentMethodSchema = z.object({
+  paymentMethod: z.array(
+    z.object({
+      appName: stringValidation(1, 100, "App name is required").optional(),
+      paymentId: stringValidation(1, 100, "Payment ID is required").optional(),
+      type: z.enum(['UPI', 'PayPal', 'Stripe', 'BankTransfer', 'ApplePay', 'CashApp', 'WeChatPay']).optional(),
+      qrCodeData: z.string().min(1, "qrCodeData should be at least 1 character long").optional(),
+    })
+    .refine((data) => data.paymentId || data.qrCodeData, {
+      message: "Either paymentId or qrCodeData is required",
+      path: ["paymentId", "qrCodeData"], // Specify which fields to check
+    })
+  )
+});

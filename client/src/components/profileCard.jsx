@@ -10,7 +10,7 @@ const ProfileCard = () => {
     return <Spinner />;
   }
   return (
-    <div>
+    <div className="flex flex-col items-center gap-3">
       <div className="w-[5rem]">
         <img src={data.avatar} alt="" />
       </div>
