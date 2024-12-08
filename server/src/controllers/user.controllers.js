@@ -204,15 +204,14 @@ const fetchSession = asyncHandler(async (req, res) => {
 const addPaymentMethod = asyncHandler(async (req, res) => {
   const userId  = req.user?._id;
   const { paymentMethod } = req.body;
-  // Find the user by ID
+ 
   const user = await User.findById(userId);
 if(!user) throw new ApiError(400,"can't find the user")
   // Add each payment method to the user's paymentMethod array
 
   paymentMethod.forEach((method) => {
     //  check if the payment method already exists for the user (optional check)
-    console.log("re");
-
+ 
    const paymentMethodExists = user.paymentMethod.some(
       (existingMethod) =>
         existingMethod.appName === method.appName &&
@@ -222,7 +221,6 @@ if(!user) throw new ApiError(400,"can't find the user")
     if (paymentMethodExists) {
       return; // Skip adding this method if it already exists
     }
-    console.log("sfad");
     user.paymentMethod.push(method);
   });
 
