@@ -9,7 +9,7 @@ const passwordSchema = z
   .refine((value) => /[!@#$%^&*]/.test(value), {
     message: "Password must contain at least one special character.",
   });
-
+ 
 export const registerSchema = z.object({
   username: stringValidation(1, 20, "username"),
   email: z

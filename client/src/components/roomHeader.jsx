@@ -1,20 +1,18 @@
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "./ui/button";
-import { logOut } from "@/api/queries/auth";
 import { toast } from "react-toastify";
+import { useAuth } from "@/hooks/useAuth";
 
 export const RoomHeader = () => {
-  const navigate = useNavigate()
-  const onClick = async() => {
-   
+  const navigate = useNavigate();
+  const { logoutMutation } = useAuth();
+  const onClick = async () => {
     try {
-      const response = await logOut()
-      console.log(response)
-      toast("User logout successful")
-      navigate("/")
-        
+      const response = await logoutMutation.mutateAsync();
+      console.log(response);
+      toast("User logout successful");
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   };
   return (
@@ -31,8 +29,13 @@ export const RoomHeader = () => {
           </Button>
         </Link>
 
-        <Link >
-          <Button onClick={()=>onClick()} className="text-primary " variant="link" size="sm">
+        <Link>
+          <Button
+            onClick={() => onClick()}
+            className="text-primary "
+            variant="link"
+            size="sm"
+          >
             Logout
           </Button>
         </Link>

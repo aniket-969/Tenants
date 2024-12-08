@@ -3,9 +3,9 @@ import axiosClient from "../axiosClient";
 const baseAuth = "users";
 
 export const fetchSession = async () => {
-  console.log("calling session")
-  const response =await axiosClient.get(`/${baseAuth}/session`);
-  console.log("Fetched session data",response.data.data)
+  console.log("calling session");
+  const response = await axiosClient.get(`/${baseAuth}/session`);
+  // console.log("Fetched session data",response.data.data)
   return response.data?.data;
 };
 
@@ -27,6 +27,10 @@ export const refreshTokens = async (data) => {
 
 export const updateUser = async (data) => {
   return axiosClient.patch(`/${baseAuth}/update-user`, data);
+};
+
+export const addPayment = async (data) => {
+  return axiosClient.patch(`/${baseAuth}/payment`, data);
 };
 
 export const changePassword = async (data) => {

@@ -1,5 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
+    addPayment,
   changePassword,
   fetchSession,
   loginUser,
@@ -16,17 +17,9 @@ export const useAuth = () => {
   const sessionQuery = useQuery({
     queryKey: ["auth", "session"],
     queryFn: fetchSession,
-    enabled: true,
-    onSuccess: (data) => {
-      console.log("Session fetched and cached:", data);
-    },
-    onError: (error) => {
-      console.error("Session fetch failed:", error);
-    },
     refetchOnWindowFocus: false,
-    staleTime: 5 * 60 * 1000,
-    cacheTime: 10 * 60 * 1000,
-    retry: 1,
+    staleTime: 30 * 60 * 1000,
+    cacheTime: 60 * 60 * 1000,
   });
 
   const registerMutation = useMutation({
@@ -44,9 +37,10 @@ export const useAuth = () => {
   const loginMutation = useMutation({
     mutationFn: loginUser,
     onSuccess: (data) => {
-      console.log(data);
-      navigate("/room");
+      console.log(data.data.data);
+      localStorage.setItem("session", JSON.stringify(data.data.data));
       queryClient.invalidateQueries(["auth", "session"]);
+      navigate("/room");
     },
     onError: (error) => {
       console.error("Login error:", error);
@@ -58,6 +52,7 @@ export const useAuth = () => {
     mutationFn: logOut,
     onSuccess: () => {
       queryClient.invalidateQueries(["auth", "session"]);
+      navigate("/login")
     },
     onError: (error) => {
       console.error("Logout error:", error);
@@ -85,6 +80,16 @@ export const useAuth = () => {
       console.error("update user error", error);
     },
   });
+  // Update Payment Mutation
+  const addPaymentMutation = useMutation({
+    mutationFn: addPayment,
+    onSuccess: () => {
+      queryClient.invalidateQueries(["auth", "profile"]);
+    },
+    onError: (error) => {
+      console.error("update user error", error);
+    },
+  });
 
   // Change Password Mutation
   const changePasswordMutation = useMutation({
@@ -105,5 +110,6 @@ export const useAuth = () => {
     refreshTokensMutation,
     logoutMutation,
     updateUserMutation,
+    addPaymentMutation
   };
 };
