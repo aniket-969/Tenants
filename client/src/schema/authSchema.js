@@ -78,9 +78,9 @@ export const paymentMethodSchema = z
         "WeChatPay",
       ])
       .optional(),
-    qrImage: imageValidation,
+      qrCodeData:  stringValidation(1, 100, "qrData is required").optional(),
   })
-  .refine((data) => data.paymentId || data.qrImage, {
+  .refine((data) => data.paymentId || data.qrData, {
     message: "Either paymentId or qrCode is required",
     path: ["paymentId", "qrCodeData"],
   });
