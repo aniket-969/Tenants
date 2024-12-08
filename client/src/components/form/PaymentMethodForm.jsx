@@ -64,7 +64,6 @@ export const PaymentMethodForm = () => {
   const onSubmit = async (values) => {
     console.log(values);
     
-    return;
     try {
       const response = await addPaymentMutation.mutateAsync(values);
       console.log(response);
@@ -109,7 +108,7 @@ export const PaymentMethodForm = () => {
           name="paymentId"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Password</FormLabel>
+              <FormLabel>Payment ID</FormLabel>
               <FormControl>
                 <Input placeholder="PaymentID" {...field} />
               </FormControl>
@@ -125,7 +124,7 @@ export const PaymentMethodForm = () => {
           name="type"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Password</FormLabel>
+              <FormLabel>Type</FormLabel>
               <FormControl>
                 <Input placeholder="Type" {...field} />
               </FormControl>
