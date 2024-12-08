@@ -12,11 +12,23 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "../ui/button";
+import { loginUser } from "@/api/queries/auth";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 export const SignIn = () => {
-
-  const onSubmit = (values) => {
+const navigate = useNavigate()
+  const onSubmit = async(values) => {
     console.log(values);
+    try {
+      const response = await loginUser(values)
+      console.log(response)
+      toast("User login successful")
+      navigate("/room")
+        
+    } catch (error) {
+      
+    }
   };
 
   const form = useForm({
