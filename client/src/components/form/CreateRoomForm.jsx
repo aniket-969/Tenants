@@ -14,10 +14,22 @@ import { Input } from "@/components/ui/input";
 import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { useRoom, useRoomMutation } from "@/hooks/useRoom";
+import { toast } from "react-toastify";
 
 export const CreateRoomForm = () => {
-  const onSubmit = (values) => {
+  const {createRoomMutation} = useRoomMutation()
+  const onSubmit = async(values) => {
     console.log(values);
+    try {
+      const response = await createRoomMutation.mutateAsync(values)
+      console.log(response)
+      toast("Room created successfully")
+        
+    } catch (error) {
+      console.error("Error during registration:", error); 
+    }
+
   };
 
   const form = useForm({

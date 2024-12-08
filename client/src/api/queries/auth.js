@@ -4,6 +4,7 @@ const baseAuth = "users";
 
 export const fetchSession = async () => {
   const response = axiosClient.get(`/${baseAuth}/session`);
+  console.log("Fetched session data",response.data)
   return response.data?.data;
 };
 
