@@ -40,7 +40,7 @@ export const useAuth = () => {
     onSuccess: (data) => {
       console.log(data);
       queryClient.invalidateQueries(["auth", "session"]);
-      sessionQuery.refetch();
+      navigate("/room");
     },
     onError: (error) => {
       console.error("Login error:", error);

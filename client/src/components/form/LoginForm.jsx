@@ -15,19 +15,20 @@ import { Button } from "../ui/button";
 import { loginUser } from "@/api/queries/auth";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
 
 export const SignIn = () => {
 const navigate = useNavigate()
+const {loginMutation} = useAuth()
   const onSubmit = async(values) => {
     console.log(values);
     try {
-      const response = await loginUser(values)
+      const response = await loginMutation.mutateAsync(values)
       console.log(response)
       toast("User login successful")
-      navigate("/room")
         
     } catch (error) {
-      
+      console.error("Error during registration:", error); 
     }
   };
 
