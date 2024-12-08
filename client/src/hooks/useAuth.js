@@ -16,7 +16,13 @@ export const useAuth = () => {
   const sessionQuery = useQuery({
     queryKey: ["auth", "session"],
     queryFn: fetchSession,
-    enabled: false,
+    enabled: true,
+    onSuccess: (data) => {
+      console.log("Session fetched and cached:", data);
+    },
+    onError: (error) => {
+      console.error("Session fetch failed:", error);
+    },
     refetchOnWindowFocus: false,
     staleTime: 5 * 60 * 1000,
     cacheTime: 10 * 60 * 1000,
@@ -39,8 +45,8 @@ export const useAuth = () => {
     mutationFn: loginUser,
     onSuccess: (data) => {
       console.log(data);
-      queryClient.invalidateQueries(["auth", "session"]);
       navigate("/room");
+      queryClient.invalidateQueries(["auth", "session"]);
     },
     onError: (error) => {
       console.error("Login error:", error);

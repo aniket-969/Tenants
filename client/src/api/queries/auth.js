@@ -3,8 +3,9 @@ import axiosClient from "../axiosClient";
 const baseAuth = "users";
 
 export const fetchSession = async () => {
-  const response = axiosClient.get(`/${baseAuth}/session`);
-  console.log("Fetched session data",response.data)
+  console.log("calling session")
+  const response =await axiosClient.get(`/${baseAuth}/session`);
+  console.log("Fetched session data",response.data.data)
   return response.data?.data;
 };
 
