@@ -14,11 +14,9 @@ import { Input } from "@/components/ui/input";
 import { Button } from "../ui/button";
 import { loginUser } from "@/api/queries/auth";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 
 export const SignIn = () => {
-const navigate = useNavigate()
 const {loginMutation} = useAuth()
   const onSubmit = async(values) => {
     console.log(values);

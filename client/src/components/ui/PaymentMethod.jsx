@@ -1,9 +1,13 @@
+import { PaymentMethodForm } from "../form/PaymentMethodForm"
 
 
 const PaymentMethod = () => {
 
   return (
-    <div> Payment Method </div>
+    <div>
+         Add payment method
+        <PaymentMethodForm/>
+         </div>
   )
 }
 

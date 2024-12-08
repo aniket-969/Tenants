@@ -1,5 +1,30 @@
 import { z } from "zod";
-import { stringValidation } from './../utils/validation';
+import { stringValidation } from "./../utils/validation";
+
+const MAX_IMAGE_SIZE = 1 * 1024 * 1024;
+
+const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png"];
+
+const imageValidation = z
+  .instanceof(File)
+  .refine(
+    (file) => {
+      return ALLOWED_IMAGE_TYPES.includes(file.type);
+    },
+    {
+      message: "Invalid file type. Only JPEG and PNG are allowed.",
+    }
+  )
+  .refine(
+    (file) => {
+      return file.size <= MAX_IMAGE_SIZE;
+    },
+    {
+      message: `File size should be less than ${
+        MAX_IMAGE_SIZE / 1024 / 1024
+      } MB.`,
+    }
+  );
 
 const passwordSchema = z
   .string()
@@ -9,7 +34,7 @@ const passwordSchema = z
   .refine((value) => /[!@#$%^&*]/.test(value), {
     message: "Password must contain at least one special character.",
   });
- 
+
 export const registerSchema = z.object({
   username: stringValidation(1, 20, "username"),
   email: z
@@ -33,22 +58,29 @@ export const changePasswordSchema = z.object({
 });
 
 export const updateUserSchema = z.object({
-    username:stringValidation(1,20,"username").optional(),
-    fullName:stringValidation(1,20,"fullName").optional(),
-    avatar:stringValidation(1,20,"avatar").optional(),
-})
-
-export const paymentMethodSchema = z.object({
-  paymentMethod: z.array(
-    z.object({
-      appName: stringValidation(1, 100, "App name is required").optional(),
-      paymentId: stringValidation(1, 100, "Payment ID is required").optional(),
-      type: z.enum(['UPI', 'PayPal', 'Stripe', 'BankTransfer', 'ApplePay', 'CashApp', 'WeChatPay']).optional(),
-      qrCodeData: z.string().min(1, "qrCodeData should be at least 1 character long").optional(),
-    })
-    .refine((data) => data.paymentId || data.qrCodeData, {
-      message: "Either paymentId or qrCodeData is required",
-      path: ["paymentId", "qrCodeData"], // Specify which fields to check
-    })
-  )
+  username: stringValidation(1, 20, "username").optional(),
+  fullName: stringValidation(1, 20, "fullName").optional(),
+  avatar: stringValidation(1, 20, "avatar").optional(),
 });
+
+export const paymentMethodSchema = z
+  .object({
+    appName: stringValidation(1, 100, "App name is required").optional(),
+    paymentId: stringValidation(1, 100, "Payment ID is required").optional(),
+    type: z
+      .enum([
+        "UPI",
+        "PayPal",
+        "Stripe",
+        "BankTransfer",
+        "ApplePay",
+        "CashApp",
+        "WeChatPay",
+      ])
+      .optional(),
+    qrImage: imageValidation,
+  })
+  .refine((data) => data.paymentId || data.qrImage, {
+    message: "Either paymentId or qrCode is required",
+    path: ["paymentId", "qrCodeData"],
+  });
