@@ -134,7 +134,7 @@ const getRoomPolls = asyncHandler(async (req, res) => {
     new ApiResponse(200, formattedPolls, "Room polls fetched successfully")
   );
 });
-
+ 
 const deletePoll = asyncHandler(async (req, res) => {
   const { pollId } = req.params;
   const poll = await Poll.findByIdAndDelete(pollId);

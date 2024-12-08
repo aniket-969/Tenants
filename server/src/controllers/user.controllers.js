@@ -47,7 +47,7 @@ const registerUser = asyncHandler(async (req, res) => {
 });
 
 const loginUser = asyncHandler(async (req, res) => {
-  console.log("Login",req.body);
+  console.log("Login", req.body);
   const { identifier, password } = req.body;
 
   const existedUser = await User.findOne({
@@ -60,7 +60,7 @@ const loginUser = asyncHandler(async (req, res) => {
   const isPasswordValid = await existedUser.isPasswordCorrect(password);
 
   if (!isPasswordValid) {
-    console.log("Password not valid")
+    console.log("Password not valid");
     throw new ApiError(401, "Invalid user credentials");
   }
 
@@ -193,8 +193,10 @@ const updateAccountDetails = asyncHandler(async (req, res) => {
 });
 
 const fetchSession = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.user?._id).select("-password -refreshToken");
-  console.log(user,"From session")
+  const user = await User.findById(req.user?._id).select(
+    "-password -refreshToken"
+  );
+  console.log(user, "From session");
   if (!user) {
     throw new ApiError(401, "Session not found");
   }
@@ -204,34 +206,33 @@ const fetchSession = asyncHandler(async (req, res) => {
 });
 
 const addPaymentMethod = asyncHandler(async (req, res) => {
-  const userId  = req.user?._id;
-  const { paymentMethod } = req.body;
- 
+  const userId = req.user?._id;
+  const { appName, paymentId, type, qrCodeData } = req.body;
+
   const user = await User.findById(userId);
-if(!user) throw new ApiError(400,"can't find the user")
-  // Add each payment method to the user's paymentMethod array
+  if (!user) throw new ApiError(400, "can't find the user");
 
-  paymentMethod.forEach((method) => {
-    //  check if the payment method already exists for the user (optional check)
- 
-   const paymentMethodExists = user.paymentMethod.some(
-      (existingMethod) =>
-        existingMethod.appName === method.appName &&
-        existingMethod.type === method.type
-    );
+  const paymentMethodExists = user.paymentMethod.some(
+    (existingMethod) =>
+      existingMethod.appName === appName && existingMethod.type === type
+  );
 
-    if (paymentMethodExists) {
-      return; // Skip adding this method if it already exists
-    }
-    user.paymentMethod.push(method);
-  });
+  if (paymentMethodExists) {
+    throw new ApiError(409, "Payment method already exists");
+  }
+  
+  const method = {
+    appName: appName || null,
+    type: type || null,
+    qrCodeData: qrCodeData || null,
+    paymentId: paymentId || null,
+  };
 
-  // Save the updated user document
+  user.paymentMethod.push(method);
   await user.save();
-
-  res.status(201).json({
-    message: "Payment methods added successfully",
-  });
+  return res
+    .status(201)
+    .json(new ApiResponse(201, "Payment methods added successfully"));
 });
 
 export {

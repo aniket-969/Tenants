@@ -3,10 +3,7 @@ import { ApiError } from "../utils/ApiError.js";
 import { isApplePayValid, isBankTransferValid, isCashAppValid, isPayPalValid, isStripeValid, isUPIValid, isWeChatPayValid } from "../utils/validation.js";
 
 export const validateQRCodeData = (req, res, next) => {
-  const { paymentMethod } = req.body;
-
-  paymentMethod.forEach((payment) => {
-    const { type, qrCodeData } = payment;
+  const { type, qrCodeData} = req.body;
 
     if (qrCodeData) {
       switch (type) {
@@ -55,7 +52,6 @@ export const validateQRCodeData = (req, res, next) => {
     } else {
       return res.status(400).json({ error: "QR code data is missing" });
     }
-  });
-
+console.log("Goint to next")
   next();
 };
