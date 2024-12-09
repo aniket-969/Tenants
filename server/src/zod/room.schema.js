@@ -3,7 +3,7 @@ import { objectIdValidation, stringValidation } from "./customValidator.js";
 
 export const creatRoomSchema = z.object({
     name:stringValidation(1,20,"name"),
-    description:stringValidation(1,20,"description").optional(),
+    description:stringValidation(1,50,"description").optional(),
     role:z.enum(["tenant","landlord"])
 })
  

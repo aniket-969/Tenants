@@ -195,8 +195,8 @@ const deleteRoom = asyncHandler(async (req, res) => {
 const getRoomData = asyncHandler(async (req, res) => {
   const { roomId } = req.params;
   const userId = req.user?._id;
-
-  let roomQuery = Room.findById(roomId).select("-groupCode -pendingRequests");
+console.log(roomId,userId)
+  let roomQuery = await Room.findById(roomId).select("-groupCode -pendingRequests");
 
   const room = await roomQuery.populate("admin tenants landlord awards");
 
@@ -204,7 +204,7 @@ const getRoomData = asyncHandler(async (req, res) => {
     throw new ApiError(404, "Room not found");
   }
 
-  if (room.admin.toString() === userId.toString()) {
+  if (room.admin.toString() === userId.toString()) { 
     const roomWithRequests = await Room.findById(roomId)
       .select("-groupCode")
       .populate("admin tenants landlord awards pendingRequests.userId");

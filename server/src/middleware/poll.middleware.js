@@ -7,13 +7,13 @@ const checkMember = asyncHandler(async (req, res,next) => {
 if(!roomId){
   throw new ApiError(404,"Room Id is required")
 }
-console.log("User",req.user)
+console.log("verifying room")
   const createdBy = req.user?._id;
   const room = await Room.findById(roomId);
   if (!room) throw new ApiError(404, "Room not found");
 
   const isMember =
-    room.tenants?.includes(createdBy) || room.landlord?.toString() === createdBy;
+    room.tenants?.includes(createdBy) || room.landlord?.toString() === createdBy.toString();
 
   if (!isMember) throw new ApiError(403, "Unauthorized member");
 
