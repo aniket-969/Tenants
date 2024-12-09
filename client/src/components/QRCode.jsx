@@ -1,11 +1,8 @@
 import { useAuth } from "@/hooks/useAuth";
-
 import { useState } from "react";
 import { Spinner } from "./ui/spinner";
 import { QRCarousel } from "./ui/QRCarousel";
 import PaymentMethod from "./ui/PaymentMethod";
-
-
 
 export default function QRScanner() {
   const { sessionQuery } = useAuth();
@@ -17,10 +14,10 @@ export default function QRScanner() {
     return <Spinner />;
   }
   return (
-    <div>
+    <div className="">
       {data.paymentMethod.length > 0 ? (
         <>
-          <PaymentMethod />
+          {/* <PaymentMethod /> */}
           <QRCarousel paymentMethod={data.paymentMethod}/>
         </>
       ) : (

@@ -1,7 +1,7 @@
 import axiosClient from "../axiosClient";
 
 const baseRoom = "room";
-
+ 
 export const createRoom = async (data) => {
   const response = await axiosClient.post(`/${baseRoom}`, data);
 
