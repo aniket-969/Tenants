@@ -7,7 +7,7 @@ import PaymentMethod from "./ui/PaymentMethod";
 export default function QRScanner() {
   const { sessionQuery } = useAuth();
   const { data, isLoading, isError } = sessionQuery;
-  console.log(data);
+  // console.log(data);
 
  
   if (isLoading) {

@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom'
 
 const RoomDetails = () => {
   const{roomId} = useParams()
-const {roomQuery} = useRoom()
+const {roomQuery} = useRoom(roomId)
 const{data,loading,error} = roomQuery
 
   return (
