@@ -26,9 +26,9 @@ export const deleteRoom = async (data, roomId) => {
 };
 
 export const getRoomData = async (roomId) => {
-  console.log(roomId) 
+  
   const response = await axiosClient.get(`/${baseRoom}/${roomId}`);
-  console.log(response)
+  // console.log(response)
   return response.data?.data;
 };
 
