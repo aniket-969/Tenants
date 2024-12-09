@@ -12,7 +12,7 @@ import{
 } from "../controllers/tasks.controller.js";
 
 const router = Router();
- 
+  
 router.use(verifyJWT,adminOnly)
 router.route("/:roomId").post(validate(createRoomTaskSchema),createRoomTask);
 router.route("/:taskId/:roomId").patch(validate(updateRoomTaskSchema), updateRoomTask);
