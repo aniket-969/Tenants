@@ -78,7 +78,7 @@ export const PaymentMethodForm = () => {
     defaultValues: {
       appName: "",
       paymentId: "",
-      type: "",
+      type: "", 
       qrCodeData: "",
     },
   });

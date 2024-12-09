@@ -1,55 +1,41 @@
-import { generateQRCode } from '@/utils/helper';
-import { useState } from 'react'
+import { generateQRCode } from "@/utils/helper";
+import { useEffect, useState } from "react";
 
-export const QRCarousel = () => {
-
-
-    const [imgs, setImg] = useState("");
-    const handleFileUpload = async (event) => {
-      const file = event.target.files[0];
-      if (!file) return;
-  
-      const canvas = document.createElement("canvas");
-      const context = canvas.getContext("2d");
-  
-      const image = new Image();
-      image.src = URL.createObjectURL(file);
-  
-      image.onload = async () => {
-        // Set canvas dimensions to the image size
-        canvas.width = image.width;
-        canvas.height = image.height;
-  
-        // Draw the image on the canvas
-        context.drawImage(image, 0, 0, canvas.width, canvas.height);
-  
-        // Extract image data
-        const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-  
-        // Use jsQR to decode the QR code
-        const qrCodeData = jsQR(
-          imageData.data,
-          imageData.width,
-          imageData.height
-        );
-  
-        if (qrCodeData) {
-          console.log("QR Code Data:", qrCodeData.data);
-          alert(`QR Code Data: ${qrCodeData.data}`);
-  
-          // Generate a QR code with the decoded data
-          const res = await generateQRCode(qrCodeData.data);
-          console.log(res);
-          setImg(res);
-        } else {
-          alert("No QR code found in the image.");
+export const QRCarousel = ({ paymentMethod }) => {
+  const [qrImages, setQrImages] = useState({});
+  useEffect(() => {
+    const generateAllQRImages = async () => {
+      const images = {};
+      for (const payment of paymentMethod) {
+        if (payment.qrCodeData) {
+          const qrImage = await generateQRCode(payment.qrCodeData);
+          images[payment._id] = qrImage;
         }
-      };
+      }
+      setQrImages(images);
     };
 
+    generateAllQRImages();
+  }, [paymentMethod]);
+
+  console.log(paymentMethod);
   return (
-    <div><h1>Upload QR Code Image</h1>
-    <input type="file" accept="image/*" onChange={handleFileUpload} />
-    {imgs && <img src={imgs} alt="Generated QR Code" />}</div>
-  )
-}
+    <div className="">
+      {paymentMethod.map((payment) => (
+        <div key={payment._id}>
+          <p>{payment.appName}</p>
+          <p>{payment.paymentId}</p>
+          <p>{payment.type}</p>
+          {qrImages[payment._id] ? (
+            <img
+              src={qrImages[payment._id]}
+              alt={`QR Code for ${payment.appName}`}
+            />
+          ) : (
+            <p>Loading QR code...</p>
+          )}
+        </div>
+      ))}
+    </div>
+  );
+};
