@@ -12,7 +12,7 @@ export const useMaintenance = (roomId) => {
     mutationFn: (newMaintenanceData) =>
       createMaintenance(roomId, newMaintenanceData),
     onSuccess: () => {
-      queryClient.invalidateQueries(["auth", "session"]);
+      queryClient.invalidateQueries(["room", roomId]);
     },
   });
 
@@ -20,14 +20,14 @@ export const useMaintenance = (roomId) => {
     mutationFn: ({ maintenanceId, updatedData }) =>
       updateMaintenance(roomId, maintenanceId, updatedData),
     onSuccess: () => {
-      queryClient.invalidateQueries(["auth", "session"]);
+      queryClient.invalidateQueries(["room", roomId]);
     },
   });
 
   const deleteMaintenanceMutation = useMutation({
     mutationFn: (maintenanceId) => deleteMaintenance(roomId, maintenanceId),
     onSuccess: () => {
-      queryClient.invalidateQueries(["auth", "session"]);
+      queryClient.invalidateQueries(["room", roomId]);
     },
   });
 

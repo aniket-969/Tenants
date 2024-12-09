@@ -1,12 +1,13 @@
 import { Spinner } from "@/components/ui/spinner";
 import { useRoom, useRoomMutation } from "@/hooks/useRoom";
 import { useParams } from "react-router-dom";
+import Maintenance from "./Maintenance";
 
 const RoomDetails = () => {
   const { roomId } = useParams();
   const { roomQuery } = useRoom(roomId);
   const { data, isLoading, isError } = roomQuery;
-
+console.log(data)
   if (isLoading) {
     return <Spinner />;
   }
@@ -17,9 +18,14 @@ const RoomDetails = () => {
   
   return (
     <div>
-      RoomDetails
-      <p>{data.name}</p>
+      <div>
+         <p>{data.name}</p>
       <p>{data.description}</p>
+      </div>
+     
+      <Maintenance/>
+
+      
     </div>
   );
 };

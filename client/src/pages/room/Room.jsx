@@ -4,7 +4,6 @@ import { RoomHeader } from "@/components/roomHeader";
 import RoomList from "@/components/roomList";
 import React from "react";
 import { Outlet } from "react-router-dom";
-import Maintenance from "./Maintenance";
 
 const Room = () => {
   return (
@@ -17,7 +16,6 @@ const Room = () => {
           <RoomList />
         </div>
       </div>
-      <Maintenance/>
     </div>
   );
 };

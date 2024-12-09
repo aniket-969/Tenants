@@ -14,12 +14,14 @@ import { Input } from "@/components/ui/input";
 import { Button } from "../ui/button";
 import { toast } from "react-toastify";
 import { useMaintenance } from "./../../hooks/useMaintenance";
+import { useParams } from "react-router-dom";
 
 export const MaintenanceForm = () => {
-  const { createMaintenanceMutation } = useMaintenance();
+    const {roomId} = useParams()
+  const { createMaintenanceMutation } = useMaintenance(roomId);
   const onSubmit = async (values) => {
     console.log(values);
-    return
+    
     try {
       const response = await createMaintenanceMutation.mutateAsync(values);
       console.log(response);
@@ -36,7 +38,7 @@ export const MaintenanceForm = () => {
       description: "",
       maintenanceProvider: "",
       contactPhone: "",
-      costEstimate: 0, 
+      costEstimate: "", 
     },
   });
 
