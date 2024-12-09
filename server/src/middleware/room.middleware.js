@@ -38,4 +38,4 @@ const adminOnly = asyncHandler(async (req, res, next) => {
   next();
 });
 
-export { checkMember };
+export { checkMember,adminOnly };
