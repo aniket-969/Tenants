@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 import { Expense } from "./expense.model.js";
 import { CalendarEvent } from "./calendarEvents.model.js";
 import { Poll } from "./poll.model.js";
- 
+
 const roomSchema = new Schema(
   {
     name: {
@@ -61,7 +61,7 @@ const roomSchema = new Schema(
         },
         image: {
           type: String,
-          required:true,
+          required: true,
         },
         criteria: {
           type: String,
@@ -69,7 +69,7 @@ const roomSchema = new Schema(
         assignedTo: {
           type: Schema.Types.ObjectId,
           ref: "User",
-          required:true,
+          required: true,
         },
       },
     ],
@@ -86,7 +86,7 @@ const roomSchema = new Schema(
         description: {
           type: String,
           required: true,
-        }, 
+        },
         status: {
           type: String,
           enum: ["pending", "in_progress", "resolved", "cancelled"],
@@ -197,7 +197,6 @@ const roomSchema = new Schema(
         },
       },
     ],
-   
     lastMessage: { type: Schema.Types.ObjectId, ref: "ChatMessage" },
     votes: [{ type: mongoose.Schema.Types.ObjectId, ref: "Vote" }],
   },
@@ -236,6 +235,6 @@ roomSchema.index({ "tasks.participants": 1 });
 roomSchema.index({ "tasks.recurring": 1, "tasks.recurrencePattern": 1 });
 roomSchema.index({ "maintenanceRequests.status": 1 });
 roomSchema.index({ "maintenanceRequests.dateReported": 1 });
-roomSchema.index({ "maintenanceRequests.dateResolved": 1 } );
+roomSchema.index({ "maintenanceRequests.dateResolved": 1 });
 
 export const Room = mongoose.model("Room", roomSchema);
