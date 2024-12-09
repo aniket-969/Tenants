@@ -9,7 +9,7 @@ import {
   updateExpense,
   updatePayment,
 } from "../controllers/expense.controller.js";
-import { checkMember } from "../middleware/poll.middleware.js";
+import { checkMember } from "../middleware/room.middleware.js";
 import { validate } from "./../middleware/validator.middleware.js";
 import {
   createExpenseSchema,

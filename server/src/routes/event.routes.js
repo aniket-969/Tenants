@@ -9,7 +9,7 @@ import {
   getRoomCalendarEvent,
   getSingleEvent,
 } from "../controllers/event.controller.js";
-import { checkMember } from "../middleware/poll.middleware.js";
+import { checkMember } from "../middleware/room.middleware.js";
 
 const router = Router();
 

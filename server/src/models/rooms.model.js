@@ -236,6 +236,6 @@ roomSchema.index({ "tasks.participants": 1 });
 roomSchema.index({ "tasks.recurring": 1, "tasks.recurrencePattern": 1 });
 roomSchema.index({ "maintenanceRequests.status": 1 });
 roomSchema.index({ "maintenanceRequests.dateReported": 1 });
-roomSchema.index({ "maintenanceRequests.dateResolved": 1 });
+roomSchema.index({ "maintenanceRequests.dateResolved": 1 } );
 
 export const Room = mongoose.model("Room", roomSchema);

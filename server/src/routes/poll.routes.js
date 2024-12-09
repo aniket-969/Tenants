@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { validate } from "../middleware/validator.middleware.js";
 import { castVoteSchema, pollSchema } from "../zod/poll.schema.js";
-import { checkMember } from "../middleware/poll.middleware.js";
+import { checkMember } from "../middleware/room.middleware.js";
 import { castVote, createPoll, deletePoll, getRoomPolls, updatePoll } from "../controllers/poll.controllers.js";
 import { verifyJWT } from "../middleware/auth.middleware.js";
 

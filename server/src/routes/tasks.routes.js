@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { verifyJWT } from "./../middleware/auth.middleware.js";
-import { checkMember } from "../middleware/poll.middleware.js";
+import { checkMember } from "../middleware/room.middleware.js";
 import { createRoomTaskSchema, updateRoomTaskSchema } from "../zod/tasks.schema.js";
 import { validate } from "../middleware/validator.middleware.js"; 
 import{

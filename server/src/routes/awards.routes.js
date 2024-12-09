@@ -5,7 +5,7 @@ import {
   updateRoomAward,
 } from "../controllers/awards.controller.js";
 import { verifyJWT } from "./../middleware/auth.middleware.js";
-import { checkMember } from "../middleware/poll.middleware.js";
+import { checkMember } from "../middleware/room.middleware.js";
 import { validate } from './../middleware/validator.middleware.js';
 import { createCustomAwardSchema, updateAwardSchema } from "../zod/awards.schema.js";
 

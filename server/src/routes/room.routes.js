@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { addUserRequest, adminResponse, createRoom, deleteRoom, getRoomData, leaveRoom, transferAdminControl, updateRoom } from "../controllers/room.controller.js";
 import { verifyJWT } from './../middleware/auth.middleware.js';
-import { checkMember } from "../middleware/poll.middleware.js";
+import { checkMember } from "../middleware/room.middleware.js";
 import { addUserRequestSchema, adminResponseSchema, creatRoomSchema, transferRoleSchema } from "../zod/room.schema.js";
 import { validate } from './../middleware/validator.middleware.js';
  
