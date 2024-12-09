@@ -39,3 +39,4 @@ export const leaveRoom = async (data, roomId) => {
 export const adminTransfer = async (data) => {
   return axiosClient.post(`/${baseRoom}/${roomId}/admin/transfer`);
 };
+ 

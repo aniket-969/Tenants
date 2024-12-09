@@ -7,7 +7,6 @@ const RoomDetails = () => {
   const { roomQuery } = useRoom(roomId);
   const { data, isLoading, isError } = roomQuery;
 
-
   if (isLoading) {
     return <Spinner />;
   }

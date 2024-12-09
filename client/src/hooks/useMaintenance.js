@@ -3,20 +3,10 @@ import {
   deleteMaintenance,
   updateMaintenance,
 } from "@/api/queries/maintenance";
-import {
-  addUserRequest,
-  createRoom,
-  getRoomData,
-  adminResponse,
-  updateRoom,
-  deleteRoom,
-} from "@/api/queries/room";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
 
 export const useMaintenance = (roomId) => {
   const queryClient = useQueryClient();
-  const navigate = useNavigate();
 
   const createMaintenanceMutation = useMutation({
     mutationFn: (newMaintenanceData) =>
