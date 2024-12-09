@@ -24,6 +24,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "dotenv": "^16.4.5",
+    "embla-carousel-react": "^8.5.1",
     "jsqr": "^1.4.0",
     "lucide-react": "^0.461.0",
     "prettier": "^3.4.1",
