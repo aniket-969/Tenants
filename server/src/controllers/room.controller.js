@@ -55,7 +55,7 @@ const createRoom = asyncHandler(async (req, res) => {
 
   const user = await User.findById(admin);
   if (user) {
-    user.rooms.push({ id: createdRoom._id, name: createdRoom.name });
+    user.rooms.push({ roomId: createdRoom._id, name: createdRoom.name });
     await user.save();
   }
 
@@ -124,9 +124,9 @@ const adminResponse = asyncHandler(async (req, res) => {
     throw new ApiError(404, "Room not found");
   }
 
-if(room.admin.toString() !== req.user._id.toString()){
- throw new ApiError(401,"Only admin can respond to requests")
-}
+  if (room.admin.toString() !== req.user._id.toString()) {
+    throw new ApiError(401, "Only admin can respond to requests");
+  }
 
   const requestIndex = room.pendingRequests.findIndex(
     (request) => request.id.toString() === requestId
