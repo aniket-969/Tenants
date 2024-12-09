@@ -11,6 +11,10 @@ const RoomList = () => {
   if (isLoading) {
     return <Spinner />;
   }
+  if(isError){
+    return <>
+    Something went wrong . Please refresh</>
+  }
   return (
     <div className="flex flex-col gap-5">
       {data.rooms.map((room) => (

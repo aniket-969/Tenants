@@ -13,6 +13,10 @@ export default function QRScanner() {
   if (isLoading) {
     return <Spinner />;
   }
+  if(isError){
+    return <>
+    Something went wrong . Please refresh</>
+  }
   return (
     <div className="">
       {data.paymentMethod.length > 0 ? (

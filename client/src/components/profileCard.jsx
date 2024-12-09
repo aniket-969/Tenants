@@ -9,6 +9,10 @@ const ProfileCard = () => {
   if (isLoading) {
     return <Spinner />;
   }
+  if(isError){
+    return <>
+    Something went wrong . Please refresh</>
+  }
   return (
     <div className="flex flex-col items-center gap-3">
       <div className="w-[5rem]">
