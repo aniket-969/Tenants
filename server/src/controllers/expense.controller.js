@@ -4,7 +4,8 @@ import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 
 const createExpense = asyncHandler(async (req, res) => {
-  const { name, totalAmount, roomId, imageUrl, userExpense, dueDate } =
+  const {roomId} = req.params
+  const { name, totalAmount,  imageUrl, userExpense, dueDate } =
     req.body;
 const paidBy = req.user._id
   const participants = userExpense.map((user) => ({
@@ -102,7 +103,7 @@ const getPendingPayments = asyncHandler(async (req, res) => {
     )
   );
 });
-
+ 
 const deleteExpense = asyncHandler(async (req, res) => {
   const { expenseId } = req.params;
 

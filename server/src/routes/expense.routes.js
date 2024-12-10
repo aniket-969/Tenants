@@ -19,9 +19,9 @@ import {
 
 const router = Router();
 router
-  .route("/")
+  .route("/:roomId")
   .post(verifyJWT, validate(createExpenseSchema), checkMember, createExpense);
-router
+router 
   .route("/:expenseId/payment")
   .patch(verifyJWT, validate(updatePaymentSchema), updatePayment);
 router.route("/").get(verifyJWT, getUserExpenses);
