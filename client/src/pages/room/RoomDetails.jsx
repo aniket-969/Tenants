@@ -7,25 +7,22 @@ const RoomDetails = () => {
   const { roomId } = useParams();
   const { roomQuery } = useRoom(roomId);
   const { data, isLoading, isError } = roomQuery;
-console.log(data)
+  console.log(data);
   if (isLoading) {
     return <Spinner />;
   }
-  if(isError){
-    return <>
-    Something went wrong . Please refresh</>
+  if (isError) {
+    return <>Something went wrong . Please refresh</>;
   }
-  
+
   return (
     <div>
       <div>
-         <p>{data.name}</p>
-      <p>{data.description}</p>
+        <p>{data.name}</p>
+        <p>{data.description}</p>
       </div>
-     
-      <Maintenance/>
 
-      
+      <Maintenance />
     </div>
   );
 };

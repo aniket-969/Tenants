@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
-    addPayment,
+  addPayment,
   changePassword,
   fetchSession,
   loginUser,
@@ -52,7 +52,7 @@ export const useAuth = () => {
     mutationFn: logOut,
     onSuccess: () => {
       queryClient.invalidateQueries(["auth", "session"]);
-      navigate("/login")
+      navigate("/login");
     },
     onError: (error) => {
       console.error("Logout error:", error);
@@ -110,6 +110,6 @@ export const useAuth = () => {
     refreshTokensMutation,
     logoutMutation,
     updateUserMutation,
-    addPaymentMutation
+    addPaymentMutation,
   };
 };
