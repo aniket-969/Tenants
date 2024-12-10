@@ -2,8 +2,8 @@ import axiosClient from "../axiosClient";
 
 const baseExpense = "expense";
 
-export const createExpense = async((data) => {
-  return axiosClient.post(`/${baseExpense}`, data);
+export const createExpense = async((data,roomId) => {
+  return axiosClient.post(`/${baseExpense}/${roomId}`, data);
 });
 
 export const deleteExpense = async((expenseId) => {

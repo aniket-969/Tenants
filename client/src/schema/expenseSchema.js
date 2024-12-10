@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { stringValidation } from "./../utils/validation";
+import { stringValidation,objectIdValidation } from "./../utils/validation";
 
 const participantSchema = z.object({
     userId: objectIdValidation,
@@ -14,7 +14,6 @@ const participantSchema = z.object({
       .positive("Amount owed must be a positive number")
       .max(10000000, { message: "Amount can't be above 7 digits" })
       .min(1),
-    roomId: objectIdValidation,
     imageUrl: stringValidation(5, 300, "imageUrl").optional(),
     userExpense: z.array(participantSchema),
     dueDate: z.string().date().optional(),

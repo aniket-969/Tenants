@@ -43,7 +43,7 @@ import {
   
     // Create an expense
     const createExpenseMutation = useMutation({
-      mutationFn: (data) => createExpense(data),
+      mutationFn: (data,roomId) => createExpense(data,roomId),
       onSuccess: () => {
         queryClient.invalidateQueries(["expense", "user"]);
       },

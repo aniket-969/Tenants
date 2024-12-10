@@ -2,6 +2,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { useRoom, useRoomMutation } from "@/hooks/useRoom";
 import { useParams } from "react-router-dom";
 import Maintenance from "./Maintenance";
+import RoomExpense from "./RoomExpense";
 
 const RoomDetails = () => {
   const { roomId } = useParams();
@@ -23,6 +24,8 @@ const RoomDetails = () => {
       </div>
 
       <Maintenance />
+
+      <RoomExpense/>
     </div>
   );
 };
