@@ -53,7 +53,10 @@ export const ExpenseForm = () => {
       totalAmount: "",
       imageUrl: "",
       dueDate: "",
-      userExpense: [],
+      userExpense: [{
+        userId:"",
+        amountOwed:"",
+      }],
     },
   });
 
@@ -80,10 +83,10 @@ export const ExpenseForm = () => {
           name="totalAmount"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Description</FormLabel>
+              <FormLabel>Total Amount</FormLabel>
               <FormControl>
                 <Input
-                  placeholder="description"
+                  placeholder="add total amount"
                   {...field}
                   onChange={(e) => field.onChange(Number(e.target.value))}
                 />
@@ -107,20 +110,7 @@ export const ExpenseForm = () => {
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="contactPhone"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Contact Number</FormLabel>
-              <FormControl>
-                <Input placeholder="add contacts " {...field} />
-              </FormControl>
 
-              <FormMessage />
-            </FormItem>
-          )}
-        />
         <FormField
           control={form.control}
           name="dueDate"
@@ -128,12 +118,7 @@ export const ExpenseForm = () => {
             <FormItem>
               <FormLabel>Due Date</FormLabel>
               <FormControl>
-                <Input
-                  placeholder="add probable cost"
-                  {...field}
-                  type="date"
-                  onChange={(e) => field.onChange(Number(e.target.value))}
-                />
+                <Input placeholder="add probable cost" {...field} type="date" />
               </FormControl>
 
               <FormMessage />
@@ -146,7 +131,8 @@ export const ExpenseForm = () => {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Participants</FormLabel>
-              <ParticipantSelector participants={participants}
+              <ParticipantSelector
+                participants={participants}
                 onChange={(selected) => form.setValue("userExpense", selected)}
               />
               <FormMessage />

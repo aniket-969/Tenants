@@ -3,18 +3,19 @@ import { useState } from "react";
 import { Spinner } from "./ui/spinner";
 import { useParams } from "react-router-dom";
 
-const ParticipantSelector = ({ onChange,participants }) => {
+const ParticipantSelector = ({ onChange, participants }) => {
   const [selected, setSelected] = useState([]);
   const { roomId } = useParams();
-  
-//   console.log(participants)
-console.log(selected)
+
+  //   console.log(participants)
+  console.log(selected);
   const toggleSelection = (participant) => {
     const isSelected = selected.some((p) => p.userId === participant._id);
     const updated = isSelected
       ? selected.filter((p) => p.userId !== participant._id)
-      : [...selected, { userId: participant._id, amountOwed: 0 }];
+      : [...selected, { userId: participant._id, amountOwed: 10 }];
     setSelected(updated);
+    console.log(updated)
     onChange(updated);
   };
 

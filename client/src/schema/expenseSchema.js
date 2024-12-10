@@ -16,7 +16,12 @@ const participantSchema = z.object({
       .min(1),
     imageUrl: stringValidation(5, 300, "imageUrl").optional(),
     userExpense: z.array(participantSchema),
-    dueDate: z.string().date().optional(),
+    dueDate: z
+    .string()
+    .transform((val) => new Date(val)) 
+    .refine((date) => !isNaN(date.getTime()), {
+      message: "Invalid date format",
+    }).optional(),
   });
   
   export const updatePaymentSchema = z.object({
