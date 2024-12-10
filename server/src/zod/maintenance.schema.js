@@ -20,5 +20,7 @@ export const updateMaintenaceSchema = z.object({
         message: 'Phone number must contain only digits and an optional leading + for international numbers.',
       }).optional(),
     costEstimate:z.number().min(1,{message:"Cost estimate should contain atleast 1 digit"}).max(10000000,{message:"Cost estimate can't exceed above 10^8 digits"}).optional(),
-    dateResolved:z.string().date().optional(),
+    dateResolved:z.string().transform((val) => new Date(val)).refine((date) => !isNaN(date.getTime()), {
+      message: "Invalid date format",
+    }).optional(),
 })
