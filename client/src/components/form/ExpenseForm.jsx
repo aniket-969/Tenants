@@ -15,10 +15,25 @@ import { Button } from "../ui/button";
 import { toast } from "react-toastify";
 import { useExpense } from "@/hooks/useExpense";
 import { useParams } from "react-router-dom";
+import ParticipantSelector from "../ParticipantsSelector";
+import { useRoom } from "@/hooks/useRoom";
+import { Spinner } from "../ui/spinner";
 
 export const ExpenseForm = () => {
   const { roomId } = useParams();
   const { createExpenseMutation } = useExpense();
+  const { roomQuery } = useRoom(roomId);
+  const { data, isLoading, isError } = roomQuery;
+  if (isLoading) {
+    return <Spinner />;
+  }
+  if (isError) {
+    return <>Something went wrong . Please refresh</>;
+  }
+  const participants = [
+    ...(data.tenants || []),
+    ...(data.landlord ? [data.landlord] : []),
+  ];
   const onSubmit = async (values) => {
     console.log(values);
     return;
@@ -38,6 +53,7 @@ export const ExpenseForm = () => {
       totalAmount: "",
       imageUrl: "",
       dueDate: "",
+      userExpense: [],
     },
   });
 
@@ -124,7 +140,19 @@ export const ExpenseForm = () => {
             </FormItem>
           )}
         />
-
+        <FormField
+          control={form.control}
+          name="userExpense"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Participants</FormLabel>
+              <ParticipantSelector participants={participants}
+                onChange={(selected) => form.setValue("userExpense", selected)}
+              />
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <Button type="submit">Submit</Button>
       </form>
     </Form>

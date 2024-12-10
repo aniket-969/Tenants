@@ -25,7 +25,7 @@ const RoomDetails = () => {
 
       <Maintenance />
 
-      <RoomExpense/>
+      <RoomExpense data={data}/>
     </div>
   );
 };
