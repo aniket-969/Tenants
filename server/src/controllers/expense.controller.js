@@ -3,7 +3,6 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 
-
 const createExpense = asyncHandler(async (req, res) => {
   const { name, totalAmount, roomId, imageUrl, userExpense, dueDate } =
     req.body;
@@ -32,7 +31,8 @@ const paidBy = req.user._id
 
 const updatePayment = asyncHandler(async (req, res) => {
   const userId = req.user?._id;
-  const { expenseId, paymentMode } = req.body;
+  const {expenseId} = req.params
+  const { paymentMode } = req.body;
   const expense = await Expense.findById(expenseId);
 
   if (!expense) {
@@ -131,31 +131,42 @@ const getExpenseDetails = asyncHandler(async (req, res) => {
 
 const updateExpense = asyncHandler(async (req, res) => {
   const { expenseId } = req.params;
-  const { name, totalAmount, paidBy, room, imageUrl, participants, dueDate, paymentHistory } = req.body;
+  const userId = req.user.id; // Assuming authenticated user ID is available in req.user
+  const { name, totalAmount, paidBy, imageUrl, participants, dueDate, paymentHistory } = req.body;
 
-  const updates = {
-    ...(name && { name }),
-    ...(totalAmount && { totalAmount }),
-    ...(paidBy && { paidBy }),
-    ...(room && { room }),
-    ...(imageUrl && { imageUrl }),
-    ...(participants && { participants }),
-    ...(dueDate && { dueDate }),
-    ...(paymentHistory && { paymentHistory }),
-  };
-
-  const expense = await Expense.findByIdAndUpdate(expenseId, updates, {
-    new: true,
-  });
-
+  // Fetch the expense to validate ownership
+  const expense = await Expense.findById(expenseId);
   if (!expense) {
     throw new ApiError(404, "Expense not found");
   }
 
+  // Validate if the user is allowed to update the expense
+  if (expense.paidBy.toString() !== userId) {
+    throw new ApiError(403, "You are not authorized to update this expense");
+  }
+
+  // Prepare updates based on provided fields
+  const updates = {
+    ...(name !== undefined && { name }),
+    ...(totalAmount !== undefined && { totalAmount }),
+    ...(paidBy !== undefined && { paidBy }),
+    ...(imageUrl !== undefined && { imageUrl }),
+    ...(participants !== undefined && { participants }),
+    ...(dueDate !== undefined && { dueDate }),
+    ...(paymentHistory !== undefined && { paymentHistory }),
+  };
+
+  // Update the expense document
+  const updatedExpense = await Expense.findByIdAndUpdate(expenseId, updates, {
+    new: true, // Return the updated document
+    runValidators: true, // Ensure validation rules are enforced
+  });
+
   return res.json(
-    new ApiResponse(200, expense, "Expense updated successfully")
+    new ApiResponse(200, updatedExpense, "Expense updated successfully")
   );
 });
+
 
 export {
   createExpense,

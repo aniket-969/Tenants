@@ -21,7 +21,6 @@ export const createExpenseSchema = z.object({
 });
 
 export const updatePaymentSchema = z.object({
-    expenseId:objectIdValidation,
     paymentMode:stringValidation(1,20,"Payment mode").optional()
 })
 
@@ -29,7 +28,6 @@ export const updateExpenseSchema = z.object({
     name: z.string().optional(),
     totalAmount: z.number().positive().optional(),
     paidBy: z.string().optional(),
-    room: z.string().optional(),
     imageUrl: z.string().url().optional(),
     participants: z
       .array(

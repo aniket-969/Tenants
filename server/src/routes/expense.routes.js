@@ -22,14 +22,14 @@ router
   .route("/")
   .post(verifyJWT, validate(createExpenseSchema), checkMember, createExpense);
 router
-  .route("/")
-  .patch(verifyJWT, validate(updatePaymentSchema), checkMember, updatePayment);
-router.route("/user").get(verifyJWT, getUserExpenses);
+  .route("/:expenseId/payment")
+  .patch(verifyJWT, validate(updatePaymentSchema), updatePayment);
+router.route("/").get(verifyJWT, getUserExpenses);
 router.route("/pending").get(verifyJWT, getPendingPayments);
 router.route("/:expenseId").get(verifyJWT, getExpenseDetails); 
 router
   .route("/:expenseId")
-  .patch(verifyJWT, validate(updateExpenseSchema), checkMember, updateExpense);
+  .patch(verifyJWT, validate(updateExpenseSchema),updateExpense);
 router.route("/:expenseId").delete(verifyJWT, deleteExpense);
 
 export default router;
