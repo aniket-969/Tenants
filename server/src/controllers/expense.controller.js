@@ -5,9 +5,9 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 
 
 const createExpense = asyncHandler(async (req, res) => {
-  const { name, totalAmount, paidBy, room, imageUrl, userExpense, dueDate } =
+  const { name, totalAmount, roomId, imageUrl, userExpense, dueDate } =
     req.body;
-
+const paidBy = req.user._id
   const participants = userExpense.map((user) => ({
     user: user.userId,
     amountOwed: user.amountOwed,
@@ -17,7 +17,7 @@ const createExpense = asyncHandler(async (req, res) => {
     name,
     totalAmount,
     paidBy,
-    room,
+    roomId,
     imageUrl,
     dueDate,
     participants,
@@ -46,7 +46,7 @@ const updatePayment = asyncHandler(async (req, res) => {
   if (!participant) {
     throw new ApiError(403, "You are not part of participant in this expense");
   }
-
+ 
   if (participant.hasPaid) {
     throw new ApiError(400, "You have already paid for this expense");
   }

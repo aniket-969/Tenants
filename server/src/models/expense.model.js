@@ -15,7 +15,7 @@ const expenseSchema = new Schema(
       ref: "User",
       required: true,
     },
-    room: {
+    roomId: {
       type: Schema.Types.ObjectId,
       ref: "Room",
       required: true,
@@ -34,7 +34,6 @@ const expenseSchema = new Schema(
     ],
     dueDate: {
       type: Date,
-      required: true,
     },
     paymentHistory: [
       {

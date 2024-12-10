@@ -3,7 +3,8 @@ import { objectIdValidation, stringValidation } from "./customValidator.js";
 
 const participantSchema = z.object({
   userId: objectIdValidation,
-  amountOwed: z.number().positive("Amount owed must be a positive number"),
+  amountOwed: z.number().positive("Amount owed must be a positive number").max(10000000, { message: "Amount can't be above 7 digits" })
+  .min(1),
 });
 
 export const createExpenseSchema = z.object({
@@ -11,11 +12,10 @@ export const createExpenseSchema = z.object({
   totalAmount: z
     .number()
     .positive("Amount owed must be a positive number")
-    .max(7, { message: "Amount can't be above 7 digits" })
+    .max(10000000, { message: "Amount can't be above 7 digits" })
     .min(1),
-  paidBy: objectIdValidation,
-  room: objectIdValidation,
-  imageUrl: stringValidation(5, 300, "imageUrl"),
+  roomId: objectIdValidation,
+  imageUrl: stringValidation(5, 300, "imageUrl").optional(),
   userExpense: z.array(participantSchema),
   dueDate: z.string().date().optional(),
 });

@@ -26,7 +26,7 @@ router
   .patch(verifyJWT, validate(updatePaymentSchema), checkMember, updatePayment);
 router.route("/user").get(verifyJWT, getUserExpenses);
 router.route("/pending").get(verifyJWT, getPendingPayments);
-router.route("/:expenseId").get(verifyJWT, getExpenseDetails);
+router.route("/:expenseId").get(verifyJWT, getExpenseDetails); 
 router
   .route("/:expenseId")
   .patch(verifyJWT, validate(updateExpenseSchema), checkMember, updateExpense);
