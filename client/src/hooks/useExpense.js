@@ -30,6 +30,7 @@ import {
       refetchOnWindowFocus: false,
       staleTime: 30 * 60 * 1000,
       cacheTime: 60 * 60 * 1000,
+      enabled:false,
     });
   
     // Fetch pending payments

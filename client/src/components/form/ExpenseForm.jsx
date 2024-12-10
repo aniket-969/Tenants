@@ -37,7 +37,7 @@ export const ExpenseForm = () => {
       name: "",
       totalAmount: "",
       imageUrl: "",
-      dueDate: z.string().date().optional(),
+      dueDate: "",
     },
   });
 
