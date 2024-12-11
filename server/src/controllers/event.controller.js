@@ -1,6 +1,8 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { Room } from "../models/rooms.model.js";
 import { CalendarEvent } from "../models/calendarEvents.model.js";
+import { ApiError } from "../utils/ApiError.js";
+import { ApiResponse } from "../utils/ApiResponse.js";
 
 const createCalendarEvent = asyncHandler(async (req, res) => {
   const {roomId} = req.params
@@ -9,7 +11,6 @@ const createCalendarEvent = asyncHandler(async (req, res) => {
     description,
     startDate,
     endDate,
-    ref,
     isRecurring,
     recurrencePattern,
   } = req.body;
@@ -50,9 +51,10 @@ const deleteCalendarEvent = asyncHandler(async (req, res) => {
 });
 
 const getRoomCalendarEvent = asyncHandler(async (req, res) => {
+  console.log(req.params)
   const { roomId } = req.params;
-
-  const events = CalendarEvent.find({ room: roomId });
+console.log("rrom")
+  const events =await CalendarEvent.find({ room: roomId });
 
   if (!events) {
     throw new ApiError(404, "No events found for this room");
@@ -71,7 +73,7 @@ const getRoomCalendarEvent = asyncHandler(async (req, res) => {
 const getSingleEvent = asyncHandler(async (req, res) => {
   const { roomId,eventId } = req.params;
 
-  const event = calendarEvent.findById(eventId);
+  const event = await CalendarEvent.findById(eventId);
   if (!event) throw new ApiError(404, "Event doesn't exist");
 
   return res.json(new ApiResponse(200, event, "Event fetched successfully"));

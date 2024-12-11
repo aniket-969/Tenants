@@ -10,17 +10,19 @@ import {
   getSingleEvent,
 } from "../controllers/event.controller.js";
 import { checkMember } from "../middleware/room.middleware.js";
-  
+
 const router = Router();
 
+router.use(verifyJWT);
+router.route("/room/:roomId/monthly").get(checkMember, getMonthlyEvents);
+router.route("/room/:roomId").get(checkMember, getRoomCalendarEvent);
 router
-  .route("/:roomId") 
-  .post(verifyJWT, validate(createCalendarEventSchema),checkMember, createCalendarEvent);
-  router
   .route("/:roomId/:eventId")
-  .delete(verifyJWT, checkMember, deleteCalendarEvent)
-  .get(verifyJWT, checkMember, getSingleEvent);
-router.route("/room/:roomId").get(verifyJWT,checkMember, getRoomCalendarEvent);
-router.route("/room/:roomId/monthly").get(verifyJWT,checkMember,getMonthlyEvents)
+  .delete(checkMember, deleteCalendarEvent)
+  .get(checkMember, getSingleEvent);
+router
+  .route("/:roomId")
+  .post(validate(createCalendarEventSchema), checkMember, createCalendarEvent);
  
+
 export default router;

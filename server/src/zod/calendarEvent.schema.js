@@ -1,22 +1,25 @@
-import {z} from "zod"
-import { objectIdValidation, stringValidation } from "./customValidator.js"
+import { z } from "zod";
+import { dateSchema, objectIdValidation, stringValidation } from "./customValidator.js";
+
 
 export const createCalendarEventSchema = z.object({
   title: stringValidation(1, 10, "title"),
-  description: stringValidation(1, 30, "description").optional(),
-  createdBy: objectIdValidation,
+  description: stringValidation(1, 50, "description").optional(),
   recurrencePattern: stringValidation(1, 10, "recurrencePattern").optional(),
   isRecurring: z.boolean().optional(),
-  startDate: z.date().refine(date => date >= new Date(), {
+  startDate: dateSchema.refine((date) => date >= new Date(), {
     message: "Start date cannot be in the past",
   }),
-  endDate: z.date().optional().refine((endDate, ctx) => {
-    if (endDate && ctx.parent.startDate && endDate < ctx.parent.startDate) {
+  endDate: dateSchema.optional(),
+}).refine(
+  (data) => {
+    if (data.endDate && data.endDate < data.startDate) {
       return false;
     }
     return true;
-  }, {
+  },
+  {
     message: "End date cannot be before start date",
-  }),
-});
- 
+    path: ["endDate"], // Ensure the error points to the correct field
+  }
+);

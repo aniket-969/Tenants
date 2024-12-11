@@ -16,3 +16,10 @@ export const stringValidation = (min, max, fieldName) => {
       message: `${fieldName} must be no more than ${max} characters long.`,
     });
 };
+
+export const dateSchema = z
+  .string()
+  .transform((val) => new Date(val))
+  .refine((date) => !isNaN(date.getTime()), {
+    message: "Invalid date format",
+  });
