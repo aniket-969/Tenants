@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { createExpenseSchema } from "@/schema/expenseSchema";
+import { createCalendarEventSchema } from "@/schema/eventSchema";
 import { zodResolver } from "./../../../node_modules/@hookform/resolvers/zod/src/zod";
 import {
   Form,
@@ -13,59 +13,42 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "../ui/button";
 import { toast } from "react-toastify";
-import { useExpense } from "@/hooks/useExpense";
 import { useParams } from "react-router-dom";
-import ParticipantSelector from "../ParticipantsSelector";
-import { useRoom } from "@/hooks/useRoom";
-import { Spinner } from "../ui/spinner";
+import { useEvent } from "@/hooks/useEvent";
 
-export const ExpenseForm = () => {
+export const EventsForm = () => {
   const { roomId } = useParams();
-  const { createExpenseMutation } = useExpense();
-  const { roomQuery } = useRoom(roomId);
-  const { data, isLoading, isError } = roomQuery;
-  if (isLoading) {
-    return <Spinner />;
-  }
-  if (isError) {
-    return <>Something went wrong . Please refresh</>;
-  }
-  const participants = [
-    ...(data.tenants || []),
-    ...(data.landlord ? [data.landlord] : []),
-  ];
+  const { createEventMutation } = useEvent();
   const onSubmit = async (values) => {
     console.log(values);
     return;
     try {
-      const response = await createExpenseMutation.mutateAsync(values, roomId);
+      const response = await createEven.mutateAsync(values);
       console.log(response);
-      toast("Expense issue added");
+      toast("Maintenance issue added");
     } catch (error) {
       console.error("Error during registration:", error);
     }
   };
 
   const form = useForm({
-    resolver: zodResolver(createExpenseSchema),
+    resolver: zodResolver(createCalendarEventSchema),
     defaultValues: {
-      name: "",
-      totalAmount: "",
-      imageUrl: "",
-      dueDate: "",
-      userExpense: [{
-        userId:"",
-        amountOwed:"",
-      }],
-    },
+        title: "",
+        description: "",
+        recurrencePattern: "",
+        startDate: "",
+        endDate: "",
+      },
   });
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
+        {/* title */}
         <FormField
           control={form.control}
-          name="name"
+          name="title"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Title</FormLabel>
@@ -78,32 +61,15 @@ export const ExpenseForm = () => {
           )}
         />
 
+        {/* description */}
         <FormField
           control={form.control}
-          name="totalAmount"
+          name="description"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Total Amount</FormLabel>
+              <FormLabel>Description</FormLabel>
               <FormControl>
-                <Input
-                  placeholder="add total amount"
-                  {...field}
-                  onChange={(e) => field.onChange(Number(e.target.value))}
-                />
-              </FormControl>
-
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="imageUrl"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Expense Provider</FormLabel>
-              <FormControl>
-                <Input placeholder="add link of expense" {...field} />
+                <Input placeholder="description" {...field} />
               </FormControl>
 
               <FormMessage />
@@ -111,34 +77,54 @@ export const ExpenseForm = () => {
           )}
         />
 
+        {/* recurrence pattern */}
         <FormField
           control={form.control}
-          name="dueDate"
+          name="recurrencePattern"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Due Date</FormLabel>
+              <FormLabel>Repeats every-</FormLabel>
               <FormControl>
-                <Input  {...field} type="date" />
+                <Input placeholder="add  " {...field} />
               </FormControl>
 
               <FormMessage />
             </FormItem>
           )}
         />
+
+        {/* start date */}
         <FormField
           control={form.control}
-          name="userExpense"
+          name="startDate"
           render={({ field }) => (
             <FormItem>
-              <FormLabel> Add Participants</FormLabel>
-              <ParticipantSelector
-                participants={participants}
-                onChange={(selected) => form.setValue("userExpense", selected)}
-              />
+              <FormLabel>Contact Number</FormLabel>
+              <FormControl>
+                <Input placeholder="add start date " {...field} type="date" />
+              </FormControl>
+
               <FormMessage />
             </FormItem>
           )}
         />
+
+        {/* end date */}
+        <FormField
+          control={form.control}
+          name="endDate"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Cost</FormLabel>
+              <FormControl>
+                <Input placeholder="add end date" {...field} type="date" />
+              </FormControl>
+
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
         <Button type="submit">Submit</Button>
       </form>
     </Form>

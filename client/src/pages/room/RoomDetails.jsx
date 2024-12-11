@@ -3,6 +3,7 @@ import { useRoom, useRoomMutation } from "@/hooks/useRoom";
 import { useParams } from "react-router-dom";
 import Maintenance from "./Maintenance";
 import RoomExpense from "./RoomExpense";
+import RoomEvents from "./RoomEvents";
 
 const RoomDetails = () => {
   const { roomId } = useParams();
@@ -24,7 +25,7 @@ const RoomDetails = () => {
       </div>
 
       <Maintenance />
-
+<RoomEvents/>
       <RoomExpense data={data}/>
     </div>
   );
