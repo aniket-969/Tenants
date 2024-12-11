@@ -6,7 +6,6 @@ export const createCalendarEventSchema = z.object({
   description: stringValidation(1, 30, "description").optional(),
   createdBy: objectIdValidation,
   recurrencePattern: stringValidation(1, 10, "recurrencePattern").optional(),
-  roomId: objectIdValidation,
   isRecurring: z.boolean().optional(),
   startDate: z.date().refine(date => date >= new Date(), {
     message: "Start date cannot be in the past",

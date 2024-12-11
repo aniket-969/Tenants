@@ -3,12 +3,12 @@ import { Room } from "../models/rooms.model.js";
 import { CalendarEvent } from "../models/calendarEvents.model.js";
 
 const createCalendarEvent = asyncHandler(async (req, res) => {
+  const {roomId} = req.params
   const {
     title,
     description,
     startDate,
     endDate,
-    roomId,
     ref,
     isRecurring,
     recurrencePattern,
@@ -37,7 +37,7 @@ const createCalendarEvent = asyncHandler(async (req, res) => {
 });
 
 const deleteCalendarEvent = asyncHandler(async (req, res) => {
-  const { eventId } = req.params;
+  const { roomId,eventId } = req.params;
   const deletedEvent = await CalendarEvent.findByIdAndDelete(eventId);
 
   if (!deletedEvent) {
@@ -69,7 +69,7 @@ const getRoomCalendarEvent = asyncHandler(async (req, res) => {
 });
 
 const getSingleEvent = asyncHandler(async (req, res) => {
-  const { eventId } = req.body;
+  const { roomId,eventId } = req.params;
 
   const event = calendarEvent.findById(eventId);
   if (!event) throw new ApiError(404, "Event doesn't exist");
@@ -100,7 +100,7 @@ const getMonthlyEvents = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, events, "Events fetched successfully"));
 });
 
-
+ 
 export {
   createCalendarEvent,
   deleteCalendarEvent,

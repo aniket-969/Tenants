@@ -10,14 +10,14 @@ import {
   getSingleEvent,
 } from "../controllers/event.controller.js";
 import { checkMember } from "../middleware/room.middleware.js";
-
+  
 const router = Router();
 
 router
-  .route("/") 
-  .post(verifyJWT, validate(createCalendarEventSchema), createCalendarEvent);
+  .route("/:roomId") 
+  .post(verifyJWT, validate(createCalendarEventSchema),checkMember, createCalendarEvent);
   router
-  .route("/:eventId")
+  .route("/:roomId/:eventId")
   .delete(verifyJWT, checkMember, deleteCalendarEvent)
   .get(verifyJWT, checkMember, getSingleEvent);
 router.route("/room/:roomId").get(verifyJWT,checkMember, getRoomCalendarEvent);
