@@ -45,7 +45,7 @@ export const useEvent = () => {
 
   // Create a calendar event
   const createEventMutation = useMutation({
-    mutationFn: ({ data, roomId }) => createCalendarEvent(data, roomId),
+    mutationFn: ({data,roomId}) => createCalendarEvent(data, roomId),
     onSuccess: (data, { roomId }) => {
       queryClient.invalidateQueries(["roomEvents", roomId]);
       queryClient.invalidateQueries(["monthlyEvents", roomId]);
@@ -54,7 +54,7 @@ export const useEvent = () => {
 
   // Delete a calendar event
   const deleteEventMutation = useMutation({
-    mutationFn: ({ roomId, eventId }) => deleteCalendarEvent(roomId, eventId),
+    mutationFn: ( {roomId, eventId} ) => deleteCalendarEvent(roomId, eventId),
     onSuccess: (data, { roomId }) => {
       queryClient.invalidateQueries(["roomEvents", roomId]);
       queryClient.invalidateQueries(["monthlyEvents", roomId]);

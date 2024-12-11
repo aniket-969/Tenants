@@ -18,14 +18,14 @@ import { useEvent } from "@/hooks/useEvent";
 
 export const EventsForm = () => {
   const { roomId } = useParams();
+  console.log(roomId)
   const { createEventMutation } = useEvent();
   const onSubmit = async (values) => {
-    console.log(values);
-    return;
+    console.log(values,roomId);
     try {
-      const response = await createEven.mutateAsync(values);
+      const response = await createEventMutation.mutateAsync({data:values,roomId});
       console.log(response);
-      toast("Maintenance issue added");
+      toast(" Events added");
     } catch (error) {
       console.error("Error during registration:", error);
     }

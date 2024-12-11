@@ -3,6 +3,7 @@ import axiosClient from "../axiosClient";
 const baseEvent = "event"
 
 export const createCalendarEvent = async(data,roomId)=>{
+    console.log(data,roomId)
     return axiosClient.post(`/${baseEvent}/${roomId}`,data)
 }
 
