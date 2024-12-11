@@ -1,9 +1,8 @@
 import { ExpenseForm } from '@/components/form/ExpenseForm'
-import React from 'react'
 
 const RoomExpense = ({data}) => {
   return (
-    <div>
+    <div className='flex justify-center flex-col items-center'>
       RoomExpense
       <ExpenseForm />
       </div>

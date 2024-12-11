@@ -64,7 +64,7 @@ const {loginMutation} = useAuth()
             <FormItem>
               <FormLabel>Password</FormLabel>
               <FormControl>
-                <Input placeholder="password" {...field} />
+                <Input type="password" placeholder="password" {...field} />
               </FormControl>
 
               <FormMessage />

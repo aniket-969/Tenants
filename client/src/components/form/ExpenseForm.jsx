@@ -130,7 +130,7 @@ export const ExpenseForm = () => {
           name="userExpense"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Participants</FormLabel>
+              <FormLabel> Add Participants</FormLabel>
               <ParticipantSelector
                 participants={participants}
                 onChange={(selected) => form.setValue("userExpense", selected)}

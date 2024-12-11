@@ -96,7 +96,7 @@ const {registerMutation} = useAuth()
             <FormItem>
               <FormLabel>Password</FormLabel>
               <FormControl>
-                <Input placeholder="Enter your password" {...field} />
+                <Input type="password" placeholder="Enter your password" {...field} />
               </FormControl>
 
               <FormMessage />

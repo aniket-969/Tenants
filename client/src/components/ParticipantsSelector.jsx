@@ -8,14 +8,12 @@ const ParticipantSelector = ({ onChange, participants }) => {
   const { roomId } = useParams();
 
   //   console.log(participants)
-  console.log(selected);
   const toggleSelection = (participant) => {
     const isSelected = selected.some((p) => p.userId === participant._id);
     const updated = isSelected
       ? selected.filter((p) => p.userId !== participant._id)
       : [...selected, { userId: participant._id, amountOwed: 10 }];
     setSelected(updated);
-    console.log(updated)
     onChange(updated);
   };
 
