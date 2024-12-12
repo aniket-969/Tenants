@@ -3,7 +3,8 @@ import axiosClient from "../axiosClient"
 const baseAward = "awards"
 
 export const getRoomAwards = async(roomId)=>{
-    return axiosClient.get(`/${baseAward}/${roomId}`)
+    const response = await axiosClient.get(`/${baseAward}/${roomId}`)
+    return response.data.data?.awards
 }
 
 export const createRoomAward = async(roomId,data)=>{

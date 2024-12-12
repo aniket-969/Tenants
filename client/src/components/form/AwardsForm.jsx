@@ -13,18 +13,18 @@ import { Input } from "@/components/ui/input";
 import { Button } from "../ui/button";
 import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
-import { useEvent } from "@/hooks/useEvent";
+import { useAward } from "@/hooks/useAwards";
+import { createCustomAwardSchema } from "@/schema/awardsSchema";
 
 
 export const AwardsForm = () => {
   const { roomId } = useParams();
-  console.log(roomId)
-  const { createEventMutation } = useEvent();
+  const { createAwardMutation } = useAward();
   const onSubmit = async (values) => {
     console.log(values,roomId);
+    
     try {
-      const response = await createEventMutation.mutateAsync({data:values,roomId});
-      console.log(response);
+      const response = await createAwardMutation.mutateAsync({data:values,roomId});
       toast(" Events added");
     } catch (error) {
       console.error("Error during registration:", error);
@@ -32,13 +32,13 @@ export const AwardsForm = () => {
   };
 
   const form = useForm({
-    resolver: zodResolver(createCalendarEventSchema),
+    resolver: zodResolver(createCustomAwardSchema),
     defaultValues: {
         title: "",
         description: "",
-        recurrencePattern: "",
-        startDate: "",
-        endDate: "",
+        image: "",
+        criteria: "",
+        assignedTo: "",
       },
   });
 
@@ -83,7 +83,7 @@ export const AwardsForm = () => {
           name="image"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Repeats every-</FormLabel>
+              <FormLabel>Add awards image link</FormLabel>
               <FormControl>
                 <Input placeholder="add ImageUrl" {...field} />
               </FormControl>
@@ -99,7 +99,7 @@ export const AwardsForm = () => {
           name="criteria"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Contact Number</FormLabel>
+              <FormLabel>Criteria</FormLabel>
               <FormControl>
                 <Input placeholder="add criteria " {...field}  />
               </FormControl>
@@ -115,7 +115,7 @@ export const AwardsForm = () => {
           name="assignedTo"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Cost</FormLabel>
+              <FormLabel>Assigned To</FormLabel>
               <FormControl>
                 <Input placeholder="add assignedTo" {...field}  />
               </FormControl>

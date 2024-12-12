@@ -1,11 +1,21 @@
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "./ui/card"
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "./ui/card";
 
-const AwardCard = ({title,description,image,criteria,assignedTo})=>{
-    return(
-        <Card className="w-full relative overflow-hidden bg-white group br">
+const AwardCard = ({ title, description, image, criteria, assignedTo }) => {
+  return (
+    <Card className="w-full relative overflow-hidden bg-white group br">
       {/* Image */}
       <div className="relative flex justify-center ">
-        <img src={image} alt={title} className="  object-cover rounded-t-md max-w-[50rem] h-[15rem] bb" />
+        <img
+          src={image}
+          alt={title}
+          className="  object-cover rounded-t-md max-w-[50rem] h-[15rem] bb"
+        />
       </div>
 
       {/* Star Sparkle Effect */}
@@ -26,11 +36,16 @@ const AwardCard = ({title,description,image,criteria,assignedTo})=>{
       <CardContent>
         {description && <p className="text-sm text-gray-600">{description}</p>}
         {assignedTo && (
-          <p className="text-sm text-gray-500 mt-2">Assigned To: {assignedTo}</p>
+          <div className="text-sm text-gray-500 mt-2">
+            Assigned To:
+            <p>{assignedTo.username}</p>
+            <p>{assignedTo.fullName}</p>
+            <img src={assignedTo.image} />
+          </div>
         )}
       </CardContent>
     </Card>
-    )
-}
+  );
+};
 
-export default AwardCard
+export default AwardCard;
