@@ -7,19 +7,30 @@ export const createCalendarEventSchema = z.object({
   description: stringValidation(1, 50, "description").optional(),
   recurrencePattern: stringValidation(1, 10, "recurrencePattern").optional(),
   isRecurring: z.boolean().optional(),
-  startDate: dateSchema.refine((date) => date >= new Date(), {
-    message: "Start date cannot be in the past",
-  }),
-  endDate: dateSchema.optional(),
-}).refine(
-  (data) => {
-    if (data.endDate && data.endDate < data.startDate) {
-      return false;
+  startDate: z
+    .string()
+    .transform((val) => new Date(val))
+    .refine((date) => !isNaN(date.getTime()), {
+      message: "Invalid date format",
+    })
+    .optional(),
+  endDate: z
+    .string()
+    .transform((val) => new Date(val))
+    .refine((date) => !isNaN(date.getTime()), {
+      message: "Invalid date format",
+    })
+    .optional(),
+})
+  .refine(
+    (data) => {
+      const { startDate, endDate } = data;
+      
+      if (!startDate || !endDate) return true;
+      return endDate >= startDate;
+    },
+    {
+      message: "End date must be greater than or equal to start date",
+      path: ["endDate"], 
     }
-    return true;
-  },
-  {
-    message: "End date cannot be before start date",
-    path: ["endDate"], // Ensure the error points to the correct field
-  }
-);
+  );

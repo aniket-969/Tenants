@@ -10,9 +10,10 @@ import { validate } from './../middleware/validator.middleware.js';
 import { createCustomAwardSchema, updateAwardSchema } from "../zod/awards.schema.js";
 
 const router = Router();
-
-router.route("/:roomId").post(verifyJWT, validate(createCustomAwardSchema),checkMember, customRoomAward);
-router.route("/:roomId/:awardId").delete(verifyJWT, checkMember, deleteRoomAward);
-router.route("/:roomId/:awardId").patch(verifyJWT,validate(updateAwardSchema), checkMember, updateRoomAward);
+ 
+router.use(verifyJWT)
+router.route("/:roomId").post( validate(createCustomAwardSchema),checkMember, customRoomAward);
+router.route("/:roomId/:awardId").delete( checkMember, deleteRoomAward);
+router.route("/:roomId/:awardId").patch(validate(updateAwardSchema), checkMember, updateRoomAward);
  
 export default router;

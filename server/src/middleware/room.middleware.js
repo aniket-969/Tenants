@@ -5,7 +5,7 @@ import { ApiError } from "../utils/ApiError.js";
 const checkMember = asyncHandler(async (req, res, next) => {
   console.log(req.params)
   const roomId = req.body?.roomId || req.params?.roomId;
-  if (!roomId) {
+  if (!roomId || roomId ==="undefined") {
     throw new ApiError(404, "Room Id is required");
   }
   console.log("verifying room",roomId);

@@ -26,7 +26,7 @@ const customRoomAward = asyncHandler(async (req, res) => {
     new ApiResponse(200, newAward, "Custom award created successfully")
   );
 });
-
+ 
 const deleteRoomAward = asyncHandler(async (req, res) => {
   const { roomId, awardId } = req.params;
 
