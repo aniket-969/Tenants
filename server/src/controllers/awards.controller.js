@@ -4,8 +4,8 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 
 const customRoomAward = asyncHandler(async (req, res) => {
-  const{roomId} = req.params
-  const {  title, description, image, criteria, assignedTo } = req.body;
+  const { roomId } = req.params;
+  const { title, description, image, criteria, assignedTo } = req.body;
 
   const room = await Room.findById(roomId);
 
@@ -26,7 +26,7 @@ const customRoomAward = asyncHandler(async (req, res) => {
     new ApiResponse(200, newAward, "Custom award created successfully")
   );
 });
- 
+
 const deleteRoomAward = asyncHandler(async (req, res) => {
   const { roomId, awardId } = req.params;
 
@@ -46,11 +46,10 @@ const deleteRoomAward = asyncHandler(async (req, res) => {
 });
 
 const updateRoomAward = asyncHandler(async (req, res) => {
-  const {roomId, awardId} = req.params
-  const {  title, description, image, criteria, assignedTo } =
-    req.body;
+  const { roomId, awardId } = req.params;
+  const { title, description, image, criteria, assignedTo } = req.body;
 
-  const updateAward =await Room.findOneAndUpdate(
+  const updateAward = await Room.findOneAndUpdate(
     { _id: roomId, "awards._id": awardId },
     {
       $set: {
@@ -75,4 +74,30 @@ const updateRoomAward = asyncHandler(async (req, res) => {
   );
 });
 
-export { customRoomAward, deleteRoomAward ,updateRoomAward};
+const getRoomAwards = asyncHandler(async (req, res) => {
+  const { roomId } = req.params;
+  const roomWithAwards = await Room.findById(roomId).select("awards").populate({
+    path: "awards.assignedTo",
+    select: "username fullName avatar",
+  });
+
+  if (roomWithAwards.length === 0) {
+    return res.json(new ApiResponse(200, {}, "No awards for this room yet"));
+  }
+
+  console.log(roomWithAwards.awards);
+  return res.json(
+    new ApiResponse(200, roomWithAwards, "Room awards fetched succesfully")
+  );
+});
+const getUserAwards = asyncHandler(async (req, res) => {
+  
+});
+
+export {
+  customRoomAward,
+  deleteRoomAward,
+  updateRoomAward,
+  getRoomAwards,
+  getUserAwards,
+};
