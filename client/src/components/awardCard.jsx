@@ -1,3 +1,5 @@
+import { AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
+import { Avatar } from "./ui/avatar";
 import {
   Card,
   CardContent,
@@ -38,9 +40,13 @@ const AwardCard = ({ title, description, image, criteria, assignedTo }) => {
         {assignedTo && (
           <div className="text-sm text-gray-500 mt-2">
             Assigned To:
+            <Avatar>
+              <AvatarImage src={assignedTo.avatar} size="lg"/>
+              <AvatarFallback>{assignedTo.username}</AvatarFallback>
+            </Avatar>
             <p>{assignedTo.username}</p>
             <p>{assignedTo.fullName}</p>
-            <img src={assignedTo.image} />
+           
           </div>
         )}
       </CardContent>
