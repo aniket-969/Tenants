@@ -135,7 +135,6 @@ const roomSchema = new Schema(
         },
         dueDate: {
           type: Date,
-          required: true,
         },
         participants: [
           {
@@ -183,6 +182,7 @@ const roomSchema = new Schema(
         completedBy: {
           type: Schema.Types.ObjectId,
           ref: "User",
+          
         },
         recurring: {
           type: Boolean,

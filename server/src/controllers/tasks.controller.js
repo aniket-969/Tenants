@@ -5,7 +5,7 @@ import { Room } from "../models/rooms.model.js";
 
 const createRoomTask = asyncHandler(async (req, res) => {
   const createdBy = req.user?._id;
-  const {roomId} = req.params
+  const { roomId } = req.params;
   const {
     title,
     description,
@@ -17,10 +17,11 @@ const createRoomTask = asyncHandler(async (req, res) => {
     recurring,
     recurrencePattern,
     customRecurrence,
+    completed
   } = req.body;
   const room = await Room.findById(roomId);
-  if(room.tasks.length >= 40){
-    throw new ApiError(404,"Maximum tasks limit reached")
+  if (room.tasks.length >= 40) {
+    throw new ApiError(404, "Maximum tasks limit reached");
   }
   const task = {
     title,
@@ -34,6 +35,7 @@ const createRoomTask = asyncHandler(async (req, res) => {
     recurring,
     recurrencePattern,
     customRecurrence,
+    createdBy
   };
   room.tasks.push(task);
 
@@ -43,7 +45,7 @@ const createRoomTask = asyncHandler(async (req, res) => {
 });
 
 const updateRoomTask = asyncHandler(async (req, res) => {
-  const {  taskId,roomId } = req.params;
+  const { taskId, roomId } = req.params;
   const updates = req.body;
 
   const updatedRoom = await Room.findOneAndUpdate(
@@ -72,7 +74,7 @@ const updateRoomTask = asyncHandler(async (req, res) => {
 });
 
 const deleteRoomTask = asyncHandler(async (req, res) => {
-  const {  taskId,roomId } = req.params;
+  const { taskId, roomId } = req.params;
   const room = await Room.findById(roomId);
   const taskIndex = room.tasks.findIndex(
     (task) => task._id.toString() === taskId
@@ -88,10 +90,10 @@ const deleteRoomTask = asyncHandler(async (req, res) => {
 
   return res.json(new ApiResponse(200, {}, "Task deleted successfully"));
 });
- 
+
 const createSwitchRequest = asyncHandler(async (req, res) => {
   const { taskId, roomId } = req.params;
-  const {  requestedTo } = req.body;
+  const { requestedTo } = req.body;
   const updatedRoomTask = await Room.findOneAndUpdate(
     { _id: roomId, "tasks._id": taskId },
     {
@@ -156,7 +158,6 @@ const switchRequestResponse = asyncHandler(async (req, res) => {
     )
   );
 });
-
 
 export {
   createRoomTask,

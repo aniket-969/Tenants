@@ -20,7 +20,7 @@ export const createRoomTaskSchema = z.object({
   recurrencePattern: stringValidation(1, 20, "recurrence pattern").optional(),
   customRecurrence: stringValidation(1, 20, "custom recurrence").optional(),
 });
-
+ 
 export const updateRoomTaskSchema = z.object({
   roomId: objectIdValidation,
   taskId: objectIdValidation,
