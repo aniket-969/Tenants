@@ -2,6 +2,10 @@ import axiosClient from "../axiosClient"
 
 const baseAward = "awards"
 
+export const getRoomAwards = async(roomId)=>{
+    return axiosClient.get(`/${baseAward}/${roomId}`)
+}
+
 export const createRoomAward = async((roomId,data)=>{
     return axiosClient.post(`/${baseAward}/${roomId}`,data)
 })
