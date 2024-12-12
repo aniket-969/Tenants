@@ -7,7 +7,7 @@ import {
   updateRoomAward,
 } from "@/api/queries/awards";
 
-export const useEvent = () => {
+export const useAward = () => {
   const queryClient = useQueryClient();
 
   const awardsQuery = (roomId) =>

@@ -1,6 +1,22 @@
+
+import { useParams } from "react-router-dom";
 import AwardCard from "../../components/awardCard";
+import { useAward } from "@/hooks/useAwards";
+import { Spinner } from "@/components/ui/spinner";
 
 const Awards = () => {
+
+  const {roomId} = useParams()
+  const {awardsQuery} = useAward()
+
+const {isLoading,data,isError} = awardsQuery(roomId)
+if(isLoading){
+  return<Spinner/>
+}
+if(isError){
+  return <div> Something went wrong. Please refresh or login again</div>
+}
+console.log(data)
 
     const awardsData = [
         {
