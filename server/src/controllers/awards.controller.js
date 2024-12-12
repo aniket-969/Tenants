@@ -90,14 +90,11 @@ const getRoomAwards = asyncHandler(async (req, res) => {
     new ApiResponse(200, roomWithAwards, "Room awards fetched succesfully")
   );
 });
-const getUserAwards = asyncHandler(async (req, res) => {
-  
-});
+
 
 export {
   customRoomAward,
   deleteRoomAward,
   updateRoomAward,
-  getRoomAwards,
-  getUserAwards,
+  getRoomAwards
 };
