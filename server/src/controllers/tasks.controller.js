@@ -17,7 +17,7 @@ const createRoomTask = asyncHandler(async (req, res) => {
     recurring,
     recurrencePattern,
     customRecurrence,
-    completed
+    completed,
   } = req.body;
   const room = await Room.findById(roomId);
   if (room.tasks.length >= 40) {
@@ -35,7 +35,7 @@ const createRoomTask = asyncHandler(async (req, res) => {
     recurring,
     recurrencePattern,
     customRecurrence,
-    createdBy
+    createdBy,
   };
   room.tasks.push(task);
 
@@ -94,6 +94,7 @@ const deleteRoomTask = asyncHandler(async (req, res) => {
 const createSwitchRequest = asyncHandler(async (req, res) => {
   const { taskId, roomId } = req.params;
   const { requestedTo } = req.body;
+ 
   const updatedRoomTask = await Room.findOneAndUpdate(
     { _id: roomId, "tasks._id": taskId },
     {
@@ -110,13 +111,13 @@ const createSwitchRequest = asyncHandler(async (req, res) => {
   if (!updateRoomTask) {
     throw new ApiError(400, "Task or room not found");
   }
-  return new ApiResponse(200, {}, "Switch request sent successfully");
+  return res.json(new ApiResponse(200, {}, "Switch request sent successfully"));
 });
 
 const switchRequestResponse = asyncHandler(async (req, res) => {
   const { taskId, roomId } = req.params;
   const { requestedBy } = req.body;
-
+  console.log(taskId, roomId, requestedBy);
   const updatedSwitchResponse = await Room.findOneAndUpdate(
     {
       _id: roomId,

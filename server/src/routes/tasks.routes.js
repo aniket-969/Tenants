@@ -26,9 +26,9 @@ router
 router.route("/:taskId/:roomId").delete(adminOnly, deleteRoomTask);
 router
   .route("/taskSwitch/:taskId/:roomId")
-  .post(checkMember, createSwitchRequest);
+  .patch(checkMember, createSwitchRequest);
 router
   .route("/taskSwitchResponse/:taskId/:roomId")
-  .post(checkMember, switchRequestResponse);
+  .patch(checkMember, switchRequestResponse);
 
-export default router;
+export default router; 
