@@ -41,12 +41,11 @@ const AwardCard = ({ title, description, image, criteria, assignedTo }) => {
           <div className="text-sm text-gray-500 mt-2">
             Assigned To:
             <Avatar>
-              <AvatarImage src={assignedTo.avatar} size="lg"/>
+              <AvatarImage src={assignedTo.avatar} size="lg" />
               <AvatarFallback>{assignedTo.username}</AvatarFallback>
             </Avatar>
             <p>{assignedTo.username}</p>
             <p>{assignedTo.fullName}</p>
-           
           </div>
         )}
       </CardContent>
