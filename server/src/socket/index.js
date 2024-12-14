@@ -26,7 +26,6 @@ const mountParticipantStoppedTypingEvent = (socket) => {
 const initializeSocketIO = (io) => {
   return io.on("connection", async (socket) => {
     try {
-      
       const token = socket.handshake.headers?.cookie?.accessToken;
 
       console.log("Reached at init");
