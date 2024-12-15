@@ -5,14 +5,16 @@ import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { emitSocketEvent } from "../socket/index.js";
 import { ChatEventEnum } from "../constants.js";
+import mongoose from "mongoose";
 
 const sendMessage = asyncHandler(async (req, res) => {
   const { roomId } = req.params;
+  console.log(roomId)
   const { content } = req.body;
 
-  const selectedChat = await Room.findById(roomId);
+  const selectedRoom = await Room.findById(roomId);
 
-  if (!selectedChat) {
+  if (!selectedRoom) {
     throw new ApiError(404, "Chat does not exist");
   } 
 
