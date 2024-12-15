@@ -9,14 +9,14 @@ import mongoose from "mongoose";
 
 const sendMessage = asyncHandler(async (req, res) => {
   const { roomId } = req.params;
-  console.log(roomId)
+  console.log(roomId);
   const { content } = req.body;
 
   const selectedRoom = await Room.findById(roomId);
 
   if (!selectedRoom) {
     throw new ApiError(404, "Chat does not exist");
-  } 
+  }
 
   const messageFiles = [];
 
@@ -69,7 +69,6 @@ const sendMessage = asyncHandler(async (req, res) => {
     );
   });
 
-
   return res
     .status(201)
     .json(new ApiResponse(201, receivedMessage, "Message saved successfully"));
@@ -77,19 +76,15 @@ const sendMessage = asyncHandler(async (req, res) => {
 
 const deleteMessage = asyncHandler(async (req, res) => {
   const { roomId, messageId } = req.params;
-
-  const chat = await Room.findOne({
-    _id: new mongoose.Types.ObjectId(roomId),
-    participants: req.user?._id,
-  });
+  console.log(roomId, messageId);
+  const chat = await Room.findById(roomId);
+  console.log(chat);
 
   if (!chat) {
     throw new ApiError(404, "Chat does not exist");
   }
 
-  const message = await ChatMessage.findOne({
-    _id: new mongoose.Types.ObjectId(messageId),
-  });
+  const message = await ChatMessage.findById(messageId);
 
   if (!message) {
     throw new ApiError(404, "Message does not exist");
@@ -121,7 +116,7 @@ const deleteMessage = asyncHandler(async (req, res) => {
       { sort: { createdAt: -1 } }
     );
 
-    await Chat.findByIdAndUpdate(roomId, {
+    await Room.findByIdAndUpdate(roomId, {
       lastMessage: lastMessage ? lastMessage?._id : null,
     });
   }
@@ -141,7 +136,6 @@ const deleteMessage = asyncHandler(async (req, res) => {
     );
   });
 
-
   return res
     .status(200)
     .json(new ApiResponse(200, message, "Message deleted successfully"));
@@ -158,7 +152,8 @@ const getAllMessages = asyncHandler(async (req, res) => {
 
   if (
     !selectedRoom.tenants.includes(req.user._id) &&
-    (!selectedRoom.landlord || selectedRoom.landlord.toString() !== req.user._id.toString())
+    (!selectedRoom.landlord ||
+      selectedRoom.landlord.toString() !== req.user._id.toString())
   ) {
     throw new ApiError(403, "You are not authorized to view this chat");
   }
@@ -174,5 +169,4 @@ const getAllMessages = asyncHandler(async (req, res) => {
     );
 });
 
-
-export { sendMessage,deleteMessage,getAllMessages };
+export { sendMessage, deleteMessage, getAllMessages };
