@@ -59,10 +59,37 @@
   }
 } */
 
-@layer base {
+input:-webkit-autofill,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+select:-webkit-autofill,
+select:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px #040404 inset !important;
+  -webkit-text-fill-color: white !important;
+  caret-color: white !important;
+  border: 1px solid #fe2858;
+  color: white !important;
+}
 
+input::-webkit-validation-bubble {
+  display: none; /* Hides validation bubble */
+}
+
+/* Force consistent background and border when spellcheck triggers */
+input::-moz-placeholder,
+textarea::-moz-placeholder {
+  color: white; /* Placeholder color */
+}
+
+input::-moz-selection,
+textarea::-moz-selection {
+  background: #fe2858; /* Highlight color for Mozilla */
+  color: white;
+}
+
+@layer base {
   :root {
-    --radius: 0.5rem; 
+    --radius: 0.5rem;
   }
 
   * {
@@ -83,7 +110,18 @@
   width: 12px;
   height: 12px;
   background: linear-gradient(45deg, gold, yellow);
-  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+  clip-path: polygon(
+    50% 0%,
+    61% 35%,
+    98% 35%,
+    68% 57%,
+    79% 91%,
+    50% 70%,
+    21% 91%,
+    32% 57%,
+    2% 35%,
+    39% 35%
+  );
   opacity: 0;
   animation: sparkle 1.8s infinite ease-in-out;
 }
@@ -131,18 +169,17 @@
   }
 }
 
-.bb{
+.bb {
   border: 2px solid blue;
 }
 
-.bgr{
+.bgr {
   border: 2px solid green;
 }
 
-.by{
+.by {
   border: 2px solid yellow;
 }
-.br{
+.br {
   border: 2px solid red;
 }
-
