@@ -71,21 +71,6 @@ select:-webkit-autofill:focus {
   color: white !important;
 }
 
-input::-webkit-validation-bubble {
-  display: none; /* Hides validation bubble */
-}
-
-/* Force consistent background and border when spellcheck triggers */
-input::-moz-placeholder,
-textarea::-moz-placeholder {
-  color: white; /* Placeholder color */
-}
-
-input::-moz-selection,
-textarea::-moz-selection {
-  background: #fe2858; /* Highlight color for Mozilla */
-  color: white;
-}
 
 @layer base {
   :root {
