@@ -10,15 +10,11 @@ const sendMessage = asyncHandler(async (req, res) => {
   const { roomId } = req.params;
   const { content } = req.body;
 
-  if (!content && !req.files?.attachments?.length) {
-    throw new ApiError(400, "Message content or attachment is required");
-  }
-
   const selectedChat = await Room.findById(roomId);
 
   if (!selectedChat) {
     throw new ApiError(404, "Chat does not exist");
-  }
+  } 
 
   const messageFiles = [];
 

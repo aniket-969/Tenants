@@ -7,6 +7,8 @@ export const RoomEventEnum = Object.freeze({
   UPDATE_ROOM_EVENT: "updateRoom",
 });
 
+export const AvailableRoomEvents = Object.values(RoomEventEnum);
+
 export const ChatEventEnum = Object.freeze({
   JOIN_CHAT_EVENT: "joinChat",
   // ? when participant gets removed from group, chat gets deleted or leaves a group
@@ -23,6 +25,8 @@ export const ChatEventEnum = Object.freeze({
   MESSAGE_DELETE_EVENT: "messageDeleted",
 });
 
+export const AvailableChatEvents = Object.values(ChatEventEnum);
+
 export const TaskEventEnum = Object.freeze({
   TASK_CREATE_EVENT: "createdTask",
   TASK_DELETE_EVENT: "deletedTask",
@@ -31,10 +35,38 @@ export const TaskEventEnum = Object.freeze({
   TASK_SWITCH_RESPONSE_EVENT: "responseSwitchTask",
 });
 
+export const AvailableTaskEvents = Object.values(TaskEventEnum);
+
 export const MaintenanceEventEnum = Object.freeze({
   MAINTENANCE_CREATED_EVENT: "createMaintenance",
   MAINTENANCE_DELETED_EVENT: "deleteMaintenance",
   MAINTENANCE_UPDATED_EVENT: "updateMaintenace",
 });
 
-export const AvailableChatEvents = Object.values(ChatEventEnum);
+export const AvailableMaintenanceEvents = Object.values(MaintenanceEventEnum);
+
+export const AwardEventEnum = Object.freeze({
+  AWARD_CREATED_EVENT: "createAward",
+  AWARD_DELETED_EVENT: "deleteAward",
+  AWARD_UPDATED_EVENT: "updatAward",
+});
+
+export const AvailableAwardEvents = Object.values(AwardEventEnum);
+
+export const CalendarEventEnum = Object.freeze({
+  CALENDAR_CREATED_EVENT: "createAward",
+  CALENDAR_DELETED_EVENT: "deleteAward",
+  CALENDAR_UPDATED_EVENT: "updatAward",
+});
+
+export const AvailableCalendarEvents = Object.values(CalendarEventEnum);
+
+
+export const ExpenseEventEnum = Object.freeze({
+  EXPENSE_CREATED_EVENT: "createExpense",
+  EXPENSE_DELETED_EVENT: "deleteExpense",
+  EXPENSE_UPDATED_EVENT: "updatExpense",
+});
+
+export const AvailableExpenseEvents = Object.values(ExpenseEventEnum);
+
