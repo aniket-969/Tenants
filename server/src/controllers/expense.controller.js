@@ -3,7 +3,7 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { ExpenseEventEnum } from "../constants.js";
-
+import { emitSocketEvent } from "../socket/index.js";
 const createExpense = asyncHandler(async (req, res) => {
   const {roomId} = req.params
   const { name, totalAmount,  imageUrl, userExpense, dueDate } =

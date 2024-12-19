@@ -3,7 +3,7 @@ import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { Room } from "../models/rooms.model.js";
 import { MaintenanceEventEnum } from "../constants.js";
-
+import { emitSocketEvent } from "../socket/index.js";
 const createMaintenance = asyncHandler(async (req, res) => {
   const { roomId } = req.params;
   const {

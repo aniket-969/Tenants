@@ -4,6 +4,7 @@ import { CalendarEvent } from "../models/calendarEvents.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { AvailableCalendarEvents } from "../constants.js";
+import { emitSocketEvent } from "../socket/index.js";
 
 const createCalendarEvent = asyncHandler(async (req, res) => {
   const {roomId} = req.params

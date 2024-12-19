@@ -7,7 +7,7 @@ import { User } from "../models/user.model.js";
 import { Poll } from "../models/poll.model.js";
 import { Expense } from "../models/expense.model.js";
 import { RoomEventEnum } from "../constants.js";
-
+import { emitSocketEvent } from "../socket/index.js";
 function generateGroupCode() {
   return crypto.randomBytes(6).toString("hex").slice(0, 6).toUpperCase();
 }
