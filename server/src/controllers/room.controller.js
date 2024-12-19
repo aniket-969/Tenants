@@ -78,7 +78,7 @@ const updateRoom = asyncHandler(async (req, res) => {
   if (!updatedRoom) {
     throw new ApiError(404, "Room not found");
   }
-
+  emitSocketEvent(req, roomId, RoomEventEnum.UPDATE_ROOM_EVENT, `Room updated`);
   return res.json(
     new ApiResponse(200, updatedRoom, "Room updated successfully")
   );
@@ -186,7 +186,12 @@ const deleteRoom = asyncHandler(async (req, res) => {
   }
 
   await room.remove();
-
+  emitSocketEvent(
+    req,
+    roomId,
+    RoomEventEnum.DELETE_ROOM_EVENT,
+    `Admin deleted the room 🥺`
+  );
   return res
     .status(200)
     .json(
@@ -246,7 +251,12 @@ const leaveRoom = asyncHandler(async (req, res) => {
     (room) => room.id.toString() !== roomId.toString()
   );
   await user.save();
-
+  emitSocketEvent(
+    req,
+    roomId,
+    RoomEventEnum.LEAVE_ROOM_EVENT,
+    `${user.fullName} left the room 🥺`
+  );
   return res.json(new ApiResponse(200, {}, "User has left the room"));
 });
 
@@ -271,7 +281,12 @@ const transferAdminControl = asyncHandler(async (req, res) => {
 
   room.admin = newAdminId;
   await room.save();
-
+  emitSocketEvent(
+    req,
+    roomId,
+    RoomEventEnum.ADMIN_ROOM_CHANGE,
+    `Room admin changed`
+  );
   return res
     .status(200)
     .json(new ApiResponse(200, room, "Admin rights transferred successfully"));

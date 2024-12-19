@@ -2,6 +2,7 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { Room } from "../models/rooms.model.js";
+import { MaintenanceEventEnum } from "../constants.js";
 
 const createMaintenance = asyncHandler(async (req, res) => {
 const {roomId} = req.params
@@ -24,13 +25,18 @@ const {roomId} = req.params
     contactPhone,
     costEstimate,
   };
+  const user = req.user
 
   room.maintenanceRequests.push(maintenance);
   await room.save();
-
   const newMaintenance =
     room.maintenanceRequests[room.maintenanceRequests.length - 1];
-
+    emitSocketEvent(
+      req,
+      roomId,
+      MaintenanceEventEnum.MAINTENANCE_CREATED_EVENT,
+      `${user.fullName} created a maintenance issue`
+    );
   return res.json(
     new ApiResponse(
       200,
@@ -56,7 +62,13 @@ const deleteMaintenance = asyncHandler(async (req, res) => {
   room.maintenanceRequests.splice(maintenanceIndex, 1);
 
   await room.save();
-
+  const user = req.user
+  emitSocketEvent(
+    req,
+    roomId,
+    MaintenanceEventEnum.MAINTENANCE_DELETED_EVENT,
+    `${user.fullName} deleted maintenance issue`
+  );
   return res.json(new ApiResponse(200, {}, "Maintenance deleted successfully"));
 });
 
@@ -93,6 +105,13 @@ const updateMaintenance = asyncHandler(async (req, res) => {
   }
   const updatedMaintenance =
     updateMaintenace.maintenanceRequests.id(maintenanceId);
+    const user = req.user
+  emitSocketEvent(
+    req,
+    roomId,
+    MaintenanceEventEnum.MAINTENANCE_UPDATED_EVENT,
+    `${user.fullName} updated maintenance issue`
+  );
   return res.json(new ApiResponse(200, updatedMaintenance, "Maintenance updated successfully"));
 });
 
