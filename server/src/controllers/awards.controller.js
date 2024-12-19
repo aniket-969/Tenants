@@ -1,3 +1,4 @@
+import { AwardEventEnum } from "../constants.js";
 import { Room } from "../models/rooms.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
@@ -21,7 +22,13 @@ const customRoomAward = asyncHandler(async (req, res) => {
   await room.save();
 
   const newAward = room.awards[room.awards.length - 1];
-
+  const user = req.user
+  emitSocketEvent(
+    req,
+    roomId,
+    AwardEventEnum.AWARD_CREATED_EVENT,
+    `${user.fullName} created an award`
+  );
   return res.json(
     new ApiResponse(200, newAward, "Custom award created successfully")
   );
@@ -42,6 +49,13 @@ const deleteRoomAward = asyncHandler(async (req, res) => {
 
   room.awards.splice(awardIndex, 1);
   await room.save();
+  const user = req.user
+  emitSocketEvent(
+    req,
+    roomId,
+    AwardEventEnum.AWARD_DELETED_EVENT,
+    `${user.fullName} deleted an award`
+  );
   return res.json(new ApiResponse(200, {}, "Awards deleted successfully"));
 });
 
@@ -68,7 +82,13 @@ const updateRoomAward = asyncHandler(async (req, res) => {
   }
 
   const updatedAward = updateAward.awards.id(awardId);
-
+  const user = req.user
+  emitSocketEvent(
+    req,
+    roomId,
+    AwardEventEnum.AWARD_UPDATED_EVENT,
+    `${user.fullName} updated an award`
+  );
   return res.json(
     new ApiResponse(200, updateAward, "Award updated successfully")
   );
