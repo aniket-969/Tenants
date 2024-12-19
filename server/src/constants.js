@@ -58,7 +58,6 @@ export const AvailableAwardEvents = Object.values(AwardEventEnum);
 export const CalendarEventEnum = Object.freeze({
   CALENDAR_CREATED_EVENT: "createAward",
   CALENDAR_DELETED_EVENT: "deleteAward",
-  CALENDAR_UPDATED_EVENT: "updatAward",
 });
 
 export const AvailableCalendarEvents = Object.values(CalendarEventEnum);

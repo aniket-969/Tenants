@@ -3,6 +3,7 @@ import { Room } from "../models/rooms.model.js";
 import { CalendarEvent } from "../models/calendarEvents.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
+import { AvailableCalendarEvents } from "../constants.js";
 
 const createCalendarEvent = asyncHandler(async (req, res) => {
   const {roomId} = req.params
@@ -29,7 +30,13 @@ const createCalendarEvent = asyncHandler(async (req, res) => {
     recurrencePattern,
     createdBy: req.user?._id,
   });
-
+  const user = req.user
+  emitSocketEvent(
+    req,
+    roomId,
+    AvailableCalendarEvents. CALENDAR_CREATED_EVENT,
+    `${user.fullName} created an event`
+  );
   return res
     .status(201)
     .json(
@@ -44,7 +51,13 @@ const deleteCalendarEvent = asyncHandler(async (req, res) => {
   if (!deletedEvent) {
     throw new ApiError(404, "Calendar event not found");
   }
-
+  const user = req.user
+  emitSocketEvent(
+    req,
+    roomId,
+    AvailableCalendarEvents. CALENDAR_DELETED_EVENT,
+    `${user.fullName} deleted an event`
+  );
   return res.json(
     new ApiResponse(200, {}, "Calendar event deleted successfully")
   );
