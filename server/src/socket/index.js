@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import { ApiError } from "../utils/ApiError.js";
 import { ChatEventEnum } from "../constants.js"; 
 
-const mountJoinChatEvent = (socket) => {
+const mountJoinRoomEvent = (socket) => {
   socket.on(ChatEventEnum.JOIN_CHAT_EVENT, (chatId) => {
     console.log(`User joined the chat 🤝. chatId: `, chatId);
 
@@ -11,17 +11,6 @@ const mountJoinChatEvent = (socket) => {
   });
 };
 
-const mountParticipantTypingEvent = (socket) => {
-  socket.on(ChatEventEnum.TYPING_EVENT, (chatId) => {
-    socket.in(chatId).emit(ChatEventEnum.TYPING_EVENT, chatId);
-  });
-};
-
-const mountParticipantStoppedTypingEvent = (socket) => {
-  socket.on(ChatEventEnum.STOP_TYPING_EVENT, (chatId) => {
-    socket.in(chatId).emit(ChatEventEnum.STOP_TYPING_EVENT, chatId);
-  });
-};
 
 const initializeSocketIO = (io) => {
   return io.on("connection", async (socket) => {
@@ -49,10 +38,6 @@ const initializeSocketIO = (io) => {
       socket.emit(ChatEventEnum.CONNECTED_EVENT);
 
       console.log("User connected 🗼. userId: ", user._id.toString());
-      // Common events that needs to be mounted on the initialization
-      mountJoinChatEvent(socket);
-      mountParticipantTypingEvent(socket);
-      mountParticipantStoppedTypingEvent(socket);
 
       socket.on(ChatEventEnum.DISCONNECT_EVENT, () => {
         console.log("user has disconnected 🚫. userId: " + socket.user?._id);
