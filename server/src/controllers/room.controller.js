@@ -112,7 +112,11 @@ const addUserRequest = asyncHandler(async (req, res) => {
   } else {
     return res.json(new ApiResponse(400, {}, "Request already sent"));
   }
-
+  emitSocketEvent(req, room.admin.toString(), RoomEventEnum.JOIN_ROOM_REQUEST_EVENT, {
+    userId,
+    role,
+    roomId: room._id,
+  });
   return res.json(new ApiResponse(200, {}, "Request sent successfully"));
 });
 
@@ -166,6 +170,11 @@ const adminResponse = asyncHandler(async (req, res) => {
     room.pendingRequests.splice(requestIndex, 1);
     await room.save();
 
+    emitSocketEvent(req, userId, RoomEventEnum.REQUEST_ROOM_RESPONSE_EVENT, {
+      action: "approved",
+      roomId: room._id,
+      roomName: room.name,
+    });
     return res.json(
       new ApiResponse(200, {}, "User denied and removed from pending requests")
     );
@@ -198,6 +207,7 @@ const deleteRoom = asyncHandler(async (req, res) => {
       new ApiResponse(200, {}, "Room and related data deleted successfully")
     );
 });
+
 const getRoomData = asyncHandler(async (req, res) => {
   const { roomId } = req.params;
   const userId = req.user?._id;

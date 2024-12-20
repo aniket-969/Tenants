@@ -220,7 +220,7 @@ const addPaymentMethod = asyncHandler(async (req, res) => {
   if (paymentMethodExists) {
     throw new ApiError(409, "Payment method already exists");
   }
-  
+
   const method = {
     appName: appName || null,
     type: type || null,
