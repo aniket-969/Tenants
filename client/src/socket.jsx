@@ -19,7 +19,7 @@ const SocketProvider = ({ children }) => {
     socket.on("connect_error", (err) => {
       console.error("Socket connection error:", err.message);
     });
-
+ 
     return () => {
       socket.disconnect();
     };
