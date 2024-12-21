@@ -15,26 +15,34 @@ const mountJoinRoomEvent = (socket) => {
   });
 };
 
-const initializeSocketIO = (io) => {
+const initializeSocketIO = (io) => { 
   return io.on("connection", async (socket) => {
     try {
-      const token = socket.handshake.headers?.cookie?.accessToken;
-
-      console.log("Reached at init");
+      const token =
+        socket.handshake.headers.cookie
+          ?.split("; ")
+          .find((cookie) => cookie.startsWith("accessToken="))
+          ?.split("=")[1] ||
+        socket.handshake.headers.authorization?.replace("Bearer ", "");
 
       if (!token) {
-        throw new ApiError(401, "Un-authorized handshake. Token is missing");
+        throw new ApiError(401, "Unauthorized request. Token is missing.");
       }
 
+      // Verify the token
       const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
 
+      console.log("decodedToken", decodedToken);
+
+      // Fetch the user from the database
       const user = await User.findById(decodedToken?._id).select(
-        "-password -refreshToken "
+        "-password -refreshToken"
       );
 
       if (!user) {
-        throw new ApiError(401, "Un-authorized handshake. Token is invalid");
+        throw new ApiError(401, "Unauthorized request. Invalid token.");
       }
+
       socket.user = user;
       socket.join(user._id.toString());
 
@@ -49,7 +57,7 @@ const initializeSocketIO = (io) => {
         }
       });
     } catch (error) {
-      console.log("error in inti", error);
+      console.log("error in init", error);
       socket.emit(
         ChatEventEnum.SOCKET_ERROR_EVENT,
         error?.message || "Something went wrong while connecting to the socket."

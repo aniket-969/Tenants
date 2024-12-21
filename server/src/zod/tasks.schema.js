@@ -6,7 +6,7 @@ export const createRoomTaskSchema = z.object({
   description: stringValidation(5, 50, "description").optional(),
   currentAssignee: objectIdValidation,
   dueDate: z
-    .string()
+    .string() 
     .transform((val) => new Date(val))
     .refine((date) => !isNaN(date.getTime()), {
       message: "Invalid date format",
