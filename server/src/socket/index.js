@@ -1,7 +1,7 @@
 import { User } from "./../models/user.model.js";
 import jwt from "jsonwebtoken";
 import { ApiError } from "../utils/ApiError.js";
-import { ChatEventEnum } from "../constants.js"; 
+import { ChatEventEnum } from "../constants.js";
 
 const mountJoinRoomEvent = (socket) => {
   socket.on(ChatEventEnum.JOIN_CHAT_EVENT, (chatId) => {
@@ -10,7 +10,6 @@ const mountJoinRoomEvent = (socket) => {
     socket.join(chatId);
   });
 };
-
 
 const initializeSocketIO = (io) => {
   return io.on("connection", async (socket) => {
@@ -38,6 +37,8 @@ const initializeSocketIO = (io) => {
       socket.emit(ChatEventEnum.CONNECTED_EVENT);
 
       console.log("User connected 🗼. userId: ", user._id.toString());
+
+      mountJoinRoomEvent(socket);
 
       socket.on(ChatEventEnum.DISCONNECT_EVENT, () => {
         console.log("user has disconnected 🚫. userId: " + socket.user?._id);
