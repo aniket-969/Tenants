@@ -8,9 +8,8 @@ export const getSocket = () => useContext(SocketContext);
 const SocketProvider = ({ children }) => {
   const socket = useMemo(
     () =>
-      io(process.env.REACT_APP_SOCKET_SERVER || "http://localhost:3000", {
-        withCredentials: true,
-        auth: { token: localStorage.getItem("authToken") },
+      io(import.meta.env.REACT_APP_SOCKET_SERVER || "http://localhost:3000", {
+        withCredentials: true
       }),
     []
   );
