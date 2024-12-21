@@ -38,13 +38,11 @@ const initializeSocketIO = (io) => {
       socket.user = user;
       socket.join(user._id.toString());
 
-      socket.emit(ChatEventEnum.CONNECTED_EVENT);
-
       console.log("User connected 🗼. userId: ", user._id.toString());
 
       mountJoinRoomEvent(socket);
 
-      socket.on(ChatEventEnum.DISCONNECT_EVENT, () => {
+      socket.on(RoomEventEnum.DISCONNECT_EVENT, () => {
         console.log("user has disconnected 🚫. userId: " + socket.user?._id);
         if (socket.user?._id) {
           socket.leave(socket.user._id);
