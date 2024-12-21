@@ -1,13 +1,17 @@
 import { User } from "./../models/user.model.js";
 import jwt from "jsonwebtoken";
 import { ApiError } from "../utils/ApiError.js";
-import { ChatEventEnum } from "../constants.js";
+import { RoomEventEnum } from "../constants.js";
 
 const mountJoinRoomEvent = (socket) => {
-  socket.on(ChatEventEnum.JOIN_CHAT_EVENT, (chatId) => {
-    console.log(`User joined the chat 🤝. chatId: `, chatId);
+  socket.on(RoomEventEnum.JOIN_ROOM_EVENT, (roomId) => {
+    console.log(`User joined the chat 🤝. chatId: `, roomId);
 
-    socket.join(chatId);
+    socket.join(roomId);
+  });
+  socket.on(RoomEventEnum.LEAVE_ROOM_EVENT, (roomId) => {
+    console.log(`User ${socket.user?._id} is leaving room: ${roomId}`);
+    socket.leave(roomId);
   });
 };
 
