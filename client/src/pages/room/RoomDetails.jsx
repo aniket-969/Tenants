@@ -4,8 +4,11 @@ import { useParams } from "react-router-dom";
 import Maintenance from "./Maintenance";
 import RoomExpense from "./RoomExpense";
 import RoomEvents from "./RoomEvents";
+import { getSocket } from "@/socket";
 
 const RoomDetails = () => {
+  const socket = getSocket();
+  console.log(socket);
   const { roomId } = useParams();
   const { roomQuery } = useRoom(roomId);
   const { data, isLoading, isError } = roomQuery;
@@ -25,8 +28,8 @@ const RoomDetails = () => {
       </div>
 
       <Maintenance />
-<RoomEvents/>
-      <RoomExpense data={data}/>
+      <RoomEvents />
+      <RoomExpense data={data} />
     </div>
   );
 };

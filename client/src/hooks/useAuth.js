@@ -15,7 +15,7 @@ export const useAuth = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const sessionQuery = useQuery({
-    queryKey: ["auth", "session"],
+    queryKey: ["auth", "session"], 
     queryFn: fetchSession,
     refetchOnWindowFocus: false,
     staleTime: 30 * 60 * 1000,
