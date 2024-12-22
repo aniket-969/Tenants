@@ -11,18 +11,8 @@ const RoomDetails = () => {
 
   const { roomQuery } = useRoom(roomId);
   const { data, isLoading, isError } = roomQuery;
-  console.log(data);
-  useEffect(() => {
-    if (roomId) {
-      socket.emit("joinRoom", roomId);
-      console.log(`Joined room: ${roomId}`);
+  // console.log(data);
 
-      return () => {
-        socket.emit("leaveRoom", roomId);
-        console.log(`Left room: ${roomId}`);
-      };
-    }
-  }, [roomId, socket]);
   if (isLoading) {
     return <Spinner />;
   }
@@ -37,8 +27,8 @@ const RoomDetails = () => {
         <p>{data.description}</p>
       </div>
 
-      <Maintenance />
-      <RoomEvents />
+      {/* <Maintenance /> */}
+      {/* <RoomEvents /> */}
       <RoomExpense data={data} />
     </div>
   );
