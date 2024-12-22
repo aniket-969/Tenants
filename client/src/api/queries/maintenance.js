@@ -2,7 +2,7 @@ import axiosClient from "../axiosClient";
 
 const baseMaintenance = "maintenance"
 
-export const createMaintenance = async(roomId,data)=>{
+export const createMaintenance = async(roomId,data)=>{ 
     console.log(roomId,data)
     return axiosClient.post(`${baseMaintenance}/${roomId}`,data)
 }

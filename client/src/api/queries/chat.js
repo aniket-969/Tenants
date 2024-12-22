@@ -8,7 +8,8 @@ export const fetchMessages = async (roomId) => {
 };
 
 export const sendMessage = async (data,roomId) => {
-  const repsonse = await axiosClient.post(`${baseChat}/${roomId}/`,data);
+  console.log(data,roomId)
+  const response = await axiosClient.post(`${baseChat}/${roomId}/`,data);
   return response.data?.data;
 };
 
