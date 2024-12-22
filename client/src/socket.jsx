@@ -9,17 +9,23 @@ const SocketProvider = ({ children }) => {
   const socket = useMemo(
     () =>
       io(import.meta.env.REACT_APP_SOCKET_SERVER || "http://localhost:3000", {
-        withCredentials: true
+        withCredentials: true,
       }),
     []
   );
 
   useEffect(() => {
+    socket.on("connect", () => {
+      console.log("connected", socket.id);
+    });
+    socket.on("welcome", (s) => {
+      console.log(s);
+    });
     // Handle socket connection errors
     socket.on("connect_error", (err) => {
       console.error("Socket connection error:", err.message);
     });
- 
+
     return () => {
       socket.disconnect();
     };
