@@ -1,5 +1,5 @@
 import { deleteMessage, fetchMessages, sendMessage } from "@/api/queries/chat";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export const useChat = () => {
   const queryClient = useQueryClient();
@@ -27,5 +27,5 @@ export const useChat = () => {
     },
   });
 
-  return {};
+  return {messageQuery,sendMessageMutation,deleteMessageMutation};
 };
