@@ -6,6 +6,7 @@ const SocketContext = createContext();
 export const getSocket = () => useContext(SocketContext);
 
 const SocketProvider = ({ children }) => {
+
   const socket = useMemo(
     () =>
       io(import.meta.env.REACT_APP_SOCKET_SERVER || "http://localhost:3000", {
