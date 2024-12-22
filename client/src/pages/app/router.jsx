@@ -16,6 +16,7 @@ import CreateRoom from "../room/CreateRoom.jsx";
 import Room from "../room/Room.jsx";
 import Awards from "../room/Awards.jsx";
 import { SocketProvider } from "@/socket.jsx";
+import Chat from "../room/Chat.jsx";
 
 const LandingPage = React.lazy(() => import("../LandingPage.jsx"));
 const Login = React.lazy(() => import("../auth/Login.jsx"));
@@ -30,6 +31,7 @@ const RoomRoutes = () => {
         <Route path=":roomId" element={<RoomLayout />}>
           <Route index element={<RoomDetails />} />
           <Route path="awards" element={<Awards />} />
+          <Route path="chat" element={<Chat />} />
           {/* <Route path="tasks" element={<RoomTasks />} /> */}
           {/* <Route path="calendar" element={<RoomCalendar />} /> */}
         </Route>

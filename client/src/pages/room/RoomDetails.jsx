@@ -4,17 +4,11 @@ import { useParams } from "react-router-dom";
 import Maintenance from "./Maintenance";
 import RoomExpense from "./RoomExpense";
 import RoomEvents from "./RoomEvents";
-import { getSocket } from "@/socket";
 import { useEffect } from "react";
 
 const RoomDetails = () => {
-  const socket = getSocket();
-
   const { roomId } = useParams();
-  const joinRoom = (roomId) => {
-    console.log(roomId);
-    socket.emit("joinRoom", roomId);
-  };
+
   const { roomQuery } = useRoom(roomId);
   const { data, isLoading, isError } = roomQuery;
   console.log(data);
