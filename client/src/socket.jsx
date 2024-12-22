@@ -19,9 +19,6 @@ const SocketProvider = ({ children }) => {
     socket.on("connect", () => {
       console.log("connected", socket.id);
     });
-    socket.on("welcome", (s) => {
-      console.log(s);
-    });
     // Handle socket connection errors
     socket.on("connect_error", (err) => {
       console.error("Socket connection error:", err.message);
@@ -30,7 +27,7 @@ const SocketProvider = ({ children }) => {
     return () => {
       socket.disconnect();
     };
-  }, [socket]);
+  }, []);
 
   return (
     <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>
