@@ -7,8 +7,8 @@ export const fetchMessages = async (roomId) => {
   return response.data.data;
 };
 
-export const sendMessage = async (roomId) => {
-  const repsonse = await axiosClient.post(`${baseChat}/${roomId}/`);
+export const sendMessage = async (data,roomId) => {
+  const repsonse = await axiosClient.post(`${baseChat}/${roomId}/`,data);
   return response.data?.data;
 };
 
