@@ -140,7 +140,7 @@ const deleteMessage = asyncHandler(async (req, res) => {
     .status(200)
     .json(new ApiResponse(200, message, "Message deleted successfully"));
 });
-
+ 
 const getAllMessages = asyncHandler(async (req, res) => {
   const { roomId } = req.params;
 

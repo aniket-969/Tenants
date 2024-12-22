@@ -15,7 +15,7 @@ const mountJoinRoomEvent = (socket) => {
   });
 };
 
-const initializeSocketIO = (io) => { 
+const initializeSocketIO = (io) => {
   return io.on("connection", async (socket) => {
     try {
       const token =
@@ -24,7 +24,8 @@ const initializeSocketIO = (io) => {
           .find((cookie) => cookie.startsWith("accessToken="))
           ?.split("=")[1] ||
         socket.handshake.headers.authorization?.replace("Bearer ", "");
-
+      socket.emit("welcome",`Welcome to the server ${socket.id}`);
+      console.log(socket.id);
       if (!token) {
         throw new ApiError(401, "Unauthorized request. Token is missing.");
       }
@@ -32,7 +33,7 @@ const initializeSocketIO = (io) => {
       // Verify the token
       const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
 
-      console.log("decodedToken", decodedToken);
+      // console.log("decodedToken", decodedToken);
 
       // Fetch the user from the database
       const user = await User.findById(decodedToken?._id).select(
