@@ -28,7 +28,7 @@ const Chat = () => {
   }
   console.log(userData._id);
   return (
-    <div className="flex flex-col items-center br">
+    <div className="flex flex-col w-full items-center my-5">
       <ChatLayout messages={messageData} currentUser={userData._id} />
     </div>
   );
