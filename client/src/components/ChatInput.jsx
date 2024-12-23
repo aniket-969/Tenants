@@ -3,6 +3,7 @@ import { Button } from "./ui/button";
 import { useState } from "react";
 import { useChat } from "@/hooks/useChat";
 import { useParams } from "react-router-dom";
+import { Textarea } from "./ui/textarea";
 
 const ChatInput = () => {
   const [content, setContent] = useState("");
@@ -17,11 +18,11 @@ const ChatInput = () => {
 
   return (
     <div className="flex items-center p-2 ">
-      <Input
+      <Textarea
         value={content}
         onChange={(e) => setContent(e.target.value)}
-        placeholder="Type a message"
-        className="flex-1"
+        placeholder="Type a message ......"
+        
       />
       <Button onClick={onClick} className="ml-2">
         Send

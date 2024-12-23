@@ -234,7 +234,7 @@ const addPaymentMethod = asyncHandler(async (req, res) => {
     .status(201)
     .json(new ApiResponse(201, "Payment methods added successfully"));
 });
-
+ 
 export {
   registerUser,
   loginUser,

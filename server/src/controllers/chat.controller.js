@@ -4,12 +4,13 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { emitSocketEvent } from "../socket/index.js";
-import { ChatEventEnum } from "../constants.js";
+import { AvailableChatEvents, ChatEventEnum } from "../constants.js";
 import mongoose from "mongoose";
 
 const sendMessage = asyncHandler(async (req, res) => {
+  console.log(req.params)
   const { roomId } = req.params;
-  console.log(roomId);
+  console.log("roomId",roomId);
   const { content } = req.body;
 
   const selectedRoom = await Room.findById(roomId);
@@ -68,7 +69,12 @@ const sendMessage = asyncHandler(async (req, res) => {
       receivedMessage
     );
   });
-
+  emitSocketEvent(
+    req,
+    roomId,
+    AvailableChatEvents.MESSAGE_SEND_EVENT,
+    receivedMessage
+  );
   return res
     .status(201)
     .json(new ApiResponse(201, receivedMessage, "Message saved successfully"));
@@ -140,7 +146,7 @@ const deleteMessage = asyncHandler(async (req, res) => {
     .status(200)
     .json(new ApiResponse(200, message, "Message deleted successfully"));
 });
- 
+  
 const getAllMessages = asyncHandler(async (req, res) => {
   const { roomId } = req.params;
 
@@ -159,7 +165,7 @@ const getAllMessages = asyncHandler(async (req, res) => {
   }
 
   const messages = await ChatMessage.find({ chat: roomId })
-    .populate("sender", "name email avatar")
+    .populate("sender", "fullName avatar")
     .sort({ createdAt: -1 });
 
   return res

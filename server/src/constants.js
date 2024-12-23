@@ -19,6 +19,8 @@ export const ChatEventEnum = Object.freeze({
   // ? when new message is received
   MESSAGE_RECEIVED_EVENT: "messageReceived",
   // ? when there is new one on one chat, new group chat or user gets added in the group
+  MESSAGE_SEND_EVENT: "messageSend",
+  // ? when there is new one on one chat, new group chat or user gets added in the group
   SOCKET_ERROR_EVENT: "socketError",
   // ? when participant stops typing
   STOP_TYPING_EVENT: "stopTyping",
