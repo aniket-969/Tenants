@@ -69,12 +69,7 @@ const sendMessage = asyncHandler(async (req, res) => {
       receivedMessage
     );
   });
-  emitSocketEvent(
-    req,
-    roomId,
-    AvailableChatEvents.MESSAGE_SEND_EVENT,
-    receivedMessage
-  );
+  
   return res
     .status(201)
     .json(new ApiResponse(201, receivedMessage, "Message saved successfully"));
