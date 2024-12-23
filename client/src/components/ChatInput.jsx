@@ -5,11 +5,12 @@ import { useChat } from "@/hooks/useChat";
 import { useParams } from "react-router-dom";
 import { Textarea } from "./ui/textarea";
 
-const ChatInput = () => {
+const ChatInput = ({ onSendMessage }) => {
   const [content, setContent] = useState("");
   const { sendMessageMutation } = useChat();
   const { roomId } = useParams();
   const onClick = async () => {
+    onSendMessage(content)
     const data = { content };
     console.log(data, roomId);
     await sendMessageMutation.mutateAsync({ data, roomId });

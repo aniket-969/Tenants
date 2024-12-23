@@ -7,11 +7,20 @@ const ChatLayout = ({ initialMessages, currentUser }) => {
   const [messages, setMessages] = useState(initialMessages);
   console.log(messages);
   const socket = getSocket();
-
+  const handleSendMessage = (content) => {
+    // Optimistically update UI
+    const newMessage = {
+      _id: Date.now().toString(), // Temporary ID
+      content,
+      sender: { _id: currentUser, username: "You" }, // Temporary user details
+      isTemporary: true, // Mark this as temporary
+    };
+    setMessages((prev) => [...prev, newMessage]);
+  };
   useEffect(() => {
     // Listen for new messages
     const handleNewMessage = (newMessage) => {
-        console.log(newMessage)
+      console.log(newMessage);
       setMessages((prevMessages) => [...prevMessages, newMessage]);
     };
 
@@ -33,7 +42,7 @@ const ChatLayout = ({ initialMessages, currentUser }) => {
           />
         ))}
       </div>
-      <ChatInput />
+      <ChatInput onSendMessage={handleSendMessage} setMessages={setMessages} />
     </div>
   );
 };
