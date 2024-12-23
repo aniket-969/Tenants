@@ -1,27 +1,32 @@
-
+import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 
 const ChatMessage = ({ message, isCurrentUser }) => {
   return (
-    <div
-      className={`flex ${
-        isCurrentUser ? "justify-end" : "justify-start"
-      } mb-2`}
-    >
-      {!isCurrentUser && (
-        <div className="text-sm text-gray-500 mb-1">
-          {message.sender.fullName}
+    <>
+      {/* Avatar */}
+      {isCurrentUser ? (
+        <p className="flex justify-end">{message.content}</p>
+      ) : (
+        <div className="flex justify-start gap-3">
+          <div className="w-[2rem]">
+            <Avatar>
+              <AvatarImage src={message.sender.avatar} />
+              <AvatarFallback>CN</AvatarFallback>
+            </Avatar>
+          </div>
+
+          {/* full name */}
+          <div className="">
+            <p className="text-sm text-foreground ">
+              {message.sender.fullName}
+            </p>
+
+            {/* content */}
+            <p>{message.content}</p>
+          </div>
         </div>
       )}
-      <div
-        className={`p-3 rounded-lg ${
-          isCurrentUser
-            ? "bg-blue-500 text-white"
-            : "bg-gray-200 text-black"
-        }`}
-      >
-        {message.content}
-      </div>
-    </div>
+    </>
   );
 };
 

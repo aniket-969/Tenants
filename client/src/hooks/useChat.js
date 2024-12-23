@@ -16,7 +16,8 @@ export const useChat = () => {
   const sendMessageMutation = useMutation({
     mutationFn: ({ data, roomId }) => sendMessage(data, roomId),
     onSuccess: () => {
-      queryClient.invalidateQueries(["chat"]);
+    //   queryClient.invalidateQueries(["chat"]);
+    
     },
   });
 

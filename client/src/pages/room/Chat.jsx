@@ -9,9 +9,17 @@ const Chat = () => {
   const { roomId } = useParams();
   const { messageQuery, sendMessageMutation } = useChat();
   const { sessionQuery } = useAuth();
-  const { data: messageData, isLoading: isMessageLoading, isError: isMessageError } = messageQuery(roomId);
-  const { data: userData, isLoading: isUserLoading, isError: isUserError } = sessionQuery;
-  
+  const {
+    data: messageData,
+    isLoading: isMessageLoading,
+    isError: isMessageError,
+  } = messageQuery(roomId);
+  const {
+    data: userData,
+    isLoading: isUserLoading,
+    isError: isUserError,
+  } = sessionQuery;
+
   if (isMessageLoading || isUserLoading) {
     return <Spinner />;
   }
@@ -19,9 +27,11 @@ const Chat = () => {
     return <>Something went wrong . Please refresh</>;
   }
   console.log(userData._id);
-  return <div>
-    <ChatLayout messages={messageData} currentUser={userData._id}/>
-  </div>;
+  return (
+    <div className="flex flex-col items-center br">
+      <ChatLayout messages={messageData} currentUser={userData._id} />
+    </div>
+  );
 };
 
 export default Chat;

@@ -16,7 +16,7 @@ const ChatInput = () => {
   };
 
   return (
-    <div className="flex items-center p-2 border-t">
+    <div className="flex items-center p-2 bgr">
       <Input
         value={content}
         onChange={(e) => setContent(e.target.value)}
