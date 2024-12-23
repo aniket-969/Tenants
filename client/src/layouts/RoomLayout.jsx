@@ -9,7 +9,6 @@ export const RoomLayout = ({ children }) => {
 
   useEffect(() => {
     if (roomId && roomId !== previousRoomId.current) {
-      
       // Join room only if it's a new room
       socket.emit("joinRoom", roomId);
       console.log(`Joined room: ${roomId}`);
