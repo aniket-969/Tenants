@@ -14,12 +14,12 @@ export const useChat = () => {
     });
 
   const sendMessageMutation = useMutation({
-    mutationFn: ({data, roomId}) => sendMessage(data, roomId),
+    mutationFn: ({ data, roomId }) => sendMessage(data, roomId),
     onSuccess: () => {
       queryClient.invalidateQueries(["chat"]);
     },
   });
-  
+
   const deleteMessageMutation = useMutation({
     mutationFn: ({ roomId, messageId }) => deleteMessage(roomId, messageId),
     onSuccess: () => {
@@ -27,5 +27,5 @@ export const useChat = () => {
     },
   });
 
-  return {messageQuery,sendMessageMutation,deleteMessageMutation};
+  return { messageQuery, sendMessageMutation, deleteMessageMutation };
 };

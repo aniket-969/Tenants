@@ -1,31 +1,27 @@
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
+import { useAuth } from "@/hooks/useAuth";
 import { useChat } from "@/hooks/useChat";
+import ChatLayout from "@/layouts/ChatLayout";
 import { useParams } from "react-router-dom";
 
 const Chat = () => {
   const { roomId } = useParams();
   const { messageQuery, sendMessageMutation } = useChat();
-  const { data, isLoading, isError } = messageQuery(roomId);
-
-  const onClick = async () => {
-    const data = { content: "Hey! it's me mario" };
-    await sendMessageMutation.mutateAsync({ data, roomId });
-  };
-  console.log(data);
-  if (isLoading) {
+  const { sessionQuery } = useAuth();
+  const { data: messageData, isLoading: isMessageLoading, isError: isMessageError } = messageQuery(roomId);
+  const { data: userData, isLoading: isUserLoading, isError: isUserError } = sessionQuery;
+  
+  if (isMessageLoading || isUserLoading) {
     return <Spinner />;
   }
-  if (isError) {
+  if (isMessageError || isUserError) {
     return <>Something went wrong . Please refresh</>;
   }
-
-  return (
-    <div>
-      Chat
-      <Button onClick={() => onClick()}></Button>
-    </div>
-  );
+  console.log(userData._id);
+  return <div>
+    <ChatLayout messages={messageData} currentUser={userData._id}/>
+  </div>;
 };
 
 export default Chat;
