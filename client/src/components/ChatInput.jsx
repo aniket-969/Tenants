@@ -6,12 +6,11 @@ import { useParams } from "react-router-dom";
 
 const ChatInput = () => {
   const [content, setContent] = useState("");
-  const { messageQuery } = useChat();
+  const { sendMessageMutation } = useChat();
   const { roomId } = useParams();
   const onClick = async () => {
     const data = { content };
     console.log(data, roomId);
-    return;
     await sendMessageMutation.mutateAsync({ data, roomId });
     setContent("");
   };
