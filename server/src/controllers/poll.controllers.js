@@ -5,19 +5,18 @@ import { ApiError } from "../utils/ApiError.js";
 import mongoose from "mongoose";
 import { Room } from "../models/rooms.model.js";
 
-
 const hasUserVoted = (poll, userId) => {
   return poll.options.some((option) =>
     option.votes.some((vote) => vote.voter.toString() === userId.toString())
   );
 };
-
 const createPoll = asyncHandler(async (req, res) => {
-  const {roomId} = req.params
-  const { title, status, voteEndTime, optionText } = req.body;
+  const { roomId } = req.params;
+  const { title, status, voteEndTime, options } = req.body; // Use 'options' from the updated schema
   const createdBy = req.user?._id;
 
-  const options = optionText.map((text) => ({
+  // Map the options array to the required format
+  const formattedOptions = options.map((text) => ({
     optionText: text,
     votes: [],
   }));
@@ -27,8 +26,8 @@ const createPoll = asyncHandler(async (req, res) => {
     title,
     status,
     voteEndTime,
-    room:roomId,
-    options,
+    room: roomId,
+    options: formattedOptions, // Save the formatted options
   });
 
   return res.json(new ApiResponse(201, poll, "Poll created successfully"));
@@ -84,16 +83,16 @@ const updatePoll = asyncHandler(async (req, res) => {
 });
 
 const getRoomPolls = asyncHandler(async (req, res) => {
-  const{roomId} = req.params
-  const {  status } = req.query;
+  const { roomId } = req.params;
+  const { status } = req.query;
 
-  const filters = { room:roomId };
+  const filters = { room: roomId };
   if (status) {
-    filters.status = status; 
+    filters.status = status;
   }
 
   const polls = await Poll.find(filters).populate({
-    path: "options.votes.voter", 
+    path: "options.votes.voter",
     select: "username avatar",
   });
 
@@ -122,7 +121,7 @@ const getRoomPolls = asyncHandler(async (req, res) => {
     new ApiResponse(200, formattedPolls, "Room polls fetched successfully")
   );
 });
- 
+
 const deletePoll = asyncHandler(async (req, res) => {
   const { pollId } = req.params;
   const poll = await Poll.findByIdAndDelete(pollId);
@@ -131,10 +130,4 @@ const deletePoll = asyncHandler(async (req, res) => {
   return res.json(new ApiResponse(200, {}, "Poll deleted successfully"));
 });
 
-export {
-  createPoll,
-  castVote,
-  updatePoll,
-  getRoomPolls,
-  deletePoll,
-};
+export { createPoll, castVote, updatePoll, getRoomPolls, deletePoll };

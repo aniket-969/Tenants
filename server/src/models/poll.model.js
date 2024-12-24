@@ -15,7 +15,7 @@ const pollSchema = new Schema(
       type: String,
       required: true,
     },
-    options: [
+    options: [ 
       {
         optionText: {
           type: String,
