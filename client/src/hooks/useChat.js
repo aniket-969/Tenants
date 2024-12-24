@@ -12,7 +12,7 @@ export const useChat = () => {
       cacheTime: 60 * 60 * 1000,
       enabled: !!roomId,
     });
-
+ 
   const sendMessageMutation = useMutation({
     mutationFn: ({ data, roomId }) => sendMessage(data, roomId),
     onSuccess: () => {

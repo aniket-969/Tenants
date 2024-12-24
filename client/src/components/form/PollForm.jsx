@@ -32,18 +32,18 @@ export const PollForm = () => {
   const options = watch("options");
 
   const onSubmit = async (values) => {
-    const formattedValues = {
+    const data = {
       ...values,
       options: values.options.filter((opt) => opt.trim() !== ""), // Remove empty options
     };
-    console.log(formattedValues);
-    return;
+    console.log(data);
+    
     try {
       const response = await createPollMutation.mutateAsync({
-        ...formattedValues,
+        data,
         roomId,
       });
-      toast("Poll issue added");
+      console.log(response)
     } catch (error) {
       console.error("Error during registration:", error);
     }

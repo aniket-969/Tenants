@@ -6,7 +6,7 @@ export const usePoll = () => {
   const queryClient = useQueryClient();
 
   const createPollMutation = useMutation({
-    mutationFn: (data, roomId) => createPoll(data, roomId),
+    mutationFn: ({data, roomId}) => createPoll(data, roomId),
     onSuccess: () => {
       toast("Poll created successfully");
     },
@@ -20,7 +20,7 @@ export const usePoll = () => {
   });
 
   const castVoteMutation = useMutation({
-    mutationFn: (pollId, optionId, data) => castVote(pollId, optionId, data),
+    mutationFn: ({pollId, optionId, data}) => castVote(pollId, optionId, data),
     onSuccess: () => {
       toast("Vote added successfully");
     },
@@ -28,5 +28,7 @@ export const usePoll = () => {
 
   return {
     createPollMutation,
+    deletePollMutation,
+    castVoteMutation
   };
 };

@@ -3,6 +3,7 @@ import axiosClient from "../axiosClient";
 const basePoll = "poll";
 
 export const createPoll = async (data,roomId) => {
+  console.log(data,roomId)
   return axiosClient.post(`${basePoll}/${roomId}/polls`, data);
 };
 
