@@ -5,6 +5,8 @@ import { ApiError } from "../utils/ApiError.js";
 import mongoose from "mongoose";
 import { Room } from "../models/rooms.model.js";
 import { isRoomMember } from "../middleware/room.middleware.js";
+import { emitSocketEvent } from "../socket/index.js";
+import { PollEventEnum } from "../constants.js";
 
 const hasUserVoted = (poll, userId) => {
   return poll.options.some((option) =>
@@ -42,6 +44,8 @@ const createPoll = asyncHandler(async (req, res) => {
     return res.status(404).json(new ApiResponse(404, null, "Room not found"));
   }
 
+  emitSocketEvent(req, roomId, PollEventEnum.CREATE_POLL_EVENT, poll);
+
   return res.json(new ApiResponse(201, poll, "Poll created successfully"));
 });
 
@@ -56,9 +60,9 @@ const castVote = asyncHandler(async (req, res) => {
     throw new ApiError(400, "Voting has ended for this poll");
   }
 
-   if(!isRoomMember(poll.room, userId)){
-    throw new ApiError(401,"User not authorized to vote this poll")
-   }
+  if (!isRoomMember(poll.room, userId)) {
+    throw new ApiError(401, "User not authorized to vote this poll");
+  }
 
   const userHasVoted = poll.options.some((option) =>
     option.votes.some((vote) => vote.voter.toString() === userId.toString())
@@ -71,9 +75,16 @@ const castVote = asyncHandler(async (req, res) => {
     throw new ApiError(404, "Option not found");
   }
 
-  option.votes.push({ voter:new mongoose.Types.ObjectId(userId) });
+  option.votes.push({ voter: new mongoose.Types.ObjectId(userId) });
 
   await poll.save();
+
+  emitSocketEvent(req, roomId, PollEventEnum.CASTVOTE_POLL_EVENT, {
+    pollId: poll._id,
+    optionId: optionId,
+    votesCount: option.votes.length,
+    userId,
+  });
   return res.json(new ApiResponse(200, poll, "Vote cast successfully"));
 });
 
@@ -151,6 +162,7 @@ const deletePoll = asyncHandler(async (req, res) => {
     { new: true }
   );
 
+  emitSocketEvent(req, roomId, PollEventEnum.CASTVOTE_POLL_EVENT, pollId);
   return res.json(new ApiResponse(200, {}, "Poll deleted successfully"));
 });
 
