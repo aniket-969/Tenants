@@ -73,10 +73,10 @@ const initializeSocketIO = (io) => {
     }
   });
 };
-
+ 
 const emitSocketEvent = (req, roomId, event, payload) => {
   console.log("EMITTING",roomId,payload,event)
   req.app.get("io").in(roomId).emit(event, payload);
 };
-
+  
 export { initializeSocketIO, emitSocketEvent };
