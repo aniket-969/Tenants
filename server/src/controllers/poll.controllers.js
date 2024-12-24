@@ -162,7 +162,7 @@ const deletePoll = asyncHandler(async (req, res) => {
     { new: true }
   );
 
-  emitSocketEvent(req, roomId, PollEventEnum.CASTVOTE_POLL_EVENT, pollId);
+  emitSocketEvent(req, roomId, PollEventEnum.DELETE_POLL_EVENT, pollId);
   return res.json(new ApiResponse(200, {}, "Poll deleted successfully"));
 });
 
