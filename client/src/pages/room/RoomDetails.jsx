@@ -29,7 +29,7 @@ const RoomDetails = () => {
 
       {/* <Maintenance /> */}
       {/* <RoomEvents /> */}
-      <RoomExpense data={data} />
+      {/* <RoomExpense data={data} /> */}
     </div>
   );
 };
