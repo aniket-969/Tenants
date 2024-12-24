@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { createMaintenanceSchema } from "@/schema/maintenanceSchema";
+import { pollSchema } from "@/schema/PollSchema";
 import { zodResolver } from "./../../../node_modules/@hookform/resolvers/zod/src/zod";
 import {
   Form,
@@ -13,32 +13,30 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "../ui/button";
 import { toast } from "react-toastify";
-import { useMaintenance } from "./../../hooks/useMaintenance";
+import { usePoll } from "./../../hooks/usePoll";
 import { useParams } from "react-router-dom";
+import { OptionSelector } from "../ui/OptionsField";
 
-export const MaintenanceForm = () => {
-    const {roomId} = useParams()
-  const { createMaintenanceMutation } = useMaintenance(roomId);
+export const PollForm = () => {
+  const { roomId } = useParams();
+  const { createPollMutation } = usePoll();
   const onSubmit = async (values) => {
-    console.log(values);
-    
+    console.log(values, roomId);
+    return;
     try {
-      const response = await createMaintenanceMutation.mutateAsync(values);
+      const response = await createPollMutation.mutateAsync(values, roomId);
       console.log(response);
-      toast("Maintenance issue added");
+      toast("Poll issue added");
     } catch (error) {
       console.error("Error during registration:", error);
     }
   };
-
   const form = useForm({
-    resolver: zodResolver(createMaintenanceSchema),
+    resolver: zodResolver(pollSchema),
     defaultValues: {
       title: "",
-      description: "",
-      maintenanceProvider: "",
-      contactPhone: "",
-      costEstimate: "", 
+      voteEndTime: "",
+      options: [],
     },
   });
 
@@ -52,9 +50,8 @@ export const MaintenanceForm = () => {
             <FormItem>
               <FormLabel>Title</FormLabel>
               <FormControl>
-                <Input placeholder="add title" {...field} />
+                <Input placeholder="Add Poll Title" {...field} />
               </FormControl>
-
               <FormMessage />
             </FormItem>
           )}
@@ -62,21 +59,21 @@ export const MaintenanceForm = () => {
 
         <FormField
           control={form.control}
-          name="description"
+          name="voteEndTime"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Description</FormLabel>
+              <FormLabel>Vote End Time</FormLabel>
               <FormControl>
-                <Input placeholder="description" {...field} />
+                <Input type="datetime-local" {...field} />
               </FormControl>
-
               <FormMessage />
             </FormItem>
           )}
         />
-        
-        
-        <Button type="submit">Submit</Button>
+
+        <OptionSelector control={form.control} name="options" />
+
+        <Button type="submit">Create Poll</Button>
       </form>
     </Form>
   );

@@ -5,6 +5,7 @@ import Maintenance from "./Maintenance";
 import RoomExpense from "./RoomExpense";
 import RoomEvents from "./RoomEvents";
 import { useEffect } from "react";
+import { PollForm } from "@/components/form/PollForm";
 
 const RoomDetails = () => {
   const { roomId } = useParams();
@@ -26,7 +27,7 @@ const RoomDetails = () => {
         <p>{data.name}</p>
         <p>{data.description}</p>
       </div>
-
+      <PollForm />
       {/* <Maintenance /> */}
       {/* <RoomEvents /> */}
       {/* <RoomExpense data={data} /> */}

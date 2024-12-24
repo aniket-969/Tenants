@@ -3,7 +3,6 @@ import { stringValidation } from "./../utils/validation";
 
 export const pollSchema = z.object({
   title: stringValidation(1, 100, "title"),
-  status: z.enum(["active", "completed", "closed"]).optional(),
   voteEndTime: z
     .string()
     .transform((val) => new Date(val))
@@ -12,5 +11,5 @@ export const pollSchema = z.object({
     }),
   options: z
     .array(stringValidation(1, 100, "Option Text"))
-    .min(1, { message: "At least one option is required" }),
+    .min(2, { message: "At least two options are required" }),
 });
