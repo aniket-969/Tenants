@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { validate } from "../middleware/validator.middleware.js";
-import { castVoteSchema, pollSchema } from "../zod/poll.schema.js";
+import {pollSchema } from "../zod/poll.schema.js";
 import { checkMember } from "../middleware/room.middleware.js";
 import {
   castVote,
@@ -21,7 +21,7 @@ router.route("/:pollId").patch(verifyJWT, updatePoll);
 router.route("/:pollId").delete(verifyJWT, deletePoll);
 
 // Voting on a poll option
-router.route("/:pollId/vote/:optionId").post(validate(castVoteSchema), verifyJWT, castVote);
+router.route("/:pollId/vote/:optionId").patch( verifyJWT, castVote);
 
 
 router.route("/:pollId").delete(verifyJWT, deletePoll);

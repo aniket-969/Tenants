@@ -39,4 +39,19 @@ const adminOnly = asyncHandler(async (req, res, next) => {
   next();
 });
 
-export { checkMember,adminOnly };
+const isRoomMember = async (roomId, userId) => {
+  const room = await Room.findById(roomId).select("tenants admin landlord");
+
+  if (!room) {
+    throw new ApiError(404, "Room not found");
+  }
+
+  // Check if user is the admin, landlord, or a tenant
+  const isMember =
+    room.landlord?.toString() === userId.toString() ||
+    room.tenants.some((tenantId) => tenantId.toString() === userId.toString());
+
+  return isMember;
+};
+
+export { checkMember,adminOnly,isRoomMember };

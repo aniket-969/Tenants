@@ -194,7 +194,7 @@ const roomSchema = new Schema(
           type: String,
         },
       },
-    ],
+    ], 
     lastMessage: { type: Schema.Types.ObjectId, ref: "ChatMessage" },
     polls: [{ type: mongoose.Schema.Types.ObjectId, ref: "Vote" }],
   },
