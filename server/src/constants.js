@@ -1,4 +1,3 @@
-
 export const RoomEventEnum = Object.freeze({
   JOIN_ROOM_EVENT: "joinRoom",
   LEAVE_ROOM_EVENT: "leaveRoom",
@@ -7,7 +6,7 @@ export const RoomEventEnum = Object.freeze({
   DELETE_ROOM_EVENT: "deleteRoom",
   UPDATE_ROOM_EVENT: "updateRoom",
   ADMIN_ROOM_CHANGE: "adminChange",
-  DISCONNECT_EVENT:"userDisconnected",
+  DISCONNECT_EVENT: "userDisconnected",
 });
 
 export const AvailableRoomEvents = Object.values(RoomEventEnum);
@@ -31,6 +30,14 @@ export const ChatEventEnum = Object.freeze({
 });
 
 export const AvailableChatEvents = Object.values(ChatEventEnum);
+
+export const PollEventEnum = Object.freeze({
+  CREATE_POLL_EVENT: "createPoll",
+  CASTVOTE_POLL_EVENT: "castVote",
+  DELETE_POLL_EVENT: "deletePoll",
+});
+
+export const AvailablePollEvents = Object.values(PollEventEnum);
 
 export const TaskEventEnum = Object.freeze({
   TASK_CREATE_EVENT: "createdTask",
@@ -65,7 +72,6 @@ export const CalendarEventEnum = Object.freeze({
 
 export const AvailableCalendarEvents = Object.values(CalendarEventEnum);
 
-
 export const ExpenseEventEnum = Object.freeze({
   EXPENSE_CREATED_EVENT: "createExpense",
   EXPENSE_DELETED_EVENT: "deleteExpense",
@@ -73,4 +79,3 @@ export const ExpenseEventEnum = Object.freeze({
 });
 
 export const AvailableExpenseEvents = Object.values(ExpenseEventEnum);
-

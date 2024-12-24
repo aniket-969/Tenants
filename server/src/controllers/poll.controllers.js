@@ -11,6 +11,7 @@ const hasUserVoted = (poll, userId) => {
     option.votes.some((vote) => vote.voter.toString() === userId.toString())
   );
 };
+
 const createPoll = asyncHandler(async (req, res) => {
   const { roomId } = req.params;
   const { title, status, voteEndTime, options } = req.body; // Use 'options' from the updated schema
@@ -63,7 +64,7 @@ const castVote = asyncHandler(async (req, res) => {
     option.votes.some((vote) => vote.voter.toString() === userId.toString())
   );
 
-  if (userHasVoted) throw new ApiError(400, "User already have voted");
+  if (userHasVoted) throw new ApiError(400, "User has already voted");
 
   const option = poll.options.id(optionId);
   if (!option) {
@@ -134,6 +135,7 @@ const getRoomPolls = asyncHandler(async (req, res) => {
     new ApiResponse(200, formattedPolls, "Room polls fetched successfully")
   );
 });
+
 const deletePoll = asyncHandler(async (req, res) => {
   const { pollId } = req.params;
 
