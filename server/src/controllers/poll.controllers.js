@@ -29,6 +29,16 @@ const createPoll = asyncHandler(async (req, res) => {
     room: roomId,
     options: formattedOptions, // Save the formatted options
   });
+  const room = await Room.findByIdAndUpdate(
+    roomId,
+    { $push: { polls: poll._id } },
+    { new: true }
+  );
+
+  if (!room) {
+    await Poll.findByIdAndDelete(poll._id); // Cleanup orphaned poll
+    return res.status(404).json(new ApiResponse(404, null, "Room not found"));
+  }
 
   return res.json(new ApiResponse(201, poll, "Poll created successfully"));
 });
