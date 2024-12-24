@@ -16,7 +16,7 @@ const hasUserVoted = (poll, userId) => {
 
 const createPoll = asyncHandler(async (req, res) => {
   const { roomId } = req.params;
-  const { title, status, voteEndTime, options } = req.body; // Use 'options' from the updated schema
+  const { title, voteEndTime, options } = req.body; // Use 'options' from the updated schema
   const createdBy = req.user?._id;
 
   // Map the options array to the required format
@@ -28,7 +28,6 @@ const createPoll = asyncHandler(async (req, res) => {
   const poll = await Poll.create({
     createdBy,
     title,
-    status,
     voteEndTime,
     room: roomId,
     options: formattedOptions, // Save the formatted options
@@ -162,7 +161,7 @@ const deletePoll = asyncHandler(async (req, res) => {
     { new: true }
   );
 
-  emitSocketEvent(req, roomId, PollEventEnum.DELETE_POLL_EVENT, pollId);
+  emitSocketEvent(req, poll.room, PollEventEnum.DELETE_POLL_EVENT, pollId);
   return res.json(new ApiResponse(200, {}, "Poll deleted successfully"));
 });
 
