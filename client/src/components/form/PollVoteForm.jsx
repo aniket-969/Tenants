@@ -12,28 +12,27 @@ import {
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { usePoll } from "@/hooks/usePoll";
 import { toast } from "react-toastify";
+import { useParams } from "react-router-dom";
 
 const PollVoteForm = ({ poll }) => {
+    
   const form = useForm();
   const {castVoteMutation} = usePoll()
 
-  const onSubmit = (values) => {
+  const onSubmit = async(values) => {
     const payload = {
         pollId:poll._id,
         optionId:values.optionId
     }
     console.log(payload);
-    return ;
     
-    // try {
-    //     const response = await castVoteMutation.mutateAsync({
-    //      optionId,
-    //     });
-    //     console.log(response);
-    //     toast("Vote added successful");
-    //   } catch (error) {
-    //     console.error("Error during adding payment method:", error);
-    //   }
+    try {
+        const response = await castVoteMutation.mutateAsync(payload);
+        console.log(response);
+        toast("Vote added successful");
+      } catch (error) {
+        console.error("Error during adding payment method:", error);
+      }
   };
 
   return (
