@@ -20,7 +20,7 @@ export const usePoll = () => {
   });
 
   const castVoteMutation = useMutation({
-    mutationFn: ({pollId, optionId, data}) => castVote(pollId, optionId, data),
+    mutationFn: ({pollId, optionId}) => castVote(pollId, optionId),
     onSuccess: () => {
       toast("Vote added successfully");
     },

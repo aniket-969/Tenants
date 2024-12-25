@@ -7,10 +7,9 @@ export const createPoll = async (data,roomId) => {
   return axiosClient.post(`${basePoll}/${roomId}/polls`, data);
 };
 
-export const castVote = async (pollId, optionId, data) => {
+export const castVote = async (pollId, optionId) => {
   return axiosClient.patch(
-    `/${basePoll}/${pollId}/vote/${optionId}`,
-    data
+    `/${basePoll}/${pollId}/vote/${optionId}`
   );
 };
 

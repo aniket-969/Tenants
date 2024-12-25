@@ -10,18 +10,38 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { usePoll } from "@/hooks/usePoll";
+import { toast } from "react-toastify";
 
 const PollVoteForm = ({ poll }) => {
   const form = useForm();
+  const {castVoteMutation} = usePoll()
+
   const onSubmit = (values) => {
-    console.log(values);
+    const payload = {
+        pollId:poll._id,
+        optionId:values.optionId
+    }
+    console.log(payload);
+    return ;
+    
+    // try {
+    //     const response = await castVoteMutation.mutateAsync({
+    //      optionId,
+    //     });
+    //     console.log(response);
+    //     toast("Vote added successful");
+    //   } catch (error) {
+    //     console.error("Error during adding payment method:", error);
+    //   }
   };
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6">
         <FormField
           control={form.control}
-          name="type"
+          name="optionId"
           render={({ field }) => (
             <FormItem className="space-y-3">
               <FormLabel>{poll.title}</FormLabel>
@@ -37,7 +57,7 @@ const PollVoteForm = ({ poll }) => {
                       className="flex items-center space-x-3 space-y-0"
                     >
                       <FormControl>
-                        <RadioGroupItem value={option.optionText} />
+                        <RadioGroupItem value={option._id} />
                       </FormControl>
                       <FormLabel className="font-normal">
                         {option.optionText}
