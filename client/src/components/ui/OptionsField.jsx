@@ -1,7 +1,12 @@
 import { useFieldArray, Controller } from "react-hook-form";
 import { Button } from "../ui/button";
 import { Input } from "@/components/ui/input";
-import { FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
+import {
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+} from "@/components/ui/form";
 
 export const OptionSelector = ({ control, name }) => {
   const { fields, append, remove } = useFieldArray({
@@ -25,7 +30,7 @@ export const OptionSelector = ({ control, name }) => {
             </FormControl>
             <FormMessage />
           </FormItem>
-          
+
           {/* Remove button */}
           <Button type="button" onClick={() => remove(index)}>
             Remove
@@ -42,7 +47,9 @@ export const OptionSelector = ({ control, name }) => {
 
       {/* Optional: Show a message when max options (6) is reached */}
       {fields.length >= 6 && (
-        <p className="text-sm text-gray-500 mt-2">You can only add up to 6 options.</p>
+        <p className="text-sm text-gray-500 mt-2">
+          You can only add up to 6 options.
+        </p>
       )}
     </div>
   );
