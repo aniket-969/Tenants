@@ -12,11 +12,14 @@ const PollVote = ({ initialPolls }) => {
   const socket = getSocket();
 
   useEffect(() => {
+    console.log("socket poll");
     const handleCreatePoll = (newPoll) => {
-      console.log(newPoll);
+      console.log("create it");
+      setPolls((prevPoll) => [...prevPoll, newPoll]);
     };
-    const handleCastVote = (newMessage) => {
-      console.log(newMessage);
+    const handleCastVote = (data) => {
+      console.log("cast it");
+      console.log(data);
     };
 
     socket.on("createPoll", handleCreatePoll);
