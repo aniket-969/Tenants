@@ -49,6 +49,7 @@ const createPoll = asyncHandler(async (req, res) => {
 });
 
 const castVote = asyncHandler(async (req, res) => {
+  console.log(req.params)
   const { pollId, optionId } = req.params;
   const userId = req.user?._id;
 
@@ -58,8 +59,9 @@ const castVote = asyncHandler(async (req, res) => {
   if (new Date() > new Date(poll.voteEndTime)) {
     throw new ApiError(400, "Voting has ended for this poll");
   }
+const roomId = poll.room
 
-  if (!isRoomMember(poll.room, userId)) {
+  if (!isRoomMember(roomId, userId)) {
     throw new ApiError(401, "User not authorized to vote this poll");
   }
 

@@ -40,6 +40,7 @@ const adminOnly = asyncHandler(async (req, res, next) => {
 });
 
 const isRoomMember = async (roomId, userId) => {
+  console.log(roomId)
   const room = await Room.findById(roomId).select("tenants admin landlord");
 
   if (!room) {
