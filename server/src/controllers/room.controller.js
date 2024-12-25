@@ -112,11 +112,16 @@ const addUserRequest = asyncHandler(async (req, res) => {
   } else {
     return res.json(new ApiResponse(400, {}, "Request already sent"));
   }
-  emitSocketEvent(req, room.admin.toString(), RoomEventEnum.JOIN_ROOM_REQUEST_EVENT, {
-    userId,
-    role,
-    roomId: room._id,
-  });
+  emitSocketEvent(
+    req,
+    room.admin.toString(),
+    RoomEventEnum.JOIN_ROOM_REQUEST_EVENT,
+    {
+      userId,
+      role,
+      roomId: room._id,
+    }
+  );
   return res.json(new ApiResponse(200, {}, "Request sent successfully"));
 });
 
@@ -223,6 +228,7 @@ const getRoomData = asyncHandler(async (req, res) => {
     {
       path: "awards",
     },
+    { path: "polls" },
   ]);
 
   if (!room) {

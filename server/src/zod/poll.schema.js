@@ -9,7 +9,7 @@ export const pollSchema = z.object({
     .transform((val) => new Date(val))
     .refine((date) => !isNaN(date.getTime()), {
       message: "Invalid date format",
-    }),
+    }), 
   options: z
     .array(stringValidation(1, 100, "Option Text"))
     .min(1, { message: "At least one option is required" }),
