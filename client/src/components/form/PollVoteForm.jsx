@@ -12,22 +12,11 @@ import {
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { usePoll } from "@/hooks/usePoll";
 import { useParams } from "react-router-dom";
-import { useAuth } from "@/hooks/useAuth";
-import { Spinner } from "../ui/spinner";
 
 const PollVoteForm = ({ poll }) => {
   const form = useForm();
   const { castVoteMutation } = usePoll();
-  const { sessionQuery } = useAuth();
-  const { data, isLoading, isError } = sessionQuery;
-
-  if (isLoading) {
-    return <Spinner />;
-  }
-  if (isError) {
-    return <p>Something went wrong</p>;
-  }
-  console.log(data._id);
+ 
   const onSubmit = async (values) => {
     const payload = {
       pollId: poll._id,
