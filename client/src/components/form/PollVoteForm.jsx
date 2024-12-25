@@ -16,7 +16,7 @@ import { useParams } from "react-router-dom";
 const PollVoteForm = ({ poll }) => {
   const form = useForm();
   const { castVoteMutation } = usePoll();
- 
+
   const onSubmit = async (values) => {
     const payload = {
       pollId: poll._id,

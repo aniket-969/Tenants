@@ -29,7 +29,7 @@ const RoomDetails = () => {
         <p>{data.description}</p>
       </div>
       <PollForm />
-<PollVote polls = {data.polls}/>
+      <PollVote initialPolls={data.polls} />
       {/* <Maintenance /> */}
       {/* <RoomEvents /> */}
       {/* <RoomExpense data={data} /> */}
