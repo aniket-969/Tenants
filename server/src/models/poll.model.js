@@ -15,7 +15,7 @@ const pollSchema = new Schema(
       type: String,
       required: true,
     },
-    options: [ 
+    options: [
       {
         optionText: {
           type: String,
@@ -36,7 +36,12 @@ const pollSchema = new Schema(
       enum: ["active", "completed", "closed"],
       default: "active",
     },
-
+    voters: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
     room: {
       type: Schema.Types.ObjectId,
       ref: "Room",
@@ -47,5 +52,6 @@ const pollSchema = new Schema(
 );
 
 pollSchema.index({ _id: 1, "votes.voter": 1 }, { unique: true });
+
 
 export const Poll = mongoose.model("Vote", pollSchema);
