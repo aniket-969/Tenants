@@ -36,7 +36,6 @@ export const PollForm = () => {
       ...values,
       options: values.options.filter((opt) => opt.trim() !== ""), // Remove empty options
     };
-    console.log(data);
     
     try {
       const response = await createPollMutation.mutateAsync({

@@ -6,6 +6,7 @@ import RoomExpense from "./RoomExpense";
 import RoomEvents from "./RoomEvents";
 import { useEffect } from "react";
 import { PollForm } from "@/components/form/PollForm";
+import PollVote from "@/components/PollVote";
 
 const RoomDetails = () => {
   const { roomId } = useParams();
@@ -28,6 +29,7 @@ const RoomDetails = () => {
         <p>{data.description}</p>
       </div>
       <PollForm />
+<PollVote polls = {data.polls}/>
       {/* <Maintenance /> */}
       {/* <RoomEvents /> */}
       {/* <RoomExpense data={data} /> */}

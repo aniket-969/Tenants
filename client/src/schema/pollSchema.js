@@ -12,4 +12,4 @@ export const pollSchema = z.object({
   options: z
     .array(stringValidation(1, 100, "Option Text"))
     .min(2, { message: "At least two options are required" }),
-});
+}); 
