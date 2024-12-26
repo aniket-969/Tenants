@@ -17,6 +17,7 @@ import Room from "../room/Room.jsx";
 import Awards from "../room/Awards.jsx";
 import { SocketProvider } from "@/socket.jsx";
 import Chat from "../room/Chat.jsx";
+import RoomProvider from "@/context/RoomContext.jsx";
 
 const LandingPage = React.lazy(() => import("../LandingPage.jsx"));
 const Login = React.lazy(() => import("../auth/Login.jsx"));
@@ -28,7 +29,8 @@ const RoomRoutes = () => {
       <Routes>
         <Route path="" element={<Room />} />
         <Route path="create" element={<CreateRoom />} />
-        <Route path=":roomId" element={<RoomLayout />}>
+        <Route path=":roomId" element={<RoomProvider>
+          <RoomLayout /></RoomProvider>}>
           <Route index element={<RoomDetails />} />
           <Route path="awards" element={<Awards />} />
           <Route path="chat" element={<Chat />} />

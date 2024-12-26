@@ -1,4 +1,5 @@
 import { createContext, useMemo, useContext, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import io from "socket.io-client";
 
 const SocketContext = createContext();
@@ -6,7 +7,6 @@ const SocketContext = createContext();
 export const getSocket = () => useContext(SocketContext);
 
 const SocketProvider = ({ children }) => {
-
   const socket = useMemo(
     () =>
       io(import.meta.env.REACT_APP_SOCKET_SERVER || "http://localhost:3000", {
@@ -14,7 +14,6 @@ const SocketProvider = ({ children }) => {
       }),
     []
   );
-
   useEffect(() => {
     socket.on("connect", () => {
       console.log("connected", socket.id);
@@ -28,7 +27,7 @@ const SocketProvider = ({ children }) => {
       socket.disconnect();
     };
   }, []);
-  
+
   return (
     <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>
   );

@@ -10,7 +10,7 @@ const PollVote = ({ initialPolls }) => {
   const { sessionQuery } = useAuth();
   const { data: user, isLoading, isError } = sessionQuery;
   const { roomId } = useParams();
-  const socket = getSocket();
+  const socket = getSocket();  
 
   useEffect(() => {
     console.log("socket poll");

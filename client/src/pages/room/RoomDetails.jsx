@@ -7,6 +7,7 @@ import RoomEvents from "./RoomEvents";
 import { useEffect } from "react";
 import { PollForm } from "@/components/form/PollForm";
 import PollVote from "@/components/PollVote";
+import { getSocket } from "@/socket";
 
 const RoomDetails = () => {
   const { roomId } = useParams();
@@ -14,6 +15,21 @@ const RoomDetails = () => {
   const { roomQuery } = useRoom(roomId);
   const { data, isLoading, isError } = roomQuery;
   // console.log(data);
+  const socket = getSocket();
+
+  useEffect(() => {
+    // Join room only if it's a new room
+
+    socket.emit("joinRoom", roomId);
+    console.log(`Joined room: ${roomId}`);
+
+    return () => {
+      // Leave room when the user navigates away from the room entirely
+
+      socket.emit("leaveRoom", roomId);
+      console.log(`Left room: ${roomId}`);
+    };
+  }, [roomId, socket]);
 
   if (isLoading) {
     return <Spinner />;
