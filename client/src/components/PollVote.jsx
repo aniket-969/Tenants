@@ -10,7 +10,18 @@ const PollVote = ({ initialPolls }) => {
   const { sessionQuery } = useAuth();
   const { data: user, isLoading, isError } = sessionQuery;
   const { roomId } = useParams();
-  const socket = getSocket();  
+
+  const socket = getSocket();
+
+  useEffect(() => {
+    socket.emit("joinRoom", roomId);
+    console.log(`Joined room: ${roomId}`);
+
+    return () => {
+      socket.emit("leaveRoom", roomId);
+      console.log(`Left room: ${roomId}`);
+    };
+  }, [roomId, socket]);
 
   useEffect(() => {
     console.log("socket poll");
