@@ -12,17 +12,17 @@ import { useEffect } from "react";
 const RoomDetails = () => {
   const { roomId } = useParams();
 
-  // const socket = getSocket();
+  const socket = getSocket();
 
-  // useEffect(() => {
-  //   socket.emit("joinRoom", roomId);
-  //   console.log(`Joined room: ${roomId}`);
+  useEffect(() => {
+    socket.emit("joinRoom", roomId);
+    console.log(`Joined room: ${roomId}`);
 
-  //   return () => {
-  //     socket.emit("leaveRoom", roomId);
-  //     console.log(`Left room: ${roomId}`);
-  //   };
-  // }, [roomId, socket]);
+    return () => {
+      socket.emit("leaveRoom", roomId);
+      console.log(`Left room: ${roomId}`);
+    };
+  }, [roomId, socket]);
 
   const { roomQuery } = useRoom(roomId);
   const { data, isLoading, isError } = roomQuery;

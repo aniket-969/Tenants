@@ -13,15 +13,15 @@ const PollVote = ({ initialPolls }) => {
 
   const socket = getSocket();
 
-  useEffect(() => {
-    socket.emit("joinRoom", roomId);
-    console.log(`Joined room: ${roomId}`);
-
-    return () => {
-      socket.emit("leaveRoom", roomId);
-      console.log(`Left room: ${roomId}`);
-    };
-  }, [roomId, socket]);
+  // useEffect(() => {
+  //   socket.emit("joinRoom", roomId);
+  //   console.log(`Joined room: ${roomId}`);
+ 
+  //   return () => {
+  //     socket.emit("leaveRoom", roomId);
+  //     console.log(`Left room: ${roomId}`);
+  //   };
+  // }, [roomId, socket]);
 
   useEffect(() => {
     console.log("socket poll");
