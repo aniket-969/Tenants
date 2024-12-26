@@ -3,12 +3,13 @@ import PollVoteForm from "./form/PollVoteForm";
 import { PollResults } from "./PollResults";
 import { useEffect, useState } from "react";
 import { getSocket } from "@/socket";
+import { useParams } from "react-router-dom";
 
 const PollVote = ({ initialPolls }) => {
   const [polls, setPolls] = useState(initialPolls);
   const { sessionQuery } = useAuth();
   const { data: user, isLoading, isError } = sessionQuery;
-
+  const { roomId } = useParams();
   const socket = getSocket();
 
   useEffect(() => {
