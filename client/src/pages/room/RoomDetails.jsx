@@ -13,16 +13,18 @@ const RoomDetails = () => {
   const { roomId } = useParams();
 
   const socket = getSocket();
-
   useEffect(() => {
     socket.emit("joinRoom", roomId);
     console.log(`Joined room: ${roomId}`);
 
+    localStorage.setItem("currentRoomId", roomId);
+
     return () => {
       socket.emit("leaveRoom", roomId);
       console.log(`Left room: ${roomId}`);
+      localStorage.removeItem("currentRoomId");
     };
-  }, [roomId, socket]);
+  }, [roomId]);
 
   const { roomQuery } = useRoom(roomId);
   const { data, isLoading, isError } = roomQuery;

@@ -12,19 +12,8 @@ const PollVote = ({ initialPolls }) => {
   const { roomId } = useParams();
 
   const socket = getSocket();
-
-  // useEffect(() => {
-  //   socket.emit("joinRoom", roomId);
-  //   console.log(`Joined room: ${roomId}`);
  
-  //   return () => {
-  //     socket.emit("leaveRoom", roomId);
-  //     console.log(`Left room: ${roomId}`);
-  //   };
-  // }, [roomId, socket]);
-
   useEffect(() => {
-    console.log("socket poll");
     const handleCreatePoll = (newPoll) => {
       console.log("create it");
       setPolls((prevPoll) => [...prevPoll, newPoll]);
