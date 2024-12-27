@@ -1,5 +1,5 @@
-import { createContext, useMemo, useContext, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { createContext, useMemo, useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import io from "socket.io-client";
 
 export const SocketContext = createContext();
@@ -19,17 +19,36 @@ export const getSocket = () => {
 
 const SocketProvider = ({ children }) => {
   const socket = useMemo(() => getSocket(), []);
+  const [currentRoomId, setCurrentRoomId] = useState(null);
+  const location = useLocation();
+
+  const joinRoom = (roomId) => {
+    if (currentRoomId !== roomId) {
+      if (currentRoomId) {
+        socket.emit("leaveRoom", currentRoomId);
+        console.log(`Left room: ${currentRoomId}`);
+      }
+      socket.emit("joinRoom", roomId);
+      console.log(`Joined room: ${roomId}`);
+      setCurrentRoomId(roomId);
+      localStorage.setItem("currentRoomId", roomId);
+    }
+  };
+
+  const leaveRoom = () => {
+    const roomId = localStorage.getItem("currentRoomId");
+    if (currentRoomId) {
+      socket.emit("leaveRoom", currentRoomId);
+      console.log(`Left room: ${currentRoomId}`);
+      localStorage.removeItem("currentRoomId");
+      setCurrentRoomId(null);
+    }
+  };
 
   useEffect(() => {
     socket.on("connect", () => {
       console.log("connected", socket.id);
 
-      // Rejoin rooms after reconnecting
-      const roomId = localStorage.getItem("currentRoomId");
-      if (roomId) {
-        socket.emit("joinRoom", roomId);
-        console.log(`rejoined room: ${roomId}`);
-      }
     });
 
     socket.on("connect_error", (err) => {
@@ -42,7 +61,9 @@ const SocketProvider = ({ children }) => {
   }, [socket]);
 
   return (
-    <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>
+    <SocketContext.Provider value={{ socket }}>
+      {children}
+    </SocketContext.Provider>
   );
 };
 
