@@ -5,13 +5,21 @@ import { useContext, useEffect } from "react";
 import { SocketContext } from "@/socket";
 import PollVote from "@/components/PollVote";
 import { PollForm } from "@/components/form/PollForm";
+import { leaveRoom } from "./../../api/queries/room";
+import { Socket } from "socket.io-client";
 
 const RoomDetails = () => {
   const { roomId } = useParams();
-  
+
   const { roomQuery } = useRoom(roomId);
   const { data, isLoading, isError } = roomQuery;
-
+  const { joinRoom, leaveRoom, socket } = useContext(SocketContext);
+  useEffect(() => {
+    joinRoom(roomId)
+    return(()=>{
+      leaveRoom(roomId)
+    })
+  }, [roomId]);
   if (isLoading) {
     return <Spinner />;
   }
