@@ -2,7 +2,7 @@ import { createContext, useMemo, useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import io from "socket.io-client";
 
-const SocketContext = createContext();
+export const SocketContext = createContext();
 let socketInstance;
 
 export const getSocket = () => {
@@ -28,7 +28,7 @@ const SocketProvider = ({ children }) => {
       const roomId = localStorage.getItem("currentRoomId");
       if (roomId) {
         socket.emit("joinRoom", roomId);
-        console.log(`Rejoined room: ${roomId}`);
+        console.log(`rejoined room: ${roomId}`);
       }
     });
 

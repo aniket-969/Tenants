@@ -6,13 +6,13 @@ import RoomExpense from "./RoomExpense";
 import RoomEvents from "./RoomEvents";
 import { PollForm } from "@/components/form/PollForm";
 import PollVote from "@/components/PollVote";
-import { getSocket } from "@/socket";
-import { useEffect } from "react";
+import { getSocket, SocketContext } from "@/socket";
+import { useContext, useEffect } from "react";
 
 const RoomDetails = () => {
   const { roomId } = useParams();
 
-  const socket = getSocket();
+  const socket = useContext(SocketContext);
   useEffect(() => {
     socket.emit("joinRoom", roomId);
     console.log(`Joined room: ${roomId}`);
