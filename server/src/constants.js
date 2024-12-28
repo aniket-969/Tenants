@@ -46,9 +46,9 @@ export const TaskEventEnum = Object.freeze({
   TASK_SWITCH_REQUEST_EVENT: "requestSwitchTask",
   TASK_SWITCH_RESPONSE_EVENT: "responseSwitchTask",
 });
-
+  
 export const AvailableTaskEvents = Object.values(TaskEventEnum);
-
+ 
 export const MaintenanceEventEnum = Object.freeze({
   MAINTENANCE_CREATED_EVENT: "createMaintenance",
   MAINTENANCE_DELETED_EVENT: "deleteMaintenance",

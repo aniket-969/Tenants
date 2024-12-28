@@ -37,7 +37,7 @@ const paidBy = req.user._id
     new ApiResponse(201, expense, "Expense detail created successfully")
   );
 });
-
+ 
 const updatePayment = asyncHandler(async (req, res) => {
   const userId = req.user?._id;
   const {expenseId,roomId} = req.params

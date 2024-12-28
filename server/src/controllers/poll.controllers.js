@@ -47,9 +47,9 @@ const createPoll = asyncHandler(async (req, res) => {
 
   return res.json(new ApiResponse(201, poll, "Poll created successfully"));
 });
-
+ 
 const castVote = asyncHandler(async (req, res) => {
-  console.log(req.params);
+  // console.log(req.params);
   const { pollId, optionId } = req.params;
   const userId = req.user?._id;
 
@@ -79,13 +79,14 @@ const castVote = asyncHandler(async (req, res) => {
   option.votes.push({ voter: new mongoose.Types.ObjectId(userId) });
   poll.voters.push(userId);
   await poll.save();
-
-  emitSocketEvent(req, roomId, PollEventEnum.CASTVOTE_POLL_EVENT, {
+  const pollData = {
     pollId: poll._id,
-    optionId: optionId,
-    votesCount: option.votes.length,
-    userId,
-  });
+    options: poll.options,
+    voters: poll.voters,
+  };
+
+  emitSocketEvent(req, roomId, "castVote", pollData);
+
   return res.json(new ApiResponse(200, poll, "Vote cast successfully"));
 });
 

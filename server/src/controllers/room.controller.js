@@ -216,7 +216,8 @@ const deleteRoom = asyncHandler(async (req, res) => {
 const getRoomData = asyncHandler(async (req, res) => {
   const { roomId } = req.params;
   const userId = req.user?._id;
-  console.log(roomId, userId);
+  // console.log(roomId, userId);
+  console.log("getting room Data")
   let roomQuery = await Room.findById(roomId).select(
     "-groupCode -pendingRequests"
   );

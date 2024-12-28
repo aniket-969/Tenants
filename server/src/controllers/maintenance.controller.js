@@ -35,7 +35,7 @@ const createMaintenance = asyncHandler(async (req, res) => {
     req,
     roomId,
     MaintenanceEventEnum.MAINTENANCE_CREATED_EVENT,
-    `${user.fullName} created a maintenance issue`
+    newMaintenance
   );
   return res.json(
     new ApiResponse(

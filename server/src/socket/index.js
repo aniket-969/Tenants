@@ -57,7 +57,7 @@ const initializeSocketIO = (io) => {
       console.log("User connected 🗼. userId: ", user._id.toString(),socket.id);
 
       mountJoinRoomEvent(socket);
-
+ 
       socket.on(RoomEventEnum.DISCONNECT_EVENT, () => {
         console.log("user has disconnected 🚫. userId: " + socket.user?._id);
         if (socket.user?._id) {
@@ -70,7 +70,7 @@ const initializeSocketIO = (io) => {
         ChatEventEnum.SOCKET_ERROR_EVENT,
         error?.message || "Something went wrong while connecting to the socket."
       );
-    }
+    } 
   });
 };
  

@@ -3,13 +3,14 @@ import { Room } from "../models/rooms.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
-
+import { emitSocketEvent } from "../socket/index.js";
+  
 const customRoomAward = asyncHandler(async (req, res) => {
   const { roomId } = req.params;
   const { title, description, image, criteria, assignedTo } = req.body;
 
   const room = await Room.findById(roomId);
-
+ 
   const award = {
     title,
     description,
@@ -17,7 +18,7 @@ const customRoomAward = asyncHandler(async (req, res) => {
     criteria,
     assignedTo,
   };
-
+  
   room.awards.push(award);
   await room.save();
 
@@ -27,7 +28,7 @@ const customRoomAward = asyncHandler(async (req, res) => {
     req,
     roomId,
     AwardEventEnum.AWARD_CREATED_EVENT,
-    `${user.fullName} created an award`
+    newAward
   );
   return res.json(
     new ApiResponse(200, newAward, "Custom award created successfully")
@@ -110,11 +111,11 @@ const getRoomAwards = asyncHandler(async (req, res) => {
     new ApiResponse(200, roomWithAwards, "Room awards fetched succesfully")
   );
 });
-
+ 
 
 export {
   customRoomAward,
-  deleteRoomAward,
+  deleteRoomAward, 
   updateRoomAward,
   getRoomAwards
 };
