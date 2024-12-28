@@ -1,21 +1,25 @@
 
-import { Outlet} from "react-router-dom";
+import { getSocket } from "@/socket";
+import { useEffect } from "react";
+import { Outlet, useParams} from "react-router-dom";
 
 export const RoomLayout = ({ children }) => {
+  const { roomId } = useParams();
 
-  // useEffect(() => {
-  //   // Join room only if it's a new room
+  const socket = getSocket();
+  useEffect(() => {
+    socket.emit("joinRoom", roomId);
+    console.log(`Joined room: ${roomId}`);
 
-  //   socket.emit("joinRoom", roomId);
-  //   console.log(`Joined room: ${roomId}`);
+    localStorage.setItem("currentRoomId", roomId);
 
-  //   return () => {
-  //     // Leave room when the user navigates away from the room entirely
+    return () => {
+      socket.emit("leaveRoom", roomId);
+      console.log(`Left room: ${roomId}`);
+      localStorage.removeItem("currentRoomId");
+    };
+  }, [roomId]);
 
-  //     socket.emit("leaveRoom", roomId);
-  //     console.log(`Left room: ${roomId}`);
-  //   };
-  // }, [roomId, socket]);
 
   return (
     <>
