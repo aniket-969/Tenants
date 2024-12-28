@@ -35,7 +35,10 @@ const SocketProvider = ({ children }) => {
     socket.on("connect_error", (err) => {
       console.error("Socket connection error:", err.message);
     });
-
+    socket.onAny((event, data) => {
+      console.log(`Received event: ${event}`, data);
+    });
+    
     return () => {
       socket.disconnect();
     };

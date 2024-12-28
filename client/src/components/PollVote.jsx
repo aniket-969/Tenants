@@ -10,19 +10,28 @@ const PollVote = ({ initialPolls }) => {
   const { sessionQuery } = useAuth();
   const { data: user, isLoading, isError } = sessionQuery;
   const { roomId } = useParams();
-
   const socket = getSocket();
- 
+// console.log(polls[0],polls[1])
   useEffect(() => {
     const handleCreatePoll = (newPoll) => {
       console.log("create it");
       setPolls((prevPoll) => [...prevPoll, newPoll]);
     };
-    const handleCastVote = (data) => {
+    const handleCastVote = (updatedPoll) => {
       console.log("cast it");
-      console.log(data);
+      setPolls((prevPolls) =>
+        prevPolls.map((poll) =>
+          poll._id === updatedPoll.pollId
+            ? {
+                ...poll,
+                options: updatedPoll.options,
+                voters: updatedPoll.voters,
+              }
+            : poll
+        )
+      );
     };
-
+    
     socket.on("createPoll", handleCreatePoll);
     socket.on("castVote", handleCastVote);
 
