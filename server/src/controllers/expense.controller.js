@@ -4,11 +4,11 @@ import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { ExpenseEventEnum } from "../constants.js";
 import { emitSocketEvent } from "../socket/index.js";
+
 const createExpense = asyncHandler(async (req, res) => {
-  const {roomId} = req.params
-  const { name, totalAmount,  imageUrl, userExpense, dueDate } =
-    req.body;
-const paidBy = req.user._id
+  const { roomId } = req.params;
+  const { name, totalAmount, imageUrl, userExpense, dueDate } = req.body;
+  const paidBy = req.user._id;
   const participants = userExpense.map((user) => ({
     user: user.userId,
     amountOwed: user.amountOwed,
@@ -26,21 +26,16 @@ const paidBy = req.user._id
   if (!expense) {
     throw new ApiError(500, "Expense creation failed");
   }
-  const user = req.user
-  emitSocketEvent(
-    req,
-    roomId,
-    ExpenseEventEnum.EXPENSE_CREATED_EVENT,
-    `${user.fullName} made new expense`
-  );
+  const user = req.user;
+  emitSocketEvent(req, roomId, ExpenseEventEnum.EXPENSE_CREATED_EVENT, expense);
   return res.json(
     new ApiResponse(201, expense, "Expense detail created successfully")
   );
 });
- 
+
 const updatePayment = asyncHandler(async (req, res) => {
   const userId = req.user?._id;
-  const {expenseId,roomId} = req.params
+  const { expenseId, roomId } = req.params;
   const { paymentMode } = req.body;
   const expense = await Expense.findById(expenseId);
 
@@ -55,7 +50,7 @@ const updatePayment = asyncHandler(async (req, res) => {
   if (!participant) {
     throw new ApiError(403, "You are not part of participant in this expense");
   }
- 
+
   if (participant.hasPaid) {
     throw new ApiError(400, "You have already paid for this expense");
   }
@@ -71,13 +66,8 @@ const updatePayment = asyncHandler(async (req, res) => {
   });
 
   await expense.save();
-  const user = req.user
-  emitSocketEvent(
-    req,
-    roomId,
-    ExpenseEventEnum.EXPENSE_UPDATED_EVENT,
-    `${user.fullName} updated the expense`
-  );
+  const user = req.user;
+  emitSocketEvent(req, roomId, ExpenseEventEnum.EXPENSE_UPDATED_EVENT, expense);
   return res.json(
     new ApiResponse(200, expense, "Payment updated successfully")
   );
@@ -117,20 +107,20 @@ const getPendingPayments = asyncHandler(async (req, res) => {
     )
   );
 });
- 
+
 const deleteExpense = asyncHandler(async (req, res) => {
-  const { expenseId,roomId } = req.params;
+  const { expenseId, roomId } = req.params;
 
   const deletedExpense = await Expense.findByIdAndDelete(expenseId);
   if (!deletedExpense) {
     throw new ApiError(404, "Expense not find");
   }
-  const user = req.user
+  const user = req.user;
   emitSocketEvent(
     req,
     roomId,
     ExpenseEventEnum.EXPENSE_DELETED_EVENT,
-    `${user.fullName} deleted the expense`
+    expenseId
   );
   return res.json(new ApiResponse(200, {}, "Expense deleted successfully"));
 });
@@ -151,9 +141,17 @@ const getExpenseDetails = asyncHandler(async (req, res) => {
 });
 
 const updateExpense = asyncHandler(async (req, res) => {
-  const { expenseId,roomId } = req.params;
+  const { expenseId, roomId } = req.params;
   const userId = req.user.id; // Assuming authenticated user ID is available in req.user
-  const { name, totalAmount, paidBy, imageUrl, participants, dueDate, paymentHistory } = req.body;
+  const {
+    name,
+    totalAmount,
+    paidBy,
+    imageUrl,
+    participants,
+    dueDate,
+    paymentHistory,
+  } = req.body;
 
   // Fetch the expense to validate ownership
   const expense = await Expense.findById(expenseId);
@@ -182,19 +180,18 @@ const updateExpense = asyncHandler(async (req, res) => {
     new: true, // Return the updated document
     runValidators: true, // Ensure validation rules are enforced
   });
-  const user = req.user
+  const user = req.user;
   emitSocketEvent(
     req,
     roomId,
-    MaintenanceEventEnum.MAINTENANCE_DELETED_EVENT,
-    `${user.fullName} deleted maintenance issue`
+    ExpenseEventEnum.MAINTENANCE_DELETED_EVENT,
+    updatedExpense
   );
 
   return res.json(
     new ApiResponse(200, updatedExpense, "Expense updated successfully")
   );
 });
-
 
 export {
   createExpense,

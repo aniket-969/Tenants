@@ -36,7 +36,7 @@ const createCalendarEvent = asyncHandler(async (req, res) => {
     req,
     roomId,
     AvailableCalendarEvents. CALENDAR_CREATED_EVENT,
-    `${user.fullName} created an event`
+    calendarEvent
   );
   return res
     .status(201)
@@ -57,7 +57,7 @@ const deleteCalendarEvent = asyncHandler(async (req, res) => {
     req,
     roomId,
     AvailableCalendarEvents. CALENDAR_DELETED_EVENT,
-    `${user.fullName} deleted an event`
+    eventId
   );
   return res.json(
     new ApiResponse(200, {}, "Calendar event deleted successfully")

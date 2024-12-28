@@ -43,7 +43,7 @@ const createRoomTask = asyncHandler(async (req, res) => {
 
   await room.save();
   const newTask = room.tasks[room.tasks.length - 1];
-  emitSocketEvent(req,roomId,TaskEventEnum.TASK_CREATE_EVENT,`Admin added a new task`)
+  emitSocketEvent(req,roomId,TaskEventEnum.TASK_CREATE_EVENT, newTask)
   return res.json(new ApiResponse(200, newTask, "Task created successfully"));
 });
 
@@ -71,7 +71,7 @@ const updateRoomTask = asyncHandler(async (req, res) => {
   }
 
   const updatedTask = updatedRoom.tasks.id(taskId);
-  emitSocketEvent(req,roomId,TaskEventEnum.TASK_UPDATED_EVENT,`Admin Updated a task`)
+  emitSocketEvent(req,roomId,TaskEventEnum.TASK_UPDATED_EVENT,updatedTask)
   return res.json(
     new ApiResponse(200, updatedTask, "Task updated successfully")
   );
@@ -91,7 +91,7 @@ const deleteRoomTask = asyncHandler(async (req, res) => {
   room.tasks.splice(taskIndex, 1);
 
   await room.save();
-  emitSocketEvent(req,roomId,TaskEventEnum.TASK_DELETE_EVENT,`Admin deleted a task`)
+  emitSocketEvent(req,roomId,TaskEventEnum.TASK_DELETE_EVENT,taskId)
 
   return res.json(new ApiResponse(200, {}, "Task deleted successfully"));
 });
