@@ -1,9 +1,18 @@
-import React from 'react'
+
 
 const Tasks = ({tasks}) => {
     console.log(tasks)
   return (
-    <div>Tasks</div>
+    <div>
+        {tasks.map((task)=>(
+        <div key={task._id}>
+            {task.title}
+            {task.description}
+            {task.title}
+            {task.title}
+        </div>
+        ))}
+    </div>
   )
 }
 
