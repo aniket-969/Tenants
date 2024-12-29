@@ -229,6 +229,9 @@ const getRoomData = asyncHandler(async (req, res) => {
     {
       path: "awards",
     },
+    {
+      path: "tasks.currentAssignee",select:"username fullName",
+    },
     { path: "polls" },
   ]);
 

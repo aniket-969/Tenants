@@ -87,7 +87,7 @@ const deleteRoomTask = asyncHandler(async (req, res) => {
   if (taskIndex === -1) {
     throw new ApiError(404, "Task not found in the room");
   }
-
+ 
   room.tasks.splice(taskIndex, 1);
 
   await room.save();
