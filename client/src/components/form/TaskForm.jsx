@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { createTaskchema } from "@/schema/Taskchema";
+import { createRoomTaskSchema } from "@/schema/taskSchema";
 import { zodResolver } from "./../../../node_modules/@hookform/resolvers/zod/src/zod";
 import {
   Form,
@@ -18,10 +18,10 @@ import { useTask } from "@/hooks/useTask";
 
 export const TaskForm = () => {
   const { roomId } = useParams();
-  console.log(roomId)
   const { createTaskMutation } = useTask();
   const onSubmit = async (values) => {
     console.log(values,roomId);
+    return;
     try {
       const response = await createTaskMutation.mutateAsync({data:values,roomId});
       console.log(response);
@@ -32,7 +32,7 @@ export const TaskForm = () => {
   };
 
   const form = useForm({
-    resolver: zodResolver(createCalendarTaskchema),
+    resolver: zodResolver(createRoomTaskSchema),
     defaultValues: {
         title: "",
         description: "",
