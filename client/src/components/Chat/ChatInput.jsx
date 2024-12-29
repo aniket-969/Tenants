@@ -1,9 +1,9 @@
-import { Input } from "./ui/input";
-import { Button } from "./ui/button";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useChat } from "@/hooks/useChat";
 import { useParams } from "react-router-dom";
-import { Textarea } from "./ui/textarea";
+import { Textarea } from "@/components/ui/textarea";
 
 const ChatInput = ({ onSendMessage }) => {
   const [content, setContent] = useState("");

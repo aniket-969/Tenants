@@ -17,7 +17,6 @@ import Room from "../room/Room.jsx";
 import Awards from "../room/Awards.jsx";
 import { SocketProvider } from "@/socket.jsx";
 import Chat from "../room/Chat.jsx";
-import RoomProvider from "@/context/RoomContext.jsx";
 
 const LandingPage = React.lazy(() => import("../LandingPage.jsx"));
 const Login = React.lazy(() => import("../auth/Login.jsx"));

@@ -1,5 +1,5 @@
-import ChatMessage from "@/components/ChatMessage";
-import ChatInput from "@/components/ChatInput";
+import ChatMessage from "@/components/Chat/ChatMessage";
+import ChatInput from "@/components/Chat/ChatInput";
 import { getSocket } from "@/socket";
 import { useEffect, useState } from "react";
 

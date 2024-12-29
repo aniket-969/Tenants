@@ -5,9 +5,10 @@ import Maintenance from "./Maintenance";
 import RoomExpense from "./RoomExpense";
 import RoomEvents from "./RoomEvents";
 import { PollForm } from "@/components/form/PollForm";
-import PollVote from "@/components/PollVote";
+import PollVote from "@/components/Poll/PollVote";
 import { getSocket } from "@/socket";
 import { useEffect } from "react";
+import RoomTasks from "./RoomTasks";
 
 const RoomDetails = () => {
   const { roomId } = useParams();
@@ -45,8 +46,8 @@ const RoomDetails = () => {
       </div>
       {/* <PollForm /> */}
       {/* <PollVote initialPolls={data.polls} /> */}
-      <Maintenance maintenance = {data.maintenanceRequests}/>
-
+      {/* <Maintenance maintenance = {data.maintenanceRequests}/> */}
+      <RoomTasks tasks={data.tasks} />
       {/* <RoomEvents /> */}
       {/* <RoomExpense data={data} /> */}
     </div>

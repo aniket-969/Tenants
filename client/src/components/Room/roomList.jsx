@@ -1,6 +1,6 @@
 import { useAuth } from "@/hooks/useAuth";
 import { useQueryClient } from "@tanstack/react-query";
-import { Spinner } from "./ui/spinner";
+import { Spinner } from "../ui/spinner";
 import { Link } from "react-router-dom";
 
 const RoomList = () => {

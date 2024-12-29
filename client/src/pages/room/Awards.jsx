@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import AwardCard from "../../components/awardCard";
+import AwardCard from "@/components/ui/awardCard";
 import { useAward } from "@/hooks/useAwards";
 import { Spinner } from "@/components/ui/spinner";
 import { AwardsForm } from "@/components/form/AwardsForm";
@@ -20,7 +20,7 @@ const Awards = () => {
 
 
   const socket = getSocket();
-  
+
     useEffect(() => {
       const handleCreateAward = (newAward) => {
         console.log("create it");

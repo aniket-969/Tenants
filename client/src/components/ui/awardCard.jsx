@@ -1,12 +1,12 @@
 import { AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
-import { Avatar } from "./ui/avatar";
+import { Avatar } from "./avatar";
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
   CardDescription,
-} from "./ui/card";
+} from "./card";
 
 const AwardCard = ({ title, description, image, criteria, assignedTo }) => {
   return (

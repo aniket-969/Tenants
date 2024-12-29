@@ -1,7 +1,7 @@
 import ProfileCard from "@/components/profileCard";
 import QRCode from "@/components/QRCode";
-import { RoomHeader } from "@/components/roomHeader";
-import RoomList from "@/components/roomList";
+import { RoomHeader } from "@/components/Room/roomHeader";
+import RoomList from "@/components/Room/roomList";
 import { Outlet } from "react-router-dom";
 
 const Room = () => {
