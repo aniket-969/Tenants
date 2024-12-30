@@ -15,7 +15,6 @@ export const createRoomTaskSchema = z.object({
       .optional(),
     participants: z.array(objectIdValidation),
     rotationOrder: stringValidation(1, 20, "rotationOrder").optional(),
-    completed: z.boolean().optional(),
     priority: z.enum(["low", "medium", "high"]).optional(),
     recurring: z.boolean().optional(),
     recurrencePattern: stringValidation(1, 20, "recurrence pattern").optional(),
