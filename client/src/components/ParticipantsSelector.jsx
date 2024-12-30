@@ -3,19 +3,22 @@ import { useState } from "react";
 import { Spinner } from "./ui/spinner";
 import { useParams } from "react-router-dom";
 
-const ParticipantSelector = ({ onChange, participants }) => {
+const ParticipantSelector = ({
+  participants,
+  onChange,
+  selectionTransform,
+}) => {
   const [selected, setSelected] = useState([]);
-  const { roomId } = useParams();
-
-  //   console.log(participants)
+  console.log(selected);
   const toggleSelection = (participant) => {
-    const isSelected = selected.some((p) => p.userId === participant._id);
+    const isSelected = selected.includes(participant._id);
     const updated = isSelected
-      ? selected.filter((p) => p.userId !== participant._id)
-      : [...selected, { userId: participant._id, amountOwed: 10 }];
+      ? selected.filter((id) => id !== participant._id)
+      : [...selected, participant._id];
     setSelected(updated);
     onChange(updated);
   };
+  
 
   return (
     <div className="grid gap-2">

@@ -37,7 +37,10 @@ const RoomDetails = () => {
   if (isError) {
     return <>Something went wrong . Please refresh</>;
   }
-
+  const participants = [
+    ...(data.tenants || []),
+    ...(data.landlord ? [data.landlord] : []),
+  ];
   return (
     <div>
       <div>
@@ -47,7 +50,7 @@ const RoomDetails = () => {
       {/* <PollForm /> */}
       {/* <PollVote initialPolls={data.polls} /> */}
       {/* <Maintenance maintenance = {data.maintenanceRequests}/> */}
-      <RoomTasks tasks={data.tasks} />
+      <RoomTasks tasks={data.tasks} participants={participants}/>
       {/* <RoomEvents /> */}
       {/* <RoomExpense data={data} /> */}
     </div>
