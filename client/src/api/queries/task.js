@@ -5,7 +5,7 @@ const baseTask = "tasks"
 export const createRoomTask = async(roomId,data)=>{
     return axiosClient.post(`/${baseTask}/${roomId}`,data)
 }
- 
+  
 export const deleteRoomTask = async(roomId,taskId)=>{
     return axiosClient.delete(`/${baseTask}/${taskId}/${roomId}`)
 }

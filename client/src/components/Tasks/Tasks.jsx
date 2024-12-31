@@ -1,7 +1,7 @@
 
 
 const Tasks = ({tasks}) => {
-    console.log(tasks)
+    // console.log(tasks)
   return (
     <div>
         {tasks.map((task)=>(

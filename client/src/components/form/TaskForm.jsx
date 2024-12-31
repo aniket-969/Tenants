@@ -32,6 +32,10 @@ export const TaskForm = ({ participants }) => {
   const [isRecurring, setIsRecurring] = useState(false);
 
   const onSubmit = async (values) => {
+     values ={
+        ...values,
+        currentAssignee:values.participants[0]
+    }
     console.log(values, roomId, participants);
     return;
     try {
@@ -45,26 +49,26 @@ export const TaskForm = ({ participants }) => {
       console.error("Error creating task:", error);
     }
   };
-
   const form = useForm({
     resolver: zodResolver(createRoomTaskSchema),
     defaultValues: {
-      title: "",
-      description: "",
-      currentAssignee: "",
-      dueDate: "",
-      startDate: "",
-      participants: [],
-      rotationOrder: "",
-      priority: "",
-      recurring: false,
-      recurrencePattern: "",
-      customRecurrence: "",
+        title: "",
+    description: "",
+    dueDate: "", // Align with optional date
+    startDate: "", // Align with optional date
+    participants: [],
+    rotationOrder: undefined, // Allow undefined for optional fields
+    priority: "low",
+    recurring: false,
+    recurrencePattern: undefined,
+    customRecurrence: undefined,
+    currentAssignee: undefined, // Allow undefined if optional
+
     },
   });
+//   console.log("Form Errors:", form.formState.errors);
 //   const participantsValue = form.watch("participants");
 //   console.log("Participants Value:", participantsValue);
-  
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">

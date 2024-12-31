@@ -9,7 +9,7 @@ const ParticipantSelector = ({
   selectionTransform,
 }) => {
   const [selected, setSelected] = useState([]);
-  console.log(selected);
+  // console.log(selected);
   const toggleSelection = (participant) => {
     const isSelected = selected.includes(participant._id);
     const updated = isSelected
@@ -27,7 +27,7 @@ const ParticipantSelector = ({
           key={user._id}
           onClick={() => toggleSelection(user)}
           className={`flex items-center space-x-2 cursor-pointer ${
-            selected.some((p) => p.userId === user._id) ? "bg-blue-100" : ""
+            selected.some((userId) => userId === user._id) ? "bg-blue-100" : ""
           }`}
         >
           <img
