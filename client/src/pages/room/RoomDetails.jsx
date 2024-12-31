@@ -52,7 +52,7 @@ const RoomDetails = () => {
       {/* <Maintenance maintenance = {data.maintenanceRequests}/> */}
       {/* <RoomTasks initialTasks={data.tasks} participants={participants}/> */}
       {/* <RoomEvents /> */}
-      <RoomExpense data={data} />
+      {/* <RoomExpense data={data} /> */}
     </div>
   );
 };
