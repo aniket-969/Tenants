@@ -21,7 +21,7 @@ import { Spinner } from "../ui/spinner";
 
 export const ExpenseForm = () => {
   const { roomId } = useParams();
-  const { createExpenseMutation } = useExpense();
+  const { createExpenseMutation } = useExpense(roomId);
   const { roomQuery } = useRoom(roomId);
   const { data, isLoading, isError } = roomQuery;
   if (isLoading) {
@@ -36,7 +36,7 @@ export const ExpenseForm = () => {
   ];
   const onSubmit = async (values) => {
     console.log(values);
-    return;
+    
     try {
       const response = await createExpenseMutation.mutateAsync(values, roomId);
       console.log(response);

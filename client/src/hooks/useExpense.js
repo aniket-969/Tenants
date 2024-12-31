@@ -8,8 +8,8 @@ import {
     updatePayment,
   } from "@/api/queries/expense";
   import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-  
-  export const useExpense = () => {
+   
+  export const useExpense = (roomId) => {
     const queryClient = useQueryClient();
   
     // Fetch expense details
@@ -44,7 +44,7 @@ import {
   
     // Create an expense
     const createExpenseMutation = useMutation({
-      mutationFn: (data,roomId) => createExpense(data,roomId),
+      mutationFn: (data) => createExpense(data,roomId),
       onSuccess: () => {
         queryClient.invalidateQueries(["expense", "user"]);
       },

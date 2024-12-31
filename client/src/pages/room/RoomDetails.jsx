@@ -51,8 +51,8 @@ const RoomDetails = () => {
       {/* <PollVote initialPolls={data.polls} /> */}
       {/* <Maintenance maintenance = {data.maintenanceRequests}/> */}
       {/* <RoomTasks initialTasks={data.tasks} participants={participants}/> */}
-      <RoomEvents />
-      {/* <RoomExpense data={data} /> */}
+      {/* <RoomEvents /> */}
+      <RoomExpense data={data} />
     </div>
   );
 };

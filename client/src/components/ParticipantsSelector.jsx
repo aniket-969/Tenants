@@ -3,22 +3,19 @@ import { useState } from "react";
 import { Spinner } from "./ui/spinner";
 import { useParams } from "react-router-dom";
 
-const ParticipantSelector = ({
-  participants,
-  onChange,
-  selectionTransform,
-}) => {
+const ParticipantSelector = ({ onChange, participants }) => {
   const [selected, setSelected] = useState([]);
-  // console.log(selected);
+  const { roomId } = useParams();
+
+  //   console.log(participants)
   const toggleSelection = (participant) => {
-    const isSelected = selected.includes(participant._id);
+    const isSelected = selected.some((p) => p.userId === participant._id);
     const updated = isSelected
-      ? selected.filter((id) => id !== participant._id)
-      : [...selected, participant._id];
+      ? selected.filter((p) => p.userId !== participant._id)
+      : [...selected, { userId: participant._id, amountOwed: 10 }];
     setSelected(updated);
     onChange(updated);
   };
-  
 
   return (
     <div className="grid gap-2">
@@ -27,7 +24,7 @@ const ParticipantSelector = ({
           key={user._id}
           onClick={() => toggleSelection(user)}
           className={`flex items-center space-x-2 cursor-pointer ${
-            selected.some((userId) => userId === user._id) ? "bg-blue-100" : ""
+            selected.some((p) => p.userId === user._id) ? "bg-blue-100" : ""
           }`}
         >
           <img
