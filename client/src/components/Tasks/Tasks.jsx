@@ -1,15 +1,15 @@
 
 
 const Tasks = ({tasks}) => {
-    // console.log(tasks)
+    console.log(tasks)
   return (
-    <div>
+    <div className="flex gap-4 ">
         {tasks.map((task)=>(
-        <div key={task._id}>
-            {task.title}
-            {task.description}
-            {task.title}
-            {task.title}
+        <div className="flex flex-col" key={task._id}>
+            <p>{task.title}</p>
+            <p>{task.description}</p>
+            <p>{task.currentAssignee.fullName}</p>
+            <p>{task.title}</p>
         </div>
         ))}
     </div>

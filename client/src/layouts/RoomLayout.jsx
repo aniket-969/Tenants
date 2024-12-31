@@ -22,8 +22,8 @@ export const RoomLayout = ({ children }) => {
 
 
   return (
-    <>
+    <div className="m-2">
       <Outlet />
-    </>
+    </div>
   );
 };
