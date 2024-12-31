@@ -60,14 +60,14 @@ export const AvailableMaintenanceEvents = Object.values(MaintenanceEventEnum);
 export const AwardEventEnum = Object.freeze({
   AWARD_CREATED_EVENT: "createAward",
   AWARD_DELETED_EVENT: "deleteAward",
-  AWARD_UPDATED_EVENT: "updatAward",
+  AWARD_UPDATED_EVENT: "updateAward",
 });
 
 export const AvailableAwardEvents = Object.values(AwardEventEnum);
 
 export const CalendarEventEnum = Object.freeze({
-  CALENDAR_CREATED_EVENT: "createAward",
-  CALENDAR_DELETED_EVENT: "deleteAward",
+  CALENDAR_CREATED_EVENT: "createdEvent",
+  CALENDAR_DELETED_EVENT: "deletedEVent",
 });
 
 export const AvailableCalendarEvents = Object.values(CalendarEventEnum);

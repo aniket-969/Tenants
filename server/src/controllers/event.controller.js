@@ -3,7 +3,7 @@ import { Room } from "../models/rooms.model.js";
 import { CalendarEvent } from "../models/calendarEvents.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
-import { AvailableCalendarEvents } from "../constants.js";
+import { AvailableCalendarEvents, CalendarEventEnum } from "../constants.js";
 import { emitSocketEvent } from "../socket/index.js";
 
 const createCalendarEvent = asyncHandler(async (req, res) => {
@@ -31,11 +31,11 @@ const createCalendarEvent = asyncHandler(async (req, res) => {
     recurrencePattern,
     createdBy: req.user?._id,
   });
-  const user = req.user
+
   emitSocketEvent(
     req,
     roomId,
-    AvailableCalendarEvents. CALENDAR_CREATED_EVENT,
+    CalendarEventEnum.CALENDAR_CREATED_EVENT,
     calendarEvent
   );
   return res

@@ -99,7 +99,7 @@ const updateMaintenance = asyncHandler(async (req, res) => {
     },
     { new: true, runValidators: true }
   );
-
+ 
   if (!updateMaintenance) {
     throw new ApiError(400, "Error updating maintenance");
   }

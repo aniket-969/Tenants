@@ -12,6 +12,13 @@ export const createRoomTaskSchema = z.object({
       message: "Invalid date format",
     })
     .optional(),
+  startDate: z
+    .string() 
+    .transform((val) => new Date(val))
+    .refine((date) => !isNaN(date.getTime()), {
+      message: "Invalid date format",
+    })
+    .optional(),
   participants: z.array(objectIdValidation),
   rotationOrder: stringValidation(1, 20, "rotationOrder").optional(),
   completed: z.boolean().optional(),

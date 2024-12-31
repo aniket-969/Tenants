@@ -12,7 +12,7 @@ export const createCalendarEventSchema = z.object({
     .transform((val) => new Date(val))
     .refine((date) => !isNaN(date.getTime()), {
       message: "Invalid date format",
-    })
+    })   
     .optional(),
   endDate: z
     .string()
