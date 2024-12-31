@@ -56,7 +56,7 @@ const deleteCalendarEvent = asyncHandler(async (req, res) => {
   emitSocketEvent(
     req,
     roomId,
-    AvailableCalendarEvents. CALENDAR_DELETED_EVENT,
+    CalendarEventEnum.CALENDAR_DELETED_EVENT,
     eventId
   );
   return res.json(

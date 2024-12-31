@@ -26,7 +26,7 @@ const createExpense = asyncHandler(async (req, res) => {
   if (!expense) {
     throw new ApiError(500, "Expense creation failed");
   }
-  const user = req.user;
+
   emitSocketEvent(req, roomId, ExpenseEventEnum.EXPENSE_CREATED_EVENT, expense);
   return res.json(
     new ApiResponse(201, expense, "Expense detail created successfully")
