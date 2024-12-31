@@ -27,22 +27,20 @@ import {
 
 export const TaskForm = ({ participants }) => {
   const { roomId } = useParams();
-  const { createTaskMutation } = useTask();
+  const { createTaskMutation } = useTask(roomId);
 
   const [isRecurring, setIsRecurring] = useState(false);
 
   const onSubmit = async (values) => {
-     values ={
-        ...values,
-        currentAssignee:values.participants[0]
-    }
-    console.log(values, roomId, participants);
-    return;
+    const data = {
+      ...values,
+      currentAssignee: values.participants[0],
+    };
+    console.log(values, participants);
+    // return;
+
     try {
-      const response = await createTaskMutation.mutateAsync({
-        data: { ...values, participants },
-        roomId,
-      });
+      const response = await createTaskMutation.mutateAsync(data);
       toast("Task added successfully!");
       console.log(response);
     } catch (error) {
@@ -52,23 +50,22 @@ export const TaskForm = ({ participants }) => {
   const form = useForm({
     resolver: zodResolver(createRoomTaskSchema),
     defaultValues: {
-        title: "",
-    description: "",
-    dueDate: "", // Align with optional date
-    startDate: "", // Align with optional date
-    participants: [],
-    rotationOrder: undefined, // Allow undefined for optional fields
-    priority: "low",
-    recurring: false,
-    recurrencePattern: undefined,
-    customRecurrence: undefined,
-    currentAssignee: undefined, // Allow undefined if optional
-
+      title: "",
+      description: "",
+      dueDate: "", // Align with optional date
+      startDate: "", // Align with optional date
+      participants: [],
+      rotationOrder: undefined, // Allow undefined for optional fields
+      priority: "low",
+      recurring: false,
+      recurrencePattern: undefined,
+      customRecurrence: undefined,
+      currentAssignee: undefined, // Allow undefined if optional
     },
   });
-//   console.log("Form Errors:", form.formState.errors);
-//   const participantsValue = form.watch("participants");
-//   console.log("Participants Value:", participantsValue);
+  //   console.log("Form Errors:", form.formState.errors);
+  //   const participantsValue = form.watch("participants");
+  //   console.log("Participants Value:", participantsValue);
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">

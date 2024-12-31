@@ -2,13 +2,13 @@ import { createRoomTask, deleteRoomTask, updateRoomTask } from "@/api/queries/ta
   import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
   import { useNavigate } from "react-router-dom";
   
-  export const useTask = (taskId) => {
+  export const useTask = (roomId) => {
     const queryClient = useQueryClient();
     const navigate = useNavigate();
   
   const createTaskMutation = useMutation({
     mutationFn: (newTaskData) =>
-      createTask(roomId, newTaskData),
+      createRoomTask(roomId, newTaskData),
     onSuccess: () => {
       queryClient.invalidateQueries(["room", roomId]);
     },
