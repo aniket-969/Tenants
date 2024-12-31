@@ -18,7 +18,7 @@ import { useEvent } from "@/hooks/useEvent";
 
 export const EventsForm = () => {
   const { roomId } = useParams();
-  console.log(roomId)
+  // console.log(roomId)
   const { createEventMutation } = useEvent();
   const onSubmit = async (values) => {
     console.log(values,roomId);
