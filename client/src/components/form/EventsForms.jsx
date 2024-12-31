@@ -29,7 +29,7 @@ export const EventsForm = () => {
     } catch (error) {
       console.error("Error during registration:", error);
     }
-  };
+  }; 
 
   const form = useForm({
     resolver: zodResolver(createCalendarEventSchema),
@@ -99,7 +99,7 @@ export const EventsForm = () => {
           name="startDate"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Contact Number</FormLabel>
+              <FormLabel>Start Date</FormLabel>
               <FormControl>
                 <Input placeholder="add start date " {...field} type="date" />
               </FormControl>
@@ -115,7 +115,7 @@ export const EventsForm = () => {
           name="endDate"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Cost</FormLabel>
+              <FormLabel>End Date</FormLabel>
               <FormControl>
                 <Input placeholder="add end date" {...field} type="date" />
               </FormControl>

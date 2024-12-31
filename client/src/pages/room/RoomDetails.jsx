@@ -50,8 +50,8 @@ const RoomDetails = () => {
       {/* <PollForm /> */}
       {/* <PollVote initialPolls={data.polls} /> */}
       {/* <Maintenance maintenance = {data.maintenanceRequests}/> */}
-      <RoomTasks initialTasks={data.tasks} participants={participants}/>
-      {/* <RoomEvents /> */}
+      {/* <RoomTasks initialTasks={data.tasks} participants={participants}/> */}
+      <RoomEvents />
       {/* <RoomExpense data={data} /> */}
     </div>
   );
