@@ -1,8 +1,8 @@
-import { createContext, useMemo, useState, useEffect } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { createContext, useMemo, useContext, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import io from "socket.io-client";
 
-export const SocketContext = createContext();
+const SocketContext = createContext();
 let socketInstance;
 
 export const getSocket = () => {
@@ -20,38 +20,15 @@ export const getSocket = () => {
 const SocketProvider = ({ children }) => {
   const socket = useMemo(() => getSocket(), []);
 
-  const joinRoom = (roomId) => {
-    console.log("in join");
-    if (roomId !== "null") {
-      console.log("joined", roomId);
-      localStorage.setItem("roomId", roomId);
-    }
-  };
-
-  const leaveRoom = (roomId) => {
-    if (roomId !== "null") {
-      console.log("let's leave", roomId);
-    }
-    localStorage.removeItem("roomId");
-  };
-
   useEffect(() => {
     socket.on("connect", () => {
       console.log("connected", socket.id);
-      const roomId = localStorage.getItem("roomId");
 
-      if (
-        !location.pathname.startsWith("/room") ||
-        location.pathname.startsWith("/room/create")
-      ) {
-        console.log("not in room ");
-        if (roomId !== "null") {
-          leaveRoom(roomId);
-        }
-      } else {
-        console.log("in room with id's");
-        if (roomId !== "null") 
-        joinRoom(roomId);
+      // Rejoin rooms after reconnecting
+      const roomId = localStorage.getItem("currentRoomId");
+      if (roomId) {
+        socket.emit("joinRoom", roomId);
+        console.log(`Rejoined room: ${roomId}`);
       }
     });
 
@@ -65,12 +42,10 @@ const SocketProvider = ({ children }) => {
     return () => {
       socket.disconnect();
     };
-  }, [socket, location]);
+  }, [socket]);
 
   return (
-    <SocketContext.Provider value={{ socket, joinRoom, leaveRoom }}>
-      {children}
-    </SocketContext.Provider>
+    <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>
   );
 };
 
