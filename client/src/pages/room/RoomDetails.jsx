@@ -1,9 +1,9 @@
 import { Spinner } from "@/components/ui/spinner";
-import { useRoom, useRoomMutation } from "@/hooks/useRoom";
+import { useRoom } from "@/hooks/useRoom";
 import { useParams } from "react-router-dom";
-import Maintenance from "./Maintenance";
-import RoomExpense from "./RoomExpense";
-import RoomEvents from "./RoomEvents";
+import { useContext, useEffect } from "react";
+import { SocketContext } from "@/socket";
+import PollVote from "@/components/PollVote";
 import { PollForm } from "@/components/form/PollForm";
 import PollVote from "@/components/Poll/PollVote";
 import { getSocket } from "@/socket";
@@ -13,29 +13,21 @@ import RoomTasks from "./RoomTasks";
 const RoomDetails = () => {
   const { roomId } = useParams();
 
-  // const socket = getSocket();
-  // useEffect(() => {
-  //   socket.emit("joinRoom", roomId);
-  //   console.log(`Joined room: ${roomId}`);
-
-  //   localStorage.setItem("currentRoomId", roomId);
-
-  //   return () => {
-  //     socket.emit("leaveRoom", roomId);
-  //     console.log(`Left room: ${roomId}`);
-  //     localStorage.removeItem("currentRoomId");
-  //   };
-  // }, [roomId]);
-
   const { roomQuery } = useRoom(roomId);
   const { data, isLoading, isError } = roomQuery;
-  // console.log(data);
-
+  const { joinRoom, leaveRoom, socket } = useContext(SocketContext);
+  useEffect(() => {
+    joinRoom(roomId)
+    return(()=>{
+      leaveRoom(roomId)
+    })
+  }, [roomId]);
   if (isLoading) {
     return <Spinner />;
   }
+
   if (isError) {
-    return <>Something went wrong . Please refresh</>;
+    return <>Something went wrong. Please refresh.</>;
   }
   const participants = [
     ...(data.tenants || []),

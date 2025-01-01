@@ -6,6 +6,7 @@ import { Outlet, useParams} from "react-router-dom";
 export const RoomLayout = ({ children }) => {
   const { roomId } = useParams();
 
+<<<<<<< HEAD
   const socket = getSocket();
   useEffect(() => {
     socket.emit("joinRoom", roomId);
@@ -20,6 +21,8 @@ export const RoomLayout = ({ children }) => {
     };
   }, [roomId]);
 
+=======
+>>>>>>> b93ec3646ef923c19b58d6d75f89844055b16ee5
 
   return (
     <div className="m-2">
