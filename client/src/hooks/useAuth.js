@@ -10,7 +10,8 @@ import {
   updateUser,
 } from "@/api/queries/auth";
 import { useNavigate } from "react-router-dom";
-
+import { toast } from "react-toastify";
+ 
 export const useAuth = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -29,6 +30,7 @@ export const useAuth = () => {
       navigate("/login");
     },
     onError: (error) => {
+      toast(error.response.data.message || " Something went wrong ,Please refresh")
       console.error("Registration failed:", error);
     },
   });
@@ -44,6 +46,7 @@ export const useAuth = () => {
     },
     onError: (error) => {
       console.error("Login error:", error);
+      toast(error.response.data.message || "Invalid User Credentials , Please login again")
     },
   });
 
@@ -52,9 +55,11 @@ export const useAuth = () => {
     mutationFn: logOut,
     onSuccess: () => {
       queryClient.invalidateQueries(["auth", "session"]);
+      localStorage.clear()
       navigate("/login");
     },
     onError: (error) => {
+      toast(error.response.data.message || " Something went wrong ,Please refresh")
       console.error("Logout error:", error);
     },
   });
