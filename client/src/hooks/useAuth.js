@@ -39,7 +39,7 @@ export const useAuth = () => {
   const loginMutation = useMutation({
     mutationFn: loginUser,
     onSuccess: (data) => {
-      console.log(data.data.data);
+      // console.log(data.data.data);
       localStorage.setItem("session", JSON.stringify(data.data.data));
       queryClient.invalidateQueries(["auth", "session"]);
       navigate("/room");

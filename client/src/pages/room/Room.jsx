@@ -10,9 +10,9 @@ const Room = () => {
   return session ? (
     <div>
       <RoomHeader />
-      <div className="flex flex-col gap-10 items-center by mt-10 mx-5">
+      <div className="flex flex-col gap-10 items-center by mt-10 mx-3">
         <ProfileCard />
-        <div className="flex justify-between w-full ">
+        <div className="flex justify-around w-full px-5">
           <QRCode />
           <RoomList />
         </div>
