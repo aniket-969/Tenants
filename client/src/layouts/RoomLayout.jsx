@@ -19,11 +19,11 @@ export const RoomLayout = ({ children }) => {
       localStorage.removeItem("currentRoomId");
     };
   }, [roomId]);
-  return session ? (
+  return session && roomId ? (
     <div className="m-2">
       <Outlet />
     </div>
   ) : (
-    <Navigate to="/login" />
+    <Navigate to="/room" />
   );
 };
