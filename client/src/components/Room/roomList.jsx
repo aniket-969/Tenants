@@ -20,7 +20,7 @@ const RoomList = () => {
       {data.rooms.map((room) => (
         <Link key={room._id} to={`/room/${room.roomId}`}>
           <Button
-            className="text-white text-lg w-full rounded-none"
+            className="text-white text-lg w-full rounded-none "
             variant="outline"
           >
             {room.name}
