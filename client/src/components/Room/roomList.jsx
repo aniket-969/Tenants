@@ -47,10 +47,10 @@ const RoomList = () => {
     <div className="flex flex-col gap-5 items-center">
       <h1 className="text-xl font-semibold">Rooms</h1>
 <ScrollArea>
-    <div className="flex flex-col gap-5 h-[15rem] pt-2">
+    <div className="flex flex-col gap-5 h-[15rem] pt-2 pr-2 b">
         {rooms.map((room) => (
           <Link key={room._id} to={`/room/${room.roomId}`}>
-            <Button className="text-white text-lg w-full rounded-none "
+            <Button className="text-white text-lg w-[95%] rounded-none "
               variant="outline">
               {room.name}
             </Button>
