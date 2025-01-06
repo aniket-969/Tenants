@@ -3,7 +3,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { Spinner } from "../ui/spinner";
 import { Link } from "react-router-dom";
 import { Button } from "../ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area"
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const RoomList = () => {
   const { sessionQuery } = useAuth();
@@ -16,6 +16,7 @@ const RoomList = () => {
   if (isError) {
     return <>Something went wrong . Please refresh</>;
   }
+
   const rooms = [
     {
       roomId: "6756e343b2fdac1824b18cc1",
@@ -43,22 +44,24 @@ const RoomList = () => {
       _id: "6756e90420e3d2b8bb7f3b52",
     },
   ];
+
   return (
-    <div className="flex flex-col gap-5 items-center">
+    <div className="flex flex-col gap-5 items-center ">
       <h1 className="text-xl font-semibold">Rooms</h1>
-<ScrollArea>
-    <div className="flex flex-col gap-5 h-[15rem] pt-2 pr-2 b">
-        {rooms.map((room) => (
-          <Link key={room._id} to={`/room/${room.roomId}`}>
-            <Button className="text-white text-lg w-[95%] rounded-none "
-              variant="outline">
-              {room.name}
-            </Button>
-          </Link>
-        ))}
-      </div>
-</ScrollArea>
-    
+      <ScrollArea>
+        <div className="flex flex-col gap-5 h-[15rem] pt-2 pr-2 b">
+          {rooms.map((room) => (
+            <Link key={room._id} to={`/room/${room.roomId}`}>
+              <Button
+                className="text-white text-lg w-[95%] rounded-none "
+                variant="outline"
+              >
+                {room.name}
+              </Button>
+            </Link>
+          ))}
+        </div>
+      </ScrollArea>
     </div>
   );
 };

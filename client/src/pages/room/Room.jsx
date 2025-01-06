@@ -12,7 +12,7 @@ const Room = () => {
       <RoomHeader />
       <div className="flex flex-col gap-10 items-center mt-10 mx-5 pb-20 pt-5 bmain">
         <ProfileCard />
-        <div className="flex justify-around w-full px-5 ">
+        <div className="flex flex-col-reverse justify-around w-full gap-10 sm:flex-row">
           <QRCode />
           <RoomList />
         </div>

@@ -29,7 +29,7 @@ export const QRCarousel = ({ paymentMethod }) => {
 
   // console.log(paymentMethod);
   return (
-    <Carousel className="w-full max-w-sm">
+    <Carousel className="w-full max-w-[20rem] b">
     <CarouselContent>
       {paymentMethod.map((payment, index) => (
         <CarouselItem key={payment._id}>
@@ -38,7 +38,7 @@ export const QRCarousel = ({ paymentMethod }) => {
               <CardContent className="flex flex-col items-center justify-center p-4">
                 <p className="text-xl font-semibold mb-2">{payment.appName}</p>
                 {/* <p className="text-sm text-gray-500 mb-2">{payment.paymentId}</p> */}
-                <p className="text-sm text-gray-500 mb-2">{payment.type}</p>
+                <p className="text-md text-gray-900 mb-2 font-semibold">{payment.type}</p>
                 {qrImages[payment._id] ? (
                   <img
                     src={qrImages[payment._id]}
