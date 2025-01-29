@@ -44,6 +44,8 @@ const {registerMutation} = useAuth()
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
+
+        {/* username */}
         <FormField
           control={form.control}
           name="username"
@@ -58,7 +60,7 @@ const {registerMutation} = useAuth()
             </FormItem>
           )}
         />
-
+{/* email */}
         <FormField
           control={form.control}
           name="email"
@@ -73,7 +75,7 @@ const {registerMutation} = useAuth()
             </FormItem>
           )}
         />
-
+{/* name */}
         <FormField
           control={form.control}
           name="fullName"
@@ -88,7 +90,7 @@ const {registerMutation} = useAuth()
             </FormItem>
           )}
         />
-
+{/* password */}
         <FormField
           control={form.control}
           name="password"
@@ -104,6 +106,7 @@ const {registerMutation} = useAuth()
           )}
         />
 
+{/* avatar */}
         <FormField
           control={form.control}
           name="avatar"
