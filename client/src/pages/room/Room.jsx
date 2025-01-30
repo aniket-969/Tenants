@@ -8,9 +8,9 @@ const Room = () => {
   const session = localStorage.getItem("session");
 
   return session ? (
-    <div className="">
+    <div className=" max-h-screen ">
       <RoomHeader />
-      <div className="flex flex-col gap-10 items-center mt-10 mx-5 pb-20 pt-5 bmain">
+      <div className="flex flex-col gap-10 items-center pt-7 ">
         <ProfileCard />
         <div className="flex flex-col-reverse justify-around items-center w-full gap-10 sm:flex-row">
           <QRCode />
