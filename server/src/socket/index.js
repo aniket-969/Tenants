@@ -1,7 +1,7 @@
 import { User } from "./../models/user.model.js";
 import jwt from "jsonwebtoken";
 import { ApiError } from "../utils/ApiError.js";
-import { RoomEventEnum } from "../constants.js";
+import { ChatEventEnum, RoomEventEnum } from "../constants.js";
  
 const mountJoinRoomEvent = (socket) => {
   const io = socket.server
