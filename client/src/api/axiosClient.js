@@ -8,43 +8,76 @@ const axiosClient = axios.create({
   },
 });
 
-let isRefreshing = false; // Prevent multiple refresh attempts
+let isRefreshing = false;
+let refreshSubscribers = []; // Store pending requests while refreshing
+
+const onTokenRefreshed = (newAccessToken) => {
+  refreshSubscribers.forEach((callback) => callback(newAccessToken));
+  refreshSubscribers = [];
+};
+
+const addRefreshSubscriber = (callback) => {
+  refreshSubscribers.push(callback);
+};
 
 axiosClient.interceptors.response.use(
-  (response) => response, // Return response if successful
+  (response) => response,
   async (error) => {
-    if (error.response?.status === 401 && !isRefreshing) {
-      console.log("Token expired, attempting to refresh...");
+    if (error.response?.status === 401) {
+      const errorMessage = error.response?.data?.message || "";
 
-      isRefreshing = true; // Set flag to prevent multiple refreshes
+      if (errorMessage.includes("expired")) {
+        console.log("Access token expired, attempting to refresh...");
 
-      try {
-        // Call the refresh token API
-        const refreshResponse = await axios.post(
-          "http://localhost:3000/api/v1/users/refreshTokens",
-          {},
-          { withCredentials: true }
-        );
+        if (!isRefreshing) {
+          isRefreshing = true;
 
-        const newAccessToken = refreshResponse.data?.accessToken;
+          try {
+            const refreshResponse = await axios.post(
+              "http://localhost:3000/api/v1/users/refreshTokens",
+              {},
+              { withCredentials: true }
+            );
 
-        if (newAccessToken) {
-          // Attach new token to the original request and retry
-          error.config.headers["Authorization"] = `Bearer ${newAccessToken}`;
-          isRefreshing = false; // Reset flag
-          return axiosClient(error.config);
+            const newAccessToken = refreshResponse.data?.accessToken;
+
+            if (newAccessToken) {
+              onTokenRefreshed(newAccessToken);
+              isRefreshing = false;
+
+              return new Promise((resolve) => {
+                addRefreshSubscriber((token) => {
+                  error.config.headers["Authorization"] = `Bearer ${token}`;
+                  resolve(axiosClient(error.config));
+                });
+              });
+            }
+          } catch (refreshError) {
+            console.error("Refresh token failed, logging out user.");
+            if (!localStorage.getItem("sessionExpired")) {
+              localStorage.setItem("sessionExpired", "true");
+              localStorage.removeItem("session");
+              window.location.href = "/login";
+            }
+          }
+
+          isRefreshing = false;
         }
-      } catch (refreshError) {
-        console.error("Refresh token failed, logging out user.");
 
+        return new Promise((resolve) => {
+          addRefreshSubscriber((token) => {
+            error.config.headers["Authorization"] = `Bearer ${token}`;
+            resolve(axiosClient(error.config));
+          });
+        });
+      } else {
+        console.warn("No valid access token found. Redirecting to login.");
         if (!localStorage.getItem("sessionExpired")) {
-          localStorage.setItem("sessionExpired", "true"); // Prevent infinite redirects
-          localStorage.removeItem("session"); // Clear session
-          window.location.href = "/login"; // Redirect to login page
+          localStorage.setItem("sessionExpired", "true");
+          localStorage.removeItem("session");
+          window.location.href = "/login";
         }
       }
-
-      isRefreshing = false; // Reset flag
     }
 
     return Promise.reject(error);
