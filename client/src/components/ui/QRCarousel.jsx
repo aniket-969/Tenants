@@ -33,9 +33,9 @@ export const QRCarousel = ({ paymentMethod }) => {
     <CarouselContent>
       {paymentMethod.map((payment, index) => (
         <CarouselItem key={payment._id}>
-          <div className="p-1">
+          <div className="">
             <Card>
-              <CardContent className="flex flex-col items-center justify-center font-semibold text-sm sm:text-xl gap-2 pt-2">
+              <CardContent className="flex flex-col items-center justify-center font-semibold text-sm sm:text-xl sm:gap-2 pt-2">
                 <p className=" font-semibold text-xl">{payment.appName}</p>
                 {/* <p className="text-sm text-gray-500 mb-2">{payment.paymentId}</p> */}
                 <p className="text-gray-900 mb-2 ">{payment.type}</p>
