@@ -19,7 +19,7 @@ const RoomDetails = () => {
   //   console.log(`Joined room: ${roomId}`);
 
   //   localStorage.setItem("currentRoomId", roomId);
-
+ 
   //   return () => {
   //     socket.emit("leaveRoom", roomId);
   //     console.log(`Left room: ${roomId}`);

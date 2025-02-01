@@ -32,7 +32,7 @@ export const refreshTokens = async (data) => {
 export const updateUser = async (data) => {
   return axiosClient.patch(`/${baseAuth}/update-user`, data);
 };
-
+ 
 export const addPayment = async (data) => {
   return axiosClient.patch(`/${baseAuth}/payment`, data);
 };
