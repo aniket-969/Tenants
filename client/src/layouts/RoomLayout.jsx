@@ -1,12 +1,11 @@
 import { getSocket } from "@/socket";
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 import { Navigate, Outlet, useParams } from "react-router-dom";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
 
-// Separate socket-handling component to prevent re-renders
 const RoomSocketHandler = ({ roomId }) => {
-  const socket = useMemo(() => getSocket(), []);
+  const socket = getSocket();
 
   useEffect(() => {
     socket.emit("joinRoom", roomId);
@@ -18,7 +17,7 @@ const RoomSocketHandler = ({ roomId }) => {
       console.log(`Left room: ${roomId}`);
       localStorage.removeItem("currentRoomId");
     };
-  }, [roomId, socket]);
+  }, [roomId]);
 
   return null;
 };
