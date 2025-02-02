@@ -1,5 +1,5 @@
-import React, { createContext, useContext, useEffect } from 'react';
-import { getSocket } from '@/socket';
+import React, { createContext, useContext, useEffect } from "react";
+import { getSocket } from "@/socket";
 
 const RoomSocketContext = createContext();
 
@@ -7,9 +7,11 @@ export const useRoomSocket = () => useContext(RoomSocketContext);
 
 export const RoomSocketProvider = ({ children }) => {
   const socket = getSocket();
+  const location = useLocation();
 
   const joinRoom = (roomId) => {
-    if (roomId) {
+    // Only join if we're actually on a room route
+    if (roomId && location.pathname.includes(`/room/${roomId}`)) {
       socket.emit("joinRoom", roomId);
       console.log(`Joined room: ${roomId}`);
       localStorage.setItem("currentRoomId", roomId);
