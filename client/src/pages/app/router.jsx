@@ -17,6 +17,7 @@ import Room from "../room/Room.jsx";
 import Awards from "../room/Awards.jsx";
 import { SocketProvider } from "@/socket.jsx";
 import Chat from "../room/Chat.jsx";
+import { RoomSocketProvider } from "@/context/RoomSocket.jsx";
 
 const LandingPage = React.lazy(() => import("../LandingPage.jsx"));
 const Login = React.lazy(() => import("../auth/Login.jsx"));
@@ -25,27 +26,27 @@ const Register = React.lazy(() => import("../auth/Register.jsx"));
 const RoomRoutes = () => {
   return (
     <SocketProvider>
-      <Routes>
-        <Route path="" element={<Room />} />
-        <Route path="create" element={<CreateRoom />} />
-        <Route path=":roomId/*" element={
-          <RoomLayout />}>
-          <Route index element={<RoomDetails />} />
-          <Route path="awards" element={<Awards />} />
-          <Route path="chat" element={<Chat />} />
-          {/* <Route path="tasks" element={<RoomTasks />} /> */}
-          {/* <Route path="calendar" element={<RoomCalendar />} /> */}
-        </Route>
-      </Routes>
+      <RoomSocketProvider>
+        <Routes>
+          <Route path="" element={<Room />} />
+          <Route path="create" element={<CreateRoom />} />
+          <Route path=":roomId/*" element={<RoomLayout />}>
+            <Route index element={<RoomDetails />} />
+            <Route path="awards" element={<Awards />} />
+            <Route path="chat" element={<Chat />} />
+            {/* <Route path="tasks" element={<RoomTasks />} /> */}
+            {/* <Route path="calendar" element={<RoomCalendar />} /> */}
+          </Route>
+        </Routes>
+      </RoomSocketProvider>
     </SocketProvider>
   );
 };
 
-
 export const AppRouter = () => {
   const queryClient = useQueryClient();
 
-  // Use useMemo to avoid recreating the router on every render
+  // useMemo to avoid recreating the router on every render
   const router = useMemo(
     () =>
       createBrowserRouter(
@@ -60,7 +61,7 @@ export const AppRouter = () => {
               </Route>
 
               {/* Conditional routes for rooms */}
-              
+
               <Route path="room/*" element={<RoomRoutes />} />
 
               <Route path="*" element={<NotFound />} />

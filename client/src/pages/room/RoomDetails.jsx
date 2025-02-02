@@ -13,19 +13,6 @@ import RoomTasks from "./RoomTasks";
 const RoomDetails = () => {
   const { roomId } = useParams();
 
-  // const socket = getSocket();
-  // useEffect(() => {
-  //   socket.emit("joinRoom", roomId);
-  //   console.log(`Joined room: ${roomId}`);
-
-  //   localStorage.setItem("currentRoomId", roomId);
- 
-  //   return () => {
-  //     socket.emit("leaveRoom", roomId);
-  //     console.log(`Left room: ${roomId}`);
-  //     localStorage.removeItem("currentRoomId");
-  //   };
-  // }, [roomId]);
 
   const { roomQuery } = useRoom(roomId);
   const { data, isLoading, isError } = roomQuery;
@@ -47,12 +34,7 @@ const RoomDetails = () => {
         <p>{data.name}</p>
         <p>{data.description}</p>
       </div>
-      {/* <PollForm /> */}
-      {/* <PollVote initialPolls={data.polls} /> */}
-      {/* <Maintenance maintenance = {data.maintenanceRequests}/> */}
-      {/* <RoomTasks initialTasks={data.tasks} participants={participants}/> */}
-      {/* <RoomEvents /> */}
-      {/* <RoomExpense data={data} /> */}
+      
     </div>
   );
 };
