@@ -18,15 +18,16 @@ import Awards from "../room/Awards.jsx";
 import { SocketProvider } from "@/socket.jsx";
 import Chat from "../room/Chat.jsx";
 import { RoomSocketProvider } from "@/context/RoomSocket.jsx";
+import { RouteMonitor } from "@/utils/RouteMonitor.js";
 
 const LandingPage = React.lazy(() => import("../LandingPage.jsx"));
 const Login = React.lazy(() => import("../auth/Login.jsx"));
 const Register = React.lazy(() => import("../auth/Register.jsx"));
-
 const RoomRoutes = () => {
   return (
     <SocketProvider>
       <RoomSocketProvider>
+        <RouteMonitor />
         <Routes>
           <Route path="" element={<Room />} />
           <Route path="create" element={<CreateRoom />} />
@@ -34,8 +35,6 @@ const RoomRoutes = () => {
             <Route index element={<RoomDetails />} />
             <Route path="awards" element={<Awards />} />
             <Route path="chat" element={<Chat />} />
-            {/* <Route path="tasks" element={<RoomTasks />} /> */}
-            {/* <Route path="calendar" element={<RoomCalendar />} /> */}
           </Route>
         </Routes>
       </RoomSocketProvider>
