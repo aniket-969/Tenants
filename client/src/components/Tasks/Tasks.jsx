@@ -1,4 +1,7 @@
+import { useRoom } from "@/hooks/useRoom";
 import { TaskForm } from "../form/TaskForm"
+import { Spinner } from "../ui/spinner";
+import { useParams } from "react-router-dom";
 
 
 const Tasks = () => {
@@ -20,7 +23,7 @@ const Tasks = () => {
   ];
   return (
     <div className="flex gap-4 ">
-      <TaskForm/>
+      <TaskForm participants={participants}/>
     </div>
   )
 }
