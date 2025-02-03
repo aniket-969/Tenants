@@ -1,17 +1,26 @@
+import { TaskForm } from "../form/TaskForm"
 
 
-const Tasks = ({tasks}) => {
-    console.log(tasks)
+const Tasks = () => {
+  const { roomId } = useParams();
+
+  const { roomQuery } = useRoom(roomId);
+  const { data, isLoading, isError } = roomQuery;
+  // console.log(data);
+
+  if (isLoading) {
+    return <Spinner />;
+  }
+  if (isError) {
+    return <>Something went wrong . Please refresh</>;
+  }
+  const participants = [
+    ...(data.tenants || []),
+    ...(data.landlord ? [data.landlord] : []),
+  ];
   return (
     <div className="flex gap-4 ">
-        {tasks.map((task)=>(
-        <div className="flex flex-col" key={task._id}>
-            <p>{task.title}</p>
-            <p>{task.description}</p>
-            <p>{task.currentAssignee.fullName}</p>
-            <p>{task.title}</p>
-        </div>
-        ))}
+      <TaskForm/>
     </div>
   )
 }

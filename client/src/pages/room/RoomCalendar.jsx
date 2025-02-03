@@ -1,10 +1,12 @@
 import { Calendar } from "@/components/ui/calendar";
+import { getCurrentAssignee } from "@/utils/helper";
 import { useState } from "react";
 
 const RoomCalendar = ({ tasks }) => {
   console.log(tasks);
   const [date, setDate] = useState(new Date());
-  console.log(date)
+//   console.log(date)
+//   console.log(getCurrentAssignee(tasks[0],date))
   return (
     <div>
       RoomCalendar
@@ -12,7 +14,7 @@ const RoomCalendar = ({ tasks }) => {
         mode="single"
         selected={date}
         onSelect={setDate}
-        className="rounded-md border shadow bmain"
+        className="rounded-xl border shadow bmain "
       />
     </div>
   );

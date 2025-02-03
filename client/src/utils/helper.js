@@ -17,7 +17,7 @@ export const generateQRCode = async (text) => {
   }
 };
 
-const getCurrentAssignee = (task, currentDate) => {
+export const getCurrentAssignee = (task, currentDate) => {
   const { rotationOrder, dueDate, currentAssignee } = task;
 
   const dateDiff = Math.floor(

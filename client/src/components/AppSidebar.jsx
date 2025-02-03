@@ -1,4 +1,5 @@
-import { Award, Calendar, Home, Inbox, Search, Settings } from "lucide-react";
+import { Award, Calendar, Home, Inbox, Search, Settings,ClipboardList,Wallet   } from "lucide-react";
+
 import {
   Sidebar,
   SidebarContent,
@@ -33,6 +34,16 @@ export function AppSidebar() {
     },
     {
       title: "Expense",
+      url: roomId ? `/room/${roomId}/expense` : "/room/expense",
+      icon: Wallet ,
+    },
+    {
+      title: "Task",
+      url: roomId ? `/room/${roomId}/tasks` : "/room",
+      icon: ClipboardList,
+    },
+    {
+      title: "Maintenance",
       url: roomId ? `/room/${roomId}/expense` : "/room/expense",
       icon: Settings,
     },

@@ -1,4 +1,4 @@
-import ProfileCard from "@/components/profileCard";
+import ProfileCard from "@/components/ProfileCard";
 import QRCode from "@/components/QRCode";
 import { RoomHeader } from "@/components/Room/roomHeader";
 import RoomList from "@/components/Room/roomList";
