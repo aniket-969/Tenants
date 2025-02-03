@@ -15,6 +15,7 @@ const Room = () => {
         <div className="flex flex-col-reverse justify-around items-center w-full gap-20 sm:gap-10 sm:flex-row sm:mt-7 ">
           <QRCode />
           <RoomList />
+          
         </div>
       </div>
     </div>

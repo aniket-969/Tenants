@@ -9,10 +9,10 @@ import PollVote from "@/components/Poll/PollVote";
 import { getSocket } from "@/socket";
 import { useEffect } from "react";
 import RoomTasks from "./RoomTasks";
+import RoomCalendar from "./RoomCalendar";
 
 const RoomDetails = () => {
   const { roomId } = useParams();
-
 
   const { roomQuery } = useRoom(roomId);
   const { data, isLoading, isError } = roomQuery;
@@ -28,13 +28,14 @@ const RoomDetails = () => {
     ...(data.tenants || []),
     ...(data.landlord ? [data.landlord] : []),
   ];
+  // console.log(data)
   return (
     <div>
       <div>
         <p>{data.name}</p>
         <p>{data.description}</p>
       </div>
-      
+      <RoomCalendar tasks={data.tasks}/>
     </div>
   );
 };
