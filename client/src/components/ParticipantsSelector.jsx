@@ -8,11 +8,12 @@ const ParticipantSelector = ({ onChange, participants }) => {
   const { roomId } = useParams();
 
   //   console.log(participants)
+  console.log(selected);
   const toggleSelection = (participant) => {
-    const isSelected = selected.some((p) => p.userId === participant._id);
+    const isSelected = selected.includes(participant._id);
     const updated = isSelected
-      ? selected.filter((p) => p.userId !== participant._id)
-      : [...selected, { userId: participant._id, amountOwed: 10 }];
+      ? selected.filter((id) => id !== participant._id)
+      : [...selected,  participant._id ];
     setSelected(updated);
     onChange(updated);
   };
@@ -24,7 +25,7 @@ const ParticipantSelector = ({ onChange, participants }) => {
           key={user._id}
           onClick={() => toggleSelection(user)}
           className={`flex items-center space-x-2 cursor-pointer ${
-            selected.some((p) => p.userId === user._id) ? "bg-blue-100" : ""
+            selected.some((id) => id === user._id) ? "bg-blue-100" : ""
           }`}
         >
           <img

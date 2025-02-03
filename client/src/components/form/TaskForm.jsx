@@ -52,18 +52,18 @@ export const TaskForm = ({ participants }) => {
     defaultValues: {
       title: "",
       description: "",
-      dueDate: "", // Align with optional date
-      startDate: "", // Align with optional date
+      dueDate: "", 
+      startDate: "", 
       participants: [],
-      rotationOrder: undefined, // Allow undefined for optional fields
+      rotationOrder: undefined, 
       priority: "low",
       recurring: false,
       recurrencePattern: undefined,
       customRecurrence: undefined,
-      currentAssignee: undefined, // Allow undefined if optional
+      currentAssignee: undefined, 
     },
   });
-  //   console.log("Form Errors:", form.formState.errors);
+    console.log("Form Errors:", form.formState.errors);
   //   const participantsValue = form.watch("participants");
   //   console.log("Participants Value:", participantsValue);
   return (
@@ -128,12 +128,14 @@ export const TaskForm = ({ participants }) => {
 
         {/* Recurring Toggle */}
         <div className="flex items-center">
-          <label className="mr-2">Recurring:</label>
-          <Input
+          <label className="mr-5">Recurring:</label>
+        
+              <Input
             type="checkbox"
             checked={isRecurring}
-            onChange={() => setIsRecurring(!isRecurring)}
+            onChange={() => setIsRecurring(!isRecurring)} className="w-[1rem]"
           />
+        
         </div>
 
         {isRecurring && (
