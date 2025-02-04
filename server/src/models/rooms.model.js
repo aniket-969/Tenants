@@ -154,8 +154,9 @@ const roomSchema = new Schema(
 
         assignmentMode: {
           type: String,
-          enum: ["single", "rotation"], 
+          enum: ["single", "rotation"],
           default: "single",
+          required: true,
         },
 
         completed: {
@@ -165,7 +166,7 @@ const roomSchema = new Schema(
         priority: {
           type: String,
           enum: ["low", "medium", "high"],
-          default: "medium",
+          default: "low",
         },
         switches: [
           {
@@ -188,10 +189,6 @@ const roomSchema = new Schema(
             acceptCount: { type: Number, default: 0 },
           },
         ],
-        completedBy: {
-          type: Schema.Types.ObjectId,
-          ref: "User",
-        },
         recurring: {
           type: Boolean,
           default: false,
@@ -202,11 +199,11 @@ const roomSchema = new Schema(
         },
         recurrenceDays: [
           {
-            type: Number, 
+            type: Number,
           },
         ],
         customRecurrence: {
-          type: String, 
+          type: String,
         },
       },
     ],
