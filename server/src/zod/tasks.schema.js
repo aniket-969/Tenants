@@ -6,28 +6,28 @@ export const createRoomTaskSchema = z.object({
   description: stringValidation(5, 50, "description").optional(),
   currentAssignee: objectIdValidation,
   dueDate: z
-    .string() 
+    .string()
     .transform((val) => new Date(val))
     .refine((date) => !isNaN(date.getTime()), {
       message: "Invalid date format",
     })
     .optional(),
   startDate: z
-    .string() 
+    .string()
     .transform((val) => new Date(val))
     .refine((date) => !isNaN(date.getTime()), {
       message: "Invalid date format",
     })
-    .optional(), 
+    .optional(),
   participants: z.array(objectIdValidation),
-  rotationOrder: stringValidation(1, 20, "rotationOrder").optional(),
+  rotationOrder: z.array(objectIdValidation).optional(),
   completed: z.boolean().optional(),
   priority: z.enum(["low", "medium", "high"]).optional(),
   recurring: z.boolean().optional(),
   recurrencePattern: stringValidation(1, 20, "recurrence pattern").optional(),
   customRecurrence: stringValidation(1, 20, "custom recurrence").optional(),
 });
- 
+
 export const updateRoomTaskSchema = z.object({
   roomId: objectIdValidation,
   taskId: objectIdValidation,

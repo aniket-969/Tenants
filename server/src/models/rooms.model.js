@@ -143,10 +143,13 @@ const roomSchema = new Schema(
             required: true,
           },
         ],
-        rotationOrder: {
-          type: [Schema.Types.ObjectId],
-          ref: "User",
-        },
+        rotationOrder: [
+          {
+            type: Schema.Types.ObjectId,
+            ref: "user",
+          },
+        ],
+
         completed: {
           type: Boolean,
           default: false,
@@ -180,7 +183,6 @@ const roomSchema = new Schema(
         completedBy: {
           type: Schema.Types.ObjectId,
           ref: "User",
-          
         },
         recurring: {
           type: Boolean,
@@ -194,7 +196,7 @@ const roomSchema = new Schema(
           type: String,
         },
       },
-    ], 
+    ],
     lastMessage: { type: Schema.Types.ObjectId, ref: "ChatMessage" },
     polls: [{ type: mongoose.Schema.Types.ObjectId, ref: "Vote" }],
   },
