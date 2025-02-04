@@ -4,7 +4,8 @@ import { z } from "zod";
 export const createRoomTaskSchema = z.object({
   title: stringValidation(1, 20, "title"),
   description: stringValidation(5, 50, "description").optional(),
-  currentAssignee: objectIdValidation.optional(),
+  currentAssignee: objectIdValidation,
+  assignmentMode: z.enum(["single", "rotation"]),
   dueDate: z
     .string()
     .transform((val) => new Date(val))
@@ -20,10 +21,12 @@ export const createRoomTaskSchema = z.object({
     })
     .optional(),
   participants: z.array(objectIdValidation),
-  rotationOrder: stringValidation(1, 20, "rotationOrder").optional(),
+  rotationOrder: z.array(objectIdValidation).optional(),
+  completed: z.boolean().optional(),
   priority: z.enum(["low", "medium", "high"]).optional(),
   recurring: z.boolean().optional(),
   recurrencePattern: stringValidation(1, 20, "recurrence pattern").optional(),
+  recurrenceDays: z.array(z.number()).optional(),
   customRecurrence: stringValidation(1, 20, "custom recurrence").optional(),
 });
 

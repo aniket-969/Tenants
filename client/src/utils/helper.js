@@ -17,36 +17,32 @@ export const generateQRCode = async (text) => {
   }
 };
 
-export function getAssignee(
-  rotationOrder,
-  createdAt,
-  selectedDate,
-  recurrencePattern = "daily"
-) {
-  if (!rotationOrder.length) return null; 
+export function getAssignee(rotationOrder, createdAt, selectedDate, recurrencePattern = "daily", customInterval = 1) {
+  if (!rotationOrder.length) return null; // No assignee if no participants
 
   const createdDate = new Date(createdAt);
   const targetDate = new Date(selectedDate);
 
-  if (targetDate < createdDate) return null; 
+  if (targetDate < createdDate) return null; // Can't assign before creation date
 
-  let cycleLength = rotationOrder.length; 
+  let cycleLength = rotationOrder.length; // Number of people in rotation
   let index = 0;
 
+  // Calculate how many shifts have occurred based on recurrence
   switch (recurrencePattern) {
     case "daily":
-      index =
-        Math.floor((targetDate - createdDate) / (1000 * 60 * 60 * 24)) %
-        cycleLength;
+      index = Math.floor((targetDate - createdDate) / (1000 * 60 * 60 * 24)) % cycleLength;
       break;
     case "weekly":
-      index =
-        Math.floor((targetDate - createdDate) / (1000 * 60 * 60 * 24 * 7)) %
-        cycleLength;
+      index = Math.floor((targetDate - createdDate) / (1000 * 60 * 60 * 24 * 7)) % cycleLength;
+      break;
+    case "custom":
+      index = Math.floor((targetDate - createdDate) / (1000 * 60 * 60 * 24 * customInterval)) % cycleLength;
       break;
     default:
-      return null; 
+      return null; // Unsupported recurrence
   }
 
-  return rotationOrder[index]; 
+  return rotationOrder[index]; // Return the user whose turn it is
 }
+
