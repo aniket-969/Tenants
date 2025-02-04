@@ -17,18 +17,36 @@ export const generateQRCode = async (text) => {
   }
 };
 
-export const getCurrentAssignee = (task, currentDate) => {
-  const { rotationOrder, dueDate, currentAssignee } = task;
+export function getAssignee(
+  rotationOrder,
+  createdAt,
+  selectedDate,
+  recurrencePattern = "daily"
+) {
+  if (!rotationOrder.length) return null; 
 
-  const dateDiff = Math.floor(
-    (currentDate - new Date(dueDate)) / (1000 * 60 * 60 * 24)
-  );
+  const createdDate = new Date(createdAt);
+  const targetDate = new Date(selectedDate);
 
-  const currentIndex = rotationOrder.findIndex(
-    (user) => user.toString() === currentAssignee.toString()
-  );
+  if (targetDate < createdDate) return null; 
 
-  const assigneeIndex = (currentIndex + dateDiff) % rotationOrder.length;
+  let cycleLength = rotationOrder.length; 
+  let index = 0;
 
-  return rotationOrder[assigneeIndex];
-};
+  switch (recurrencePattern) {
+    case "daily":
+      index =
+        Math.floor((targetDate - createdDate) / (1000 * 60 * 60 * 24)) %
+        cycleLength;
+      break;
+    case "weekly":
+      index =
+        Math.floor((targetDate - createdDate) / (1000 * 60 * 60 * 24 * 7)) %
+        cycleLength;
+      break;
+    default:
+      return null; 
+  }
+
+  return rotationOrder[index]; 
+}
