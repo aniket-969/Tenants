@@ -126,7 +126,9 @@ const roomSchema = new Schema(
         currentAssignee: {
           type: Schema.Types.ObjectId,
           ref: "User",
-          required: true,
+          required: function () {
+            return this.assignmentMode === "single";
+          }, // Only required if it's a direct assignment
         },
         createdBy: {
           type: Schema.Types.ObjectId,
@@ -139,16 +141,22 @@ const roomSchema = new Schema(
         participants: [
           {
             type: Schema.Types.ObjectId,
-            ref: "user",
+            ref: "User",
             required: true,
           },
         ],
         rotationOrder: [
           {
             type: Schema.Types.ObjectId,
-            ref: "user",
+            ref: "User",
           },
         ],
+
+        assignmentMode: {
+          type: String,
+          enum: ["single", "rotation"], 
+          default: "single",
+        },
 
         completed: {
           type: Boolean,
@@ -192,11 +200,17 @@ const roomSchema = new Schema(
           type: String,
           enum: ["daily", "weekly", "monthly", "custom"],
         },
+        recurrenceDays: [
+          {
+            type: Number, 
+          },
+        ],
         customRecurrence: {
-          type: String,
+          type: String, 
         },
       },
     ],
+
     lastMessage: { type: Schema.Types.ObjectId, ref: "ChatMessage" },
     polls: [{ type: mongoose.Schema.Types.ObjectId, ref: "Vote" }],
   },
