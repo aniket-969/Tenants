@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { createRoomTaskSchema } from "@/schema/taskSchema";
-import { zodResolver } from "./../../../node_modules/@hookform/resolvers/zod/src/zod";
+import { zodResolver } from "@hookform/resolvers/zod/src/zod";
 import {
   Form,
   FormItem,
@@ -11,19 +11,19 @@ import {
   FormField,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Button } from "../ui/button";
+import { Button } from "../../ui/button";
 import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
 import { useTask } from "@/hooks/useTask";
 import { useState } from "react";
-import ParticipantSelector from "../ParticipantsSelector";
+import ParticipantSelector from "../../ParticipantsSelector";
 import {
   Select,
   SelectTrigger,
   SelectContent,
   SelectItem,
   SelectValue,
-} from "../ui/select";
+} from "../../ui/select";
 
 export const TaskForm = ({ participants }) => {
   const { roomId } = useParams();
@@ -52,18 +52,15 @@ export const TaskForm = ({ participants }) => {
     defaultValues: {
       title: "",
       description: "",
-      dueDate: "", 
-      startDate: "", 
+      dueDate: "",
+      startDate: "",
       participants: [],
-      rotationOrder: undefined, 
+      rotationOrder: undefined,
       priority: "low",
-      recurring: false,
-      recurrencePattern: undefined,
-      customRecurrence: undefined,
-      currentAssignee: undefined, 
+      
     },
   });
-    console.log("Form Errors:", form.formState.errors);
+  console.log("Form Errors:", form.formState.errors);
   //   const participantsValue = form.watch("participants");
   //   console.log("Participants Value:", participantsValue);
   return (
@@ -125,50 +122,6 @@ export const TaskForm = ({ participants }) => {
             </FormItem>
           )}
         />
-
-        {/* Recurring Toggle */}
-        <div className="flex items-center">
-          <label className="mr-5">Recurring:</label>
-        
-              <Input
-            type="checkbox"
-            checked={isRecurring}
-            onChange={() => setIsRecurring(!isRecurring)} className="w-[1rem]"
-          />
-        
-        </div>
-
-        {isRecurring && (
-          <>
-            <FormField
-              control={form.control}
-              name="recurrencePattern"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Recurrence Pattern</FormLabel>
-                  <FormControl>
-                    <Input placeholder="e.g., Daily, Weekly" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="customRecurrence"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Custom Recurrence</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Add custom recurrence" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </>
-        )}
 
         {/* Participants Selector */}
         <FormField

@@ -23,11 +23,11 @@ export const RoomLayout = () => {
 
   return (
     <SidebarProvider>
-      <div className="flex">
+      <div className="flex w-full " >
         <AppSidebar />
-        <main className="flex-1">
+        <main className=" w-full">
           <SidebarTrigger />
-          <div className="m-2">
+          <div className="p-2 w-full">
             <Outlet />
           </div>
         </main>

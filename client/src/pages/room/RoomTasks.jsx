@@ -1,4 +1,4 @@
-import { TaskForm } from "@/components/form/TaskForm";
+import { TaskForm } from "@/components/form/tasks/TaskForm";
 import Tasks from "@/components/Tasks/Tasks";
 import { getSocket } from "@/socket";
 import { useEffect, useState } from "react";
