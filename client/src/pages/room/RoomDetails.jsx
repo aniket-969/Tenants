@@ -10,6 +10,7 @@ import { getSocket } from "@/socket";
 import { useEffect } from "react";
 import RoomTasks from "./RoomTasks";
 import RoomCalendar from "./RoomCalendar";
+import Chat from "./Chat";
 
 const RoomDetails = () => {
   const { roomId } = useParams();
@@ -35,7 +36,11 @@ const RoomDetails = () => {
         <p>{data.name}</p>
         <p>{data.description}</p>
       </div>
-      <RoomCalendar tasks={data.tasks}/>
+      <div className="flex gap-5 justify-center">
+         <RoomCalendar tasks={data.tasks}/>
+      <Chat/>
+      </div>
+     
     </div>
   );
 };

@@ -24,17 +24,17 @@ export function AppSidebar() {
     { title: "Room", url: roomId ? `/room/${roomId}` : "/room", icon: Inbox },
     {
       title: "Awards",
-      url: roomId ? `/room/${roomId}/awards` : "/room/awards",
+      url: roomId ? `/room/${roomId}/awards` : "/room",
       icon: Award,
     },
     {
       title: "Events",
-      url: roomId ? `/room/${roomId}/events` : "/room/events",
+      url: roomId ? `/room/${roomId}/events` : "/room",
       icon: CalendarDays ,
     },
     {
       title: "Expense",
-      url: roomId ? `/room/${roomId}/expense` : "/room/expense",
+      url: roomId ? `/room/${roomId}/expense` : "/room",
       icon: Wallet ,
     },
     {
@@ -44,7 +44,7 @@ export function AppSidebar() {
     },
     {
       title: "Maintenance",
-      url: roomId ? `/room/${roomId}/maintenance` : "/room/expense",
+      url: roomId ? `/room/${roomId}/maintenance` : "/room",
       icon: Hammer,
     },
   ];
