@@ -17,32 +17,57 @@ export const generateQRCode = async (text) => {
   }
 };
 
-export function getAssignee(rotationOrder, createdAt, selectedDate, recurrencePattern = "daily", customInterval = 1) {
-  if (!rotationOrder.length) return null; // No assignee if no participants
+export const getAssignee = (task, selectedDate) => {
+  const { assignmentMode, rotationOrder, recurrencePattern, recurrenceDays, startDate } = task;
 
-  const createdDate = new Date(createdAt);
-  const targetDate = new Date(selectedDate);
-
-  if (targetDate < createdDate) return null; // Can't assign before creation date
-
-  let cycleLength = rotationOrder.length; // Number of people in rotation
-  let index = 0;
-
-  // Calculate how many shifts have occurred based on recurrence
-  switch (recurrencePattern) {
-    case "daily":
-      index = Math.floor((targetDate - createdDate) / (1000 * 60 * 60 * 24)) % cycleLength;
-      break;
-    case "weekly":
-      index = Math.floor((targetDate - createdDate) / (1000 * 60 * 60 * 24 * 7)) % cycleLength;
-      break;
-    case "custom":
-      index = Math.floor((targetDate - createdDate) / (1000 * 60 * 60 * 24 * customInterval)) % cycleLength;
-      break;
-    default:
-      return null; // Unsupported recurrence
+  if (assignmentMode === "single") {
+    return task.currentAssignee;
   }
 
-  return rotationOrder[index]; // Return the user whose turn it is
-}
+  if (assignmentMode === "rotation") {
+    if (!rotationOrder || rotationOrder.length === 0) {
+      throw new Error("Rotation order must be defined for rotation tasks.");
+    }
+
+    // Convert dates
+    const start = new Date(startDate);
+    const selected = new Date(selectedDate);
+
+    // If task is recurring, check valid days
+    if (task.recurring) {
+      const selectedDay = selected.getDay(); // 0 = Sunday, 1 = Monday, etc.
+      if (!recurrenceDays.includes(selectedDay)) {
+        return null; // No assignment on this day
+      }
+    }
+
+    // Calculate the difference in days from start date
+    const dayDiff = Math.floor((selected - start) / (1000 * 60 * 60 * 24));
+
+    // Determine assignment based on recurrence pattern
+    let index;
+    switch (recurrencePattern) {
+      case "daily":
+        index = dayDiff % rotationOrder.length;
+        break;
+      case "weekly":
+        index = Math.floor(dayDiff / 7) % rotationOrder.length;
+        break;
+      case "monthly":
+        index = (selected.getMonth() - start.getMonth() + 12 * (selected.getFullYear() - start.getFullYear())) % rotationOrder.length;
+        break;
+      case "custom":
+        // Custom recurrence (e.g., every 3 days, garbage on Tue/Thu/Sat)
+        const customDays = recurrenceDays.length;
+        index = Math.floor(dayDiff / customDays) % rotationOrder.length;
+        break;
+      default:
+        throw new Error("Invalid recurrence pattern.");
+    }
+
+    return rotationOrder[index];
+  }
+
+  return null;
+};
 

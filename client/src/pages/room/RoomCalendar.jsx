@@ -13,9 +13,7 @@ const RoomCalendar = ({ tasks }) => {
 const createdAt = "2024-02-01"; // Task created on Feb 1, 2024
 const selectedDate = "2024-02-10"; // Check for Feb 10, 2024
 
-console.log(getAssignee(rotationOrder, createdAt, selectedDate, "daily")); // Output: 2
-console.log(getAssignee(rotationOrder, createdAt, "2024-02-15", "daily")); // Output: 1
-console.log(getAssignee(rotationOrder, createdAt, "2024-03-01", "weekly")); // Output: 3
+console.log(getAssignee(task[0], selectedDate)); // Output: 2
   return (
     <div>
       RoomCalendar
