@@ -65,7 +65,7 @@ export const TaskForm = ({ participants }) => {
   //   console.log("Participants Value:", participantsValue);
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
         {/* Title */}
         <FormField
           control={form.control}

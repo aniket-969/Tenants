@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label";
 
 const Tasks = () => {
   const { roomId } = useParams();
-  const [recurringTask, setRecurringTask] = useState(true);
+  const [recurringTask, setRecurringTask] = useState(false);
   const { roomQuery } = useRoom(roomId);
   const { data, isLoading, isError } = roomQuery;
   if (isLoading) {
@@ -23,8 +23,9 @@ const Tasks = () => {
     ...(data.landlord ? [data.landlord] : []),
   ];
   return (
-    <div className="flex flex-col gap-4 by w-full">
-      <div className="flex items-center gap-4 bb">
+    <div className="flex flex-col gap-4 w-full items-center ">
+      <h2 className="font-bold text-xl">Create Task</h2>
+      <div className="flex items-center gap-4 ">
         <Label htmlFor="room-toggle" className="text-sm">
           One Time
         </Label>
@@ -37,11 +38,14 @@ const Tasks = () => {
           Recurring
         </Label>
       </div>
-      {recurringTask ? (
+      <div className="bmain w-full max-w-[30rem] py-5 px-8">
+        {recurringTask ? (
         <RecurringTaskForm participants={participants} />
       ) : (
         <TaskForm participants={participants} />
       )}
+      </div>
+      
     </div>
   );
 };

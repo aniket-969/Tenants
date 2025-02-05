@@ -27,7 +27,7 @@ export const RoomLayout = () => {
         <AppSidebar />
         <main className=" w-full">
           <SidebarTrigger />
-          <div className="p-2 w-full">
+          <div className="px-2 py-5 w-full">
             <Outlet />
           </div>
         </main>
