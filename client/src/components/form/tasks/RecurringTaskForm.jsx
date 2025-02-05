@@ -60,6 +60,7 @@ export const RecurringTaskForm = ({ participants }) => {
       recurrenceDays: undefined,
       customRecurrence: undefined,
       currentAssignee: undefined,
+      assignmentMode:"rotation"
     },
   });
   console.log("Form Errors:", form.formState.errors);

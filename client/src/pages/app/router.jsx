@@ -20,6 +20,7 @@ import Chat from "../room/Chat.jsx";
 import { RoomSocketProvider } from "@/context/RoomSocket.jsx";
 import { RouteMonitor } from "@/utils/RouteMonitor.js";
 import Tasks from "@/components/Tasks/Tasks.jsx";
+import Expense from "@/components/Expense/Expense.jsx";
 
 const LandingPage = React.lazy(() => import("../LandingPage.jsx"));
 const Login = React.lazy(() => import("../auth/Login.jsx"));
@@ -37,6 +38,7 @@ const RoomRoutes = () => {
             <Route path="awards" element={<Awards />} />
             <Route path="chat" element={<Chat />} />
             <Route path="tasks" element={<Tasks />} />
+            <Route path="expense" element={<Expense />} />
           </Route>
         </Routes>
       </RoomSocketProvider>

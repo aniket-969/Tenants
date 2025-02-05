@@ -23,7 +23,7 @@ const Tasks = () => {
     ...(data.landlord ? [data.landlord] : []),
   ];
   return (
-    <div className="flex flex-col gap-4 w-full items-center ">
+    <div className="flex flex-col gap-6 w-full items-center ">
       <h2 className="font-bold text-xl">Create Task</h2>
       <div className="flex items-center gap-4 ">
         <Label htmlFor="room-toggle" className="text-sm">

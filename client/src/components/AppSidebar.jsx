@@ -1,4 +1,4 @@
-import { Award, Calendar, Home, Inbox, Search, Settings,ClipboardList,Wallet   } from "lucide-react";
+import { Award, Calendar, Home, Inbox, Search, Settings,ClipboardList,Wallet ,Hammer,CalendarDays   } from "lucide-react";
 
 import {
   Sidebar,
@@ -30,7 +30,7 @@ export function AppSidebar() {
     {
       title: "Events",
       url: roomId ? `/room/${roomId}/events` : "/room/events",
-      icon: Settings,
+      icon: CalendarDays ,
     },
     {
       title: "Expense",
@@ -44,8 +44,8 @@ export function AppSidebar() {
     },
     {
       title: "Maintenance",
-      url: roomId ? `/room/${roomId}/expense` : "/room/expense",
-      icon: Settings,
+      url: roomId ? `/room/${roomId}/maintenance` : "/room/expense",
+      icon: Hammer,
     },
   ];
 

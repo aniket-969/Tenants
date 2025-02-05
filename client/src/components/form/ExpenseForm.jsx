@@ -19,21 +19,8 @@ import ParticipantSelector from "../ParticipantsSelector";
 import { useRoom } from "@/hooks/useRoom";
 import { Spinner } from "../ui/spinner";
 
-export const ExpenseForm = () => {
-  const { roomId } = useParams();
-  const { createExpenseMutation } = useExpense(roomId);
-  const { roomQuery } = useRoom(roomId);
-  const { data, isLoading, isError } = roomQuery;
-  if (isLoading) {
-    return <Spinner />;
-  }
-  if (isError) {
-    return <>Something went wrong . Please refresh</>;
-  }
-  const participants = [
-    ...(data.tenants || []),
-    ...(data.landlord ? [data.landlord] : []),
-  ];
+export const ExpenseForm = ({participants}) => {
+  
   const onSubmit = async (values) => {
     console.log(values);
     
@@ -125,7 +112,9 @@ export const ExpenseForm = () => {
             </FormItem>
           )}
         />
-        <FormField
+
+        {/* Participants selector */}
+        {/* <FormField
           control={form.control}
           name="userExpense"
           render={({ field }) => (
@@ -138,7 +127,7 @@ export const ExpenseForm = () => {
               <FormMessage />
             </FormItem>
           )}
-        />
+        /> */}
         <Button type="submit">Submit</Button>
       </form>
     </Form>
