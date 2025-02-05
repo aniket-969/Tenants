@@ -57,6 +57,7 @@ export const TaskForm = ({ participants }) => {
       participants: [],
       rotationOrder: undefined,
       priority: "low",
+      assignmentMode:"single",
       
     },
   });

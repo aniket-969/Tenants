@@ -4,7 +4,7 @@ import { z } from "zod";
 export const createRoomTaskSchema = z.object({
   title: stringValidation(1, 20, "title"),
   description: stringValidation(5, 50, "description").optional(),
-  currentAssignee: objectIdValidation,
+  currentAssignee: objectIdValidation.optional(),
   assignmentMode: z.enum(["single", "rotation"]),
   dueDate: z
     .string()
