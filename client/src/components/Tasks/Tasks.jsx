@@ -26,7 +26,7 @@ const Tasks = () => {
     <div className="flex flex-col gap-4 by w-full">
       <div className="flex items-center gap-4 bb">
         <Label htmlFor="room-toggle" className="text-sm">
-          Recurring
+          One Time
         </Label>
         <Switch
           id="room-toggle"
@@ -34,7 +34,7 @@ const Tasks = () => {
           onCheckedChange={setRecurringTask}
         />
         <Label htmlFor="room-toggle" className="text-sm">
-          One Time
+          Recurring
         </Label>
       </div>
       {recurringTask ? (

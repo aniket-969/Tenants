@@ -28,8 +28,6 @@ import {
 export const RecurringTaskForm = ({ participants }) => {
   const { roomId } = useParams();
   const { createTaskMutation } = useTask(roomId);
-console.log("nonre")
-  const [isRecurring, setIsRecurring] = useState(false);
 
   const onSubmit = async (values) => {
     const data = {
@@ -127,62 +125,46 @@ console.log("nonre")
           )}
         />
 
-        {/* Recurring Toggle */}
-        <div className="flex items-center">
-          <label className="mr-5">Recurring:</label>
+        <FormField
+          control={form.control}
+          name="recurrencePattern"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Recurrence Pattern</FormLabel>
+              <FormControl>
+                <Input placeholder="e.g., Daily, Weekly" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="recurrenceDays"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Recurrence Days</FormLabel>
+              <FormControl>
+                <Input placeholder="e.g., Daily, Weekly" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
-          <Input
-            type="checkbox"
-            checked={isRecurring}
-            onChange={() => setIsRecurring(!isRecurring)}
-            className="w-[1rem]"
-          />
-        </div>
-
-        {isRecurring && (
-          <>
-            <FormField
-              control={form.control}
-              name="recurrencePattern"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Recurrence Pattern</FormLabel>
-                  <FormControl>
-                    <Input placeholder="e.g., Daily, Weekly" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="recurrenceDays"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Recurrence Days</FormLabel>
-                  <FormControl>
-                    <Input placeholder="e.g., Daily, Weekly" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="customRecurrence"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Custom Recurrence</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Add custom recurrence" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </>
-        )}
+        <FormField
+          control={form.control}
+          name="customRecurrence"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Custom Recurrence</FormLabel>
+              <FormControl>
+                <Input placeholder="Add custom recurrence" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
         {/* Participants Selector */}
         <FormField
