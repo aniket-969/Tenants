@@ -55,11 +55,10 @@ export const RecurringTaskForm = ({ participants }) => {
       participants: [],
       rotationOrder: undefined,
       priority: "low",
-      recurring: false,
+      recurring: true,
       recurrencePattern: undefined,
       recurrenceDays: undefined,
       customRecurrence: undefined,
-      currentAssignee: undefined,
       assignmentMode: "rotation",
     },
   });
