@@ -5,6 +5,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { AwardsForm } from "@/components/form/AwardsForm";
 import { useEffect, useState } from "react";
 import { getSocket } from "@/socket";
+import FormWrapper from "@/components/ui/formWrapper";
 
 const Awards = () => {
   const { roomId } = useParams();
@@ -45,9 +46,9 @@ const Awards = () => {
       {/* Award heading */}
       <h1 className="text-2xl font-bold mb-6">Awards</h1>
       {/* Awards grid */}
-      <div className="flex justify-center">
+      <FormWrapper>
         <AwardsForm />
-      </div>
+      </FormWrapper>
 
       <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 lg:gap-10 content-center ">
         {awards.map((award) => (
