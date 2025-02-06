@@ -26,6 +26,7 @@ import {
 } from "../../ui/select";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
+import { MultiSelect } from "@/components/ui/multiSelect";
 
 export const RecurringTaskForm = ({ participants }) => {
   const { roomId } = useParams();
@@ -196,23 +197,7 @@ export const RecurringTaskForm = ({ participants }) => {
             <FormItem>
               <FormLabel>Days task happens</FormLabel>
               <FormControl>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Select Repetition Days" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Sunday">Sunday</SelectItem>
-                    <SelectItem value="Monday">Monday</SelectItem>
-                    <SelectItem value="Tuesday">Tuesday</SelectItem>
-                    <SelectItem value="Wednesday">Wednesday</SelectItem>
-                    <SelectItem value="Thursday">Thursday</SelectItem>
-                    <SelectItem value="Friday">Friday</SelectItem>
-                    <SelectItem value="Saturday">Saturday</SelectItem>
-                  </SelectContent>
-                </Select>
+              <MultiSelect value={field.value} onChange={field.onChange}/>
               </FormControl>
               <FormMessage />
             </FormItem>
