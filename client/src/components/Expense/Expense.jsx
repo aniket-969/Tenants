@@ -4,6 +4,7 @@ import { Spinner } from "../ui/spinner";
 import { useRoom } from "@/hooks/useRoom";
 import { useExpense } from "@/hooks/useExpense";
 import { useParams } from "react-router-dom";
+import FormWrapper from "../ui/formWrapper";
 
 const Expense = () => {
     const { roomId } = useParams();
