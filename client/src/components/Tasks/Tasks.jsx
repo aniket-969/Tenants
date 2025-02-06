@@ -6,6 +6,7 @@ import { Switch } from "../ui/switch";
 import { useState } from "react";
 import { RecurringTaskForm } from "../form/tasks/RecurringTaskForm";
 import { Label } from "@/components/ui/label";
+import FormWrapper from "../ui/formWrapper";
 
 const Tasks = () => {
   const { roomId } = useParams();
@@ -38,13 +39,13 @@ const Tasks = () => {
           Recurring
         </Label>
       </div>
-      <div className="bmain w-full max-w-[30rem] py-5 px-8">
+      <FormWrapper>
         {recurringTask ? (
         <RecurringTaskForm participants={participants} />
       ) : (
         <TaskForm participants={participants} />
       )}
-      </div>
+      </FormWrapper>
       
     </div>
   );

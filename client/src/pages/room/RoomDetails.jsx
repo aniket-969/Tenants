@@ -31,14 +31,14 @@ const RoomDetails = () => {
   ];
   // console.log(data)
   return (
-    <div>
-      <div>
-        <p>{data.name}</p>
-        <p>{data.description}</p>
+    <div className="flex flex-col gap-10 ">
+      <div className=" flex flex-col gap-4 items-center">
+        <h3 className="text-3xl">{data.name}</h3>
+        <p className="text-lg">{data.description}</p>
       </div>
-      <div className="flex gap-5 justify-center">
+      <div className="flex justify-center">
          <RoomCalendar tasks={data.tasks}/>
-      <Chat/>
+      {/* <Chat/> */}
       </div>
      
     </div>
