@@ -24,11 +24,13 @@ import {
   SelectItem,
   SelectValue,
 } from "../../ui/select";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
 
 export const RecurringTaskForm = ({ participants }) => {
   const { roomId } = useParams();
   const { createTaskMutation } = useTask(roomId);
-
+  const [customRecurrence, setCustomRecurrence] = useState(false);
   const onSubmit = async (values) => {
     const data = {
       ...values,
@@ -68,6 +70,7 @@ export const RecurringTaskForm = ({ participants }) => {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+
         {/* Title */}
         <FormField
           control={form.control}
@@ -126,31 +129,64 @@ export const RecurringTaskForm = ({ participants }) => {
         />
 
         {/* Recurrence Pattern */}
-        <FormField
-          control={form.control}
-          name="recurrencePattern"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Repetition Pattern</FormLabel>
-              <FormControl>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Select pattern" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="low">Weekly</SelectItem>
-                    <SelectItem value="medium">Daily</SelectItem>
-                    <SelectItem value="high">Monthly</SelectItem>
-                  </SelectContent>
-                </Select>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
+        <div className="flex items-center gap-4">
+            <Label htmlFor="custom-toggle" className="text-sm">
+          Predefined
+        </Label>
+        <Switch
+          id="custom-toggle"
+          checked={customRecurrence}
+          onCheckedChange={setCustomRecurrence}
         />
+        <Label htmlFor="custom-toggle" className="text-sm">
+          Custom
+        </Label>
+        </div>
+      
+        {!customRecurrence ? (
+          <FormField
+            control={form.control}
+            name="recurrencePattern"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Repetition Pattern</FormLabel>
+                <FormControl>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select pattern" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="low">Weekly</SelectItem>
+                      <SelectItem value="medium">Daily</SelectItem>
+                      <SelectItem value="high">Monthly</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        ) : (
+          <FormField
+            control={form.control}
+            name="customRecurrence"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Custom Recurrence</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="e.g. if repeats every 3 days mention 3"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
 
         {/* Recurrence Days */}
         <FormField
@@ -177,23 +213,6 @@ export const RecurringTaskForm = ({ participants }) => {
                     <SelectItem value="Saturday">Saturday</SelectItem>
                   </SelectContent>
                 </Select>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="customRecurrence"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Custom Recurrence</FormLabel>
-              <FormControl>
-                <Input
-                  placeholder="e.g. if repeats every 3 days mention 3"
-                  {...field}
-                />
               </FormControl>
               <FormMessage />
             </FormItem>
