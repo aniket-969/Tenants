@@ -58,29 +58,29 @@ export const RecurringTaskForm = ({ participants }) => {
       participants: [],
       priority: "low",
       recurring: true,
-      recurrencePattern: null,
+      recurrencePattern: "",
       recurrenceDays: [],
-      customRecurrence: null,
+      customRecurrence: "",
       assignmentMode: "rotation",
     },
   });
   console.log("Form Errors:", form.formState.errors);
   //   const participantsValue = form.watch("participants");
   //   console.log("Participants Value:", participantsValue);
+
+  const days = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
   
-const days = [
-  "Sunday",
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
-];
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-
         {/* Title */}
         <FormField
           control={form.control}
@@ -140,19 +140,19 @@ const days = [
 
         {/* Recurrence Pattern */}
         <div className="flex items-center gap-4">
-            <Label htmlFor="custom-toggle" className="text-sm">
-          Predefined
-        </Label>
-        <Switch
-          id="custom-toggle"
-          checked={customRecurrence}
-          onCheckedChange={setCustomRecurrence}
-        />
-        <Label htmlFor="custom-toggle" className="text-sm">
-          Custom
-        </Label>
+          <Label htmlFor="custom-toggle" className="text-sm">
+            Predefined
+          </Label>
+          <Switch
+            id="custom-toggle"
+            checked={customRecurrence}
+            onCheckedChange={setCustomRecurrence}
+          />
+          <Label htmlFor="custom-toggle" className="text-sm">
+            Custom
+          </Label>
         </div>
-      
+
         {!customRecurrence ? (
           <FormField
             control={form.control}
@@ -189,7 +189,8 @@ const days = [
                 <FormControl>
                   <Input
                     placeholder="e.g. if repeats every 3 days mention 3"
-                    {...field} type="number"
+                    {...field}
+                    type="number"
                   />
                 </FormControl>
                 <FormMessage />
@@ -206,7 +207,11 @@ const days = [
             <FormItem>
               <FormLabel>Days task happens</FormLabel>
               <FormControl>
-              <MultiSelect options={days} value={field.value} onChange={field.onChange}/>
+                <MultiSelect
+                  options={days}
+                  value={field.value}
+                  onChange={field.onChange}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

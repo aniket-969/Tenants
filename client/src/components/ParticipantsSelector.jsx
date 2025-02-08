@@ -13,7 +13,7 @@ const ParticipantSelector = ({ onChange, participants }) => {
     const isSelected = selected.includes(participant._id);
     const updated = isSelected
       ? selected.filter((id) => id !== participant._id)
-      : [...selected,  participant._id ];
+      : [...selected, participant._id];
     setSelected(updated);
     onChange(updated);
   };
@@ -24,8 +24,8 @@ const ParticipantSelector = ({ onChange, participants }) => {
         <div
           key={user._id}
           onClick={() => toggleSelection(user)}
-          className={`flex items-center space-x-2 cursor-pointer ${
-            selected.some((id) => id === user._id) ? "bg-blue-100" : ""
+          className={`flex items-center space-x-2 cursor-pointer px-2 py-1 rounded-sm ${
+            selected.some((id) => id === user._id) ? "bg-card text-card-foreground" : ""
           }`}
         >
           <img
@@ -35,7 +35,7 @@ const ParticipantSelector = ({ onChange, participants }) => {
           />
           <div>
             <p className="font-semibold">{user.username}</p>
-            <p className="text-sm text-gray-500">{user.fullName}</p>
+            <p className="text-sm text-card-foreground">{user.fullName}</p>
           </div>
         </div>
       ))}

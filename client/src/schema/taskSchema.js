@@ -25,9 +25,23 @@ export const createRoomTaskSchema = z.object({
   completed: z.boolean().optional(),
   priority: z.enum(["low", "medium", "high"]).optional(),
   recurring: z.boolean().optional(),
-  recurrencePattern: stringValidation(1, 20, "recurrence pattern").optional(),
-  recurrenceDays: z.array(z.number()).optional(),
-  customRecurrence: stringValidation(1, 20, "custom recurrence").optional(),
+  recurrencePattern: stringValidation(1, 20, "recurrence pattern")
+    .optional()
+    .refine((val) => val !== "", {
+      message: "Recurrence pattern cannot be empty",
+    }),
+  recurrenceDays: z
+    .array(z.number())
+    .optional()
+    .refine((val) => val.length > 0, {
+      message: "At least one recurrence day should be selected",
+    }),
+
+  customRecurrence: stringValidation(1, 20, "custom recurrence")
+    .optional()
+    .refine((val) => val !== "", {
+      message: "Custom recurrence cannot be empty",
+    }),
 });
 
 export const updateRoomTaskSchema = z.object({
