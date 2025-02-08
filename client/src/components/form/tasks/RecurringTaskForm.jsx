@@ -56,12 +56,11 @@ export const RecurringTaskForm = ({ participants }) => {
       dueDate: "",
       startDate: "",
       participants: [],
-      rotationOrder: undefined,
       priority: "low",
       recurring: true,
-      recurrencePattern: undefined,
-      recurrenceDays: undefined,
-      customRecurrence: undefined,
+      recurrencePattern: null,
+      recurrenceDays: [],
+      customRecurrence: null,
       assignmentMode: "rotation",
     },
   });
@@ -190,7 +189,7 @@ const days = [
                 <FormControl>
                   <Input
                     placeholder="e.g. if repeats every 3 days mention 3"
-                    {...field}
+                    {...field} type="number"
                   />
                 </FormControl>
                 <FormMessage />

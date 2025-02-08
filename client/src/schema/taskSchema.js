@@ -48,8 +48,8 @@ export const updateRoomTaskSchema = z.object({
   completed: z.boolean().optional(),
   priority: z.enum(["low", "medium", "high"]).optional(),
   recurring: z.boolean().optional(),
-  recurrencePattern: stringValidation(1, 20, "recurrence pattern").optional(),
-  customRecurrence: stringValidation(1, 20, "custom recurrence").optional(),
+  recurrencePattern: stringValidation(1, 20, "recurrence pattern").nullable(),
+  customRecurrence: stringValidation(1, 20, "custom recurrence").nullable(),
   startDate: z
     .string()
     .transform((val) => new Date(val))
