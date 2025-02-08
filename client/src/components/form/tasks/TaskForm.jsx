@@ -55,10 +55,10 @@ export const TaskForm = ({ participants }) => {
       dueDate: "",
       startDate: "",
       participants: [],
+      recurring:false,
       rotationOrder: undefined,
       priority: "low",
       assignmentMode:"single",
-      
     },
   });
   console.log("Form Errors:", form.formState.errors);
