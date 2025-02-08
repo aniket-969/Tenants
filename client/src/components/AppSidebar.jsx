@@ -1,4 +1,15 @@
-import { Award, Calendar, Home, Inbox, Search, Settings,ClipboardList,Wallet ,Hammer,CalendarDays   } from "lucide-react";
+import {
+  Award,
+  Calendar,
+  Home,
+  Inbox,
+  Search,
+  Settings,
+  ClipboardList,
+  Wallet,
+  Hammer,
+  CalendarDays,
+} from "lucide-react";
 
 import {
   Sidebar,
@@ -11,13 +22,17 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
 export function AppSidebar() {
-  const [roomId, setRoomId] = useState(null);
-  useEffect(() => {
-    const storedRoomId = localStorage.getItem("currentRoomId");
-    setRoomId(storedRoomId);
-  }, []);
+  // const [roomId, setRoomId] = useState(null);
+  // useEffect(() => {
+  //   const storedRoomId = localStorage.getItem("currentRoomId");
+  //   setRoomId(storedRoomId);
+  //   console.log(roomId);
+  // }, [roomId]);
+  const {roomId} = useParams()
+  // console.log(roomId)
   // Menu items with dynamic roomId
   const items = [
     { title: "Home", url: "/room", icon: Home },
@@ -30,12 +45,12 @@ export function AppSidebar() {
     {
       title: "Events",
       url: roomId ? `/room/${roomId}/events` : "/room",
-      icon: CalendarDays ,
+      icon: CalendarDays,
     },
     {
       title: "Expense",
       url: roomId ? `/room/${roomId}/expense` : "/room",
-      icon: Wallet ,
+      icon: Wallet,
     },
     {
       title: "Task",
