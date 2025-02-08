@@ -9,23 +9,14 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
-const days = [
-  "Sunday",
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
-];
 
-export function MultiSelect({ value = [], onChange }) {
+export function MultiSelect({ value = [], onChange ,options}) {
   const [open, setOpen] = useState(false);
 
-  const toggleSelection = (day) => {
-    const newSelection = value.includes(day)
-      ? value.filter((d) => d !== day)
-      : [...value, day];
+  const toggleSelection = (option) => {
+    const newSelection = value.includes(option)
+      ? value.filter((d) => d !== option)
+      : [...value, option];
     onChange(newSelection);
   };
 
@@ -33,22 +24,22 @@ export function MultiSelect({ value = [], onChange }) {
     
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
-        <Button variant="outline" className="w-full text-sm">
+        <Button variant="outline" className="w-full text-sm font-normal">
           {value.length
-            ? value.length === days.length
+            ? value.length === options.length
               ? "All Days"
-              : value.map((day) => day.slice(0, 3)).join(", ")
+              : value.map((option) => option.slice(0, 3)).join(", ")
             : "Select Repetition Days"}
         </Button>
         </PopoverTrigger>
         <PopoverContent className="w-56 p-2">
-          {days.map((day) => (
-            <div key={day} className="flex items-center gap-2 py-1">
+          {options.map((option) => (
+            <div key={option} className="flex items-center gap-2 py-1">
               <Checkbox
-                checked={value.includes(day)}
-                onCheckedChange={() => toggleSelection(day)}
+                checked={value.includes(option)}
+                onCheckedChange={() => toggleSelection(option)}
               />
-              <span className="text-sm">{day}</span>
+              <span className="text-sm">{option}</span>
             </div>
           ))}
         </PopoverContent>

@@ -68,6 +68,16 @@ export const RecurringTaskForm = ({ participants }) => {
   console.log("Form Errors:", form.formState.errors);
   //   const participantsValue = form.watch("participants");
   //   console.log("Participants Value:", participantsValue);
+  
+const days = [
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+];
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -197,7 +207,7 @@ export const RecurringTaskForm = ({ participants }) => {
             <FormItem>
               <FormLabel>Days task happens</FormLabel>
               <FormControl>
-              <MultiSelect value={field.value} onChange={field.onChange}/>
+              <MultiSelect options={days} value={field.value} onChange={field.onChange}/>
               </FormControl>
               <FormMessage />
             </FormItem>
