@@ -32,7 +32,6 @@ export const createRoomTaskSchema = z
   })
   .superRefine((data, ctx) => {
     if (data.recurring) {
-      // If recurring is true, ensure required fields are provided
       if (!data.recurrenceDays || data.recurrenceDays.length === 0) {
         ctx.addIssue({
           path: ["recurrenceDays"],
@@ -61,7 +60,6 @@ export const createRoomTaskSchema = z
         });
       }
     } else {
-      // If recurring is false, ignore recurrence-related fields
       data.recurrenceDays = undefined;
       data.recurrencePattern = undefined;
       data.customRecurrence = undefined;
