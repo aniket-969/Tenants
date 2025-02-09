@@ -9,51 +9,43 @@ export const createRoomTaskSchema = z
     assignmentMode: z.enum(["single", "rotation"]),
     dueDate: z
       .string()
-      .transform((val) => new Date(val))
-      .refine((date) => !isNaN(date.getTime()), {
+      .optional() // Allow undefined
+      .refine((val) => !val || !isNaN(new Date(val).getTime()), {
         message: "Invalid date format",
       })
-      .optional(),
+      .transform((val) => (val ? new Date(val) : undefined)),
     startDate: z
       .string()
-      .transform((val) => new Date(val))
-      .refine((date) => !isNaN(date.getTime()), {
+      .optional() // Allow undefined
+      .refine((val) => !val || !isNaN(new Date(val).getTime()), {
         message: "Invalid date format",
       })
-      .optional(),
+      .transform((val) => (val ? new Date(val) : undefined)),
     participants: z.array(objectIdValidation),
     rotationOrder: z.array(objectIdValidation).optional(),
     completed: z.boolean().optional(),
     priority: z.enum(["low", "medium", "high"]).optional(),
-    recurring: z.boolean().optional(), // Indicates if it's a recurring task
+    recurring: z.boolean().optional(),
     recurrencePattern: stringValidation(1, 20, "recurrence pattern").optional(),
     recurrenceDays: z.array(z.number()).optional(),
     customRecurrence: stringValidation(1, 20, "custom recurrence").optional(),
   })
   .superRefine((data, ctx) => {
     if (data.recurring) {
-      // If recurring is true, ensure required fields are provided
-      if (!data.recurrenceDays || data.recurrenceDays.length === 0) {
+      const hasRecurrenceDays =
+        data.recurrenceDays && data.recurrenceDays.length > 0;
+      const hasRecurrencePattern = !!data.recurrencePattern;
+      const hasCustomRecurrence = !!data.customRecurrence;
+
+      if (!hasRecurrenceDays && !hasRecurrencePattern && !hasCustomRecurrence) {
         ctx.addIssue({
           path: ["recurrenceDays"],
-          message: "At least one recurrence day should be selected",
+          message:
+            "At least one of recurrenceDays, recurrencePattern, or customRecurrence must be provided",
         });
       }
 
-      if (!data.recurrencePattern) {
-        ctx.addIssue({
-          path: ["recurrencePattern"],
-          message: "Recurrence pattern is required for recurring tasks",
-        });
-      }
-
-      if (!data.customRecurrence) {
-        ctx.addIssue({
-          path: ["customRecurrence"],
-          message: "Custom recurrence details are required for recurring tasks",
-        });
-      }
-
+      // Ensure rotationOrder is required when recurring is true
       if (!data.rotationOrder || data.rotationOrder.length === 0) {
         ctx.addIssue({
           path: ["rotationOrder"],

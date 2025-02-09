@@ -3,10 +3,12 @@ import { z } from "zod";
 export const stringValidation = (min, max, fieldName) => {
   return z
     .string()
-    .min(min, {
+    .transform((val) => (val.trim() === "" ? undefined : val)) // Convert empty string to undefined
+    .optional() // Make field optional
+    .refine((val) => val === undefined || val.length >= min, {
       message: `${fieldName} must be at least ${min} characters long.`,
     })
-    .max(max, {
+    .refine((val) => val === undefined || val.length <= max, {
       message: `${fieldName} must be no more than ${max} characters long.`,
     });
 };
