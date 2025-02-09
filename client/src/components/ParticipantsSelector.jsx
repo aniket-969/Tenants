@@ -2,12 +2,44 @@ import { useRoom } from "@/hooks/useRoom";
 import { useState } from "react";
 import { Spinner } from "./ui/spinner";
 import { useParams } from "react-router-dom";
+import { ScrollArea } from "@/components/ui/scroll-area"
 
-const ParticipantSelector = ({ onChange, participants }) => {
+const ParticipantSelector = ({ onChange }) => {
   const [selected, setSelected] = useState([]);
   const { roomId } = useParams();
-
-  //   console.log(participants)
+const participants = [
+  {
+      "_id": "6755933c7314896238c01d6e",
+      "username": "sae@rer",
+      "fullName": "Frontend developer",
+      "avatar": "https://avatar.iran.liara.run/public/5"
+  },
+  {
+      "_id": "67549ddf41800bca7286c7d3",
+      "username": "test",
+      "fullName": "me",
+      "avatar": "https://avatar.iran.liara.run/public/60"
+  },
+  {
+      "_id": "6769b27be51080a39035dec6",
+      "username": "koala",
+      "fullName": "Beear",
+      "avatar": "https://avatar.iran.liara.run/public/37"
+  },
+  {
+      "_id": "6769b27be51080a39035dec6",
+      "username": "koala",
+      "fullName": "Beear",
+      "avatar": "https://avatar.iran.liara.run/public/37"
+  },
+  {
+      "_id": "6769b27be51080a39035dec6",
+      "username": "koala",
+      "fullName": "Beear",
+      "avatar": "https://avatar.iran.liara.run/public/37"
+  },
+]
+    console.log(participants)
   console.log(selected);
   const toggleSelection = (participant) => {
     const isSelected = selected.includes(participant._id);
@@ -19,7 +51,8 @@ const ParticipantSelector = ({ onChange, participants }) => {
   };
 
   return (
-    <div className="grid gap-2">
+    <ScrollArea>
+ <div className="grid gap-2 h-[12rem] py-1">
       {participants.map((user) => (
         <div
           key={user._id}
@@ -50,6 +83,8 @@ const ParticipantSelector = ({ onChange, participants }) => {
         </div>
       ))}
     </div>
+    </ScrollArea>
+   
   );
 };
 
