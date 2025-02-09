@@ -7,20 +7,9 @@ export const createRoomTaskSchema = z
     description: stringValidation(5, 50, "description").optional(),
     currentAssignee: objectIdValidation.optional(),
     assignmentMode: z.enum(["single", "rotation"]),
-    dueDate: z
-      .string()
-      .optional() // Allow undefined
-      .refine((val) => !val || !isNaN(new Date(val).getTime()), {
-        message: "Invalid date format",
-      })
-      .transform((val) => (val ? new Date(val) : undefined)),
-    startDate: z
-      .string()
-      .optional() // Allow undefined
-      .refine((val) => !val || !isNaN(new Date(val).getTime()), {
-        message: "Invalid date format",
-      })
-      .transform((val) => (val ? new Date(val) : undefined)),
+    dueDate: z.date().optional()
+     ,
+    startDate: z.date().optional(),
     participants: z.array(objectIdValidation),
     rotationOrder: z.array(objectIdValidation).optional(),
     completed: z.boolean().optional(),

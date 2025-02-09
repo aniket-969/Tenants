@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import { createRoomTaskSchema } from "@/schema/taskSchema";
 import { zodResolver } from "@hookform/resolvers/zod/src/zod";
+
 import {
   Form,
   FormItem,
@@ -27,6 +28,7 @@ import {
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { MultiSelect } from "@/components/ui/multiSelect";
+import DatePicker from "@/components/ui/datePicker";
 
 export const RecurringTaskForm = ({ participants }) => {
   const { roomId } = useParams();
@@ -77,7 +79,7 @@ export const RecurringTaskForm = ({ participants }) => {
     "Friday",
     "Saturday",
   ];
-  
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -244,28 +246,38 @@ export const RecurringTaskForm = ({ participants }) => {
             <FormItem>
               <FormLabel>Start Date</FormLabel>
               <FormControl>
-                <Input type="date" {...field} />
+                <DatePicker
+                  name="startDate"
+                  value={field.value}
+                  onChange={(date) => field.onChange(date)}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
-        />
-
+        /> 
+        
         {/* End Date */}
+      
         <FormField
           control={form.control}
-          name="dueDate"
+          name="endDate"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Due Date</FormLabel>
               <FormControl>
-                <Input type="date" {...field} />
+                <DatePicker
+                  name="endDate"
+                  value={field.value}
+                  onChange={(date) => field.onChange(date)}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
 
+      
         <Button type="submit">Submit</Button>
       </form>
     </Form>

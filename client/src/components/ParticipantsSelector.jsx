@@ -1,48 +1,9 @@
 import { useState } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
-const ParticipantSelector = ({ onChange }) => {
+const ParticipantSelector = ({ participants, onChange }) => {
   const [selected, setSelected] = useState([]);
   const [selectionOrder, setSelectionOrder] = useState({});
-
-  const participants = [
-    {
-      _id: "6755933c7314896238c01d6e",
-      username: "sae@rer",
-      fullName: "Frontend developer",
-      avatar: "https://avatar.iran.liara.run/public/5",
-    },
-    {
-      _id: "67549ddf41800bca7286c7d3",
-      username: "test",
-      fullName: "me",
-      avatar: "https://avatar.iran.liara.run/public/60",
-    },
-    {
-      _id: "6769b27be51080a39035dec6",
-      username: "koala",
-      fullName: "Beear",
-      avatar: "https://avatar.iran.liara.run/public/37",
-    },
-    {
-      _id: "6769b27be51080a39035dec7",
-      username: "sdfd",
-      fullName: "Beear",
-      avatar: "https://avatar.iran.liara.run/public/43",
-    },
-    {
-      _id: "6769b27be51080a39035ded4",
-      username: "oewme",
-      fullName: "Beear",
-      avatar: "https://avatar.iran.liara.run/public/51",
-    },
-    {
-      _id: "6769b27be51080a39035des4",
-      username: "aksdmf",
-      fullName: "Beear",
-      avatar: "https://avatar.iran.liara.run/public/53",
-    },
-  ];
 
   const getSortedParticipants = () => {
     const selectedParticipants = participants.filter((user) =>
@@ -89,7 +50,7 @@ const ParticipantSelector = ({ onChange }) => {
           <div
             key={user._id}
             onClick={() => toggleSelection(user)}
-            className={`flex items-center space-x-2 cursor-pointer px-2 py-1 ${
+            className={`flex items-center space-x-2 cursor-pointer px-2 py-1 rounded-lg ${
               selected.includes(user._id) ? "bg-card text-card-foreground" : ""
             }`}
           >

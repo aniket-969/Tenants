@@ -24,6 +24,7 @@ import {
   SelectItem,
   SelectValue,
 } from "../../ui/select";
+import DatePicker from "@/components/ui/datePicker";
 
 export const TaskForm = ({ participants }) => {
   const { roomId } = useParams();
@@ -37,7 +38,7 @@ export const TaskForm = ({ participants }) => {
       currentAssignee: values.participants[0],
     };
     console.log(values, participants);
-    // return;
+    return;
 
     try {
       const response = await createTaskMutation.mutateAsync(data);
@@ -51,14 +52,14 @@ export const TaskForm = ({ participants }) => {
     resolver: zodResolver(createRoomTaskSchema),
     defaultValues: {
       title: "",
-      description: "",
-      dueDate: "",
-      startDate: "",
+      description: null,
+      dueDate: null,
+      startDate: null,
       participants: [],
-      recurring:false,
+      recurring: false,
       rotationOrder: undefined,
       priority: "low",
-      assignmentMode:"single",
+      assignmentMode: "single",
     },
   });
   console.log("Form Errors:", form.formState.errors);
@@ -143,14 +144,17 @@ export const TaskForm = ({ participants }) => {
         />
 
         {/* Start Date */}
-        <FormField
+        <FormField 
           control={form.control}
           name="startDate"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Start Date</FormLabel>
               <FormControl>
-                <Input type="date" {...field} />
+              <DatePicker
+                    name="startDate"
+                   field={field}  
+                  />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -158,6 +162,7 @@ export const TaskForm = ({ participants }) => {
         />
 
         {/* End Date */}
+
         <FormField
           control={form.control}
           name="dueDate"
@@ -165,7 +170,10 @@ export const TaskForm = ({ participants }) => {
             <FormItem>
               <FormLabel>Due Date</FormLabel>
               <FormControl>
-                <Input type="date" {...field} />
+                <DatePicker
+                  name="dueDate"
+                  field={field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
