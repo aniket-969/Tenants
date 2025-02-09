@@ -52,12 +52,11 @@ export const TaskForm = ({ participants }) => {
     resolver: zodResolver(createRoomTaskSchema),
     defaultValues: {
       title: "",
-      description: null,
-      dueDate: null,
-      startDate: null,
+      description: "",
+      dueDate: undefined,
+      startDate: undefined,
       participants: [],
       recurring: false,
-      rotationOrder: undefined,
       priority: "low",
       assignmentMode: "single",
     },
@@ -144,17 +143,14 @@ export const TaskForm = ({ participants }) => {
         />
 
         {/* Start Date */}
-        <FormField 
+        <FormField
           control={form.control}
           name="startDate"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Start Date</FormLabel>
               <FormControl>
-              <DatePicker
-                    name="startDate"
-                   field={field}  
-                  />
+                <DatePicker name="startDate" field={field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -170,10 +166,7 @@ export const TaskForm = ({ participants }) => {
             <FormItem>
               <FormLabel>Due Date</FormLabel>
               <FormControl>
-                <DatePicker
-                  name="dueDate"
-                  field={field}
-                />
+                <DatePicker name="dueDate" field={field} />
               </FormControl>
               <FormMessage />
             </FormItem>

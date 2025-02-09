@@ -55,8 +55,8 @@ export const RecurringTaskForm = ({ participants }) => {
     defaultValues: {
       title: "",
       description: "",
-      dueDate: "",
-      startDate: "",
+      dueDate: undefined,
+      startDate: undefined,
       participants: [],
       priority: "low",
       recurring: true,
@@ -246,38 +246,29 @@ export const RecurringTaskForm = ({ participants }) => {
             <FormItem>
               <FormLabel>Start Date</FormLabel>
               <FormControl>
-                <DatePicker
-                  name="startDate"
-                  value={field.value}
-                  onChange={(date) => field.onChange(date)}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        /> 
-        
-        {/* End Date */}
-      
-        <FormField
-          control={form.control}
-          name="endDate"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Due Date</FormLabel>
-              <FormControl>
-                <DatePicker
-                  name="endDate"
-                  value={field.value}
-                  onChange={(date) => field.onChange(date)}
-                />
+                <DatePicker name="startDate" field={field} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
 
-      
+        {/* End Date */}
+
+        <FormField
+          control={form.control}
+          name="dueDate"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Due Date</FormLabel>
+              <FormControl>
+                <DatePicker name="dueDate" field={field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
         <Button type="submit">Submit</Button>
       </form>
     </Form>

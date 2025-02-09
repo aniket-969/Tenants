@@ -1,17 +1,16 @@
-import { stringValidation, objectIdValidation } from "@/utils/validation";
+import { stringValidation, objectIdValidation, optionalStringValidation } from "@/utils/validation";
 import { z } from "zod";
 
 export const createRoomTaskSchema = z
   .object({
     title: stringValidation(1, 20, "title"),
-    description: stringValidation(5, 50, "description").optional(),
+    description: optionalStringValidation(5, 50, "description").optional(),
     currentAssignee: objectIdValidation.optional(),
     assignmentMode: z.enum(["single", "rotation"]),
     dueDate: z.date().optional()
      ,
     startDate: z.date().optional(),
     participants: z.array(objectIdValidation),
-    rotationOrder: z.array(objectIdValidation).optional(),
     completed: z.boolean().optional(),
     priority: z.enum(["low", "medium", "high"]).optional(),
     recurring: z.boolean().optional(),
