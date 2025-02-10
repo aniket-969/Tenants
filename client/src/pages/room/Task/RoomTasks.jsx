@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 const RoomTasks = ({ initialTasks, participants }) => {
   const [tasks, setTasks] = useState(initialTasks);
   const socket = getSocket();
-
+ 
   useEffect(() => {
     const handleCreateTask = (newTask) => {
       console.log("create it");

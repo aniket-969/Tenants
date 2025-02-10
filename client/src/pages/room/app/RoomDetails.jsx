@@ -1,16 +1,16 @@
 import { Spinner } from "@/components/ui/spinner";
 import { useRoom, useRoomMutation } from "@/hooks/useRoom";
 import { useParams } from "react-router-dom";
-import Maintenance from "./Maintenance";
-import RoomExpense from "./RoomExpense";
-import RoomEvents from "./RoomEvents";
+import Maintenance from "../Maintenance/Maintenance";
+import RoomExpense from "../Expense/RoomExpense";
+import RoomEvents from "../Event/RoomEvents";
 import { PollForm } from "@/components/form/PollForm";
 import PollVote from "@/components/Poll/PollVote";
 import { getSocket } from "@/socket";
 import { useEffect } from "react";
-import RoomTasks from "./RoomTasks";
-import RoomCalendar from "./RoomCalendar";
-import Chat from "./Chat";
+import RoomTasks from "../Task/RoomTasks";
+import RoomCalendar from "../Calendar/RoomCalendar";
+import Chat from "../Chat/Chat";
 
 const RoomDetails = () => {
   const { roomId } = useParams();
