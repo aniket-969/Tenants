@@ -9,8 +9,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
-
-export function MultiSelect({ value = [], onChange ,options}) {
+export function MultiSelect({ value = [], onChange, options }) {
   const [open, setOpen] = useState(false);
 
   const toggleSelection = (option) => {
@@ -21,9 +20,8 @@ export function MultiSelect({ value = [], onChange ,options}) {
   };
 
   return (
-    
-      <Popover open={open} onOpenChange={setOpen}>
-        <PopoverTrigger asChild>
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
         <Button variant="outline" className="w-full text-sm font-normal">
           {value.length
             ? value.length === options.length
@@ -31,18 +29,18 @@ export function MultiSelect({ value = [], onChange ,options}) {
               : value.map((option) => option.slice(0, 3)).join(", ")
             : "Select Repetition Days"}
         </Button>
-        </PopoverTrigger>
-        <PopoverContent className="w-56 p-2">
-          {options.map((option) => (
-            <div key={option} className="flex items-center gap-2 py-1">
-              <Checkbox
-                checked={value.includes(option)}
-                onCheckedChange={() => toggleSelection(option)}
-              />
-              <span className="text-sm">{option}</span>
-            </div>
-          ))}
-        </PopoverContent>
-      </Popover>
+      </PopoverTrigger>
+      <PopoverContent className="w-56 p-2">
+        {options.map((option) => (
+          <div key={option} className="flex items-center gap-2 py-1">
+            <Checkbox
+              checked={value.includes(option)}
+              onCheckedChange={() => toggleSelection(option)}
+            />
+            <span className="text-sm">{option}</span>
+          </div>
+        ))}
+      </PopoverContent>
+    </Popover>
   );
 }

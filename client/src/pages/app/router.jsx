@@ -19,7 +19,7 @@ import { SocketProvider } from "@/socket.jsx";
 import Chat from "../room/Chat/Chat.jsx";
 import { RoomSocketProvider } from "@/context/RoomSocket.jsx";
 import { RouteMonitor } from "@/utils/RouteMonitor.js";
-import Tasks from "@/components/Tasks/Tasks.jsx";
+import Tasks from "../room/Task/Tasks.jsx";
 import RoomExpense from "../room/Expense/RoomExpense.jsx";
 
 const LandingPage = React.lazy(() => import("../LandingPage.jsx"));

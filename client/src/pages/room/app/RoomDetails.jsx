@@ -1,14 +1,10 @@
 import { Spinner } from "@/components/ui/spinner";
 import { useRoom, useRoomMutation } from "@/hooks/useRoom";
 import { useParams } from "react-router-dom";
-import Maintenance from "../Maintenance/Maintenance";
-import RoomExpense from "../Expense/RoomExpense";
-import RoomEvents from "../Event/RoomEvents";
 import { PollForm } from "@/components/form/PollForm";
 import PollVote from "@/components/Poll/PollVote";
 import { getSocket } from "@/socket";
 import { useEffect } from "react";
-import RoomTasks from "../Task/RoomTasks";
 import RoomCalendar from "../Calendar/RoomCalendar";
 import Chat from "../Chat/Chat";
 
@@ -18,7 +14,6 @@ const RoomDetails = () => {
   const { roomQuery } = useRoom(roomId);
   const { data, isLoading, isError } = roomQuery;
   // console.log(data);
-
   if (isLoading) {
     return <Spinner />;
   }

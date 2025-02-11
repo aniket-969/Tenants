@@ -40,7 +40,7 @@ export const RecurringTaskForm = ({ participants }) => {
       currentAssignee: values.participants[0],
     };
     console.log(values, participants);
-    // return;
+    return;
 
     try {
       const response = await createTaskMutation.mutateAsync(data);
