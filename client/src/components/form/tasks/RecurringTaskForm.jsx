@@ -15,7 +15,7 @@ import { Button } from "../../ui/button";
 import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
 import { useTask } from "@/hooks/useTask";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import ParticipantSelector from "../../ParticipantsSelector";
 import {
   Select,
@@ -50,6 +50,7 @@ export const RecurringTaskForm = ({ participants }) => {
       console.error("Error creating task:", error);
     }
   };
+
   const form = useForm({
     resolver: zodResolver(createRoomTaskSchema),
     defaultValues: {
@@ -66,6 +67,7 @@ export const RecurringTaskForm = ({ participants }) => {
       assignmentMode: "rotation",
     },
   });
+
   console.log("Form Errors:", form.formState.errors);
 
   const days = [

@@ -9,25 +9,19 @@ export const createRoomTaskSchema = z
   .object({
     title: stringValidation(1, 20, "title"),
     description: optionalStringValidation(5, 50, "description").optional(),
-    currentAssignee: objectIdValidation.optional(),
     assignmentMode: z.enum(["single", "rotation"]),
     dueDate: z.date().optional(),
     startDate: z.date().optional(),
-    participants: z.array(objectIdValidation).min(1,"Minimum one participants is required").max(20,"Maximum allowed participants are 20"),
+    participants: z
+      .array(objectIdValidation)
+      .min(1, "Minimum one participants is required")
+      .max(20, "Maximum allowed participants are 20"),
     completed: z.boolean().optional(),
     priority: z.enum(["low", "medium", "high"]).optional(),
     recurring: z.boolean().optional(),
-    recurrencePattern: optionalStringValidation(
-      1,
-      20,
-      "recurrence pattern"
-    ),
+    recurrencePattern: optionalStringValidation(1, 20, "recurrence pattern"),
     recurrenceDays: z.array(z.string()).optional(),
-    customRecurrence: optionalStringValidation(
-      1,
-      20,
-      "custom recurrence"
-    ),
+    customRecurrence: optionalStringValidation(1, 20, "custom recurrence"),
   })
   .superRefine((data, ctx) => {
     if (data.recurring) {
@@ -43,7 +37,6 @@ export const createRoomTaskSchema = z
             "At least one of recurrenceDays, recurrencePattern, or customRecurrence must be provided",
         });
       }
-
     }
   });
 

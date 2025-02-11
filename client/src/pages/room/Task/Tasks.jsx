@@ -18,7 +18,6 @@ const Tasks = () => {
   const socket = getSocket();
 
   useEffect(() => {
-   
     const handleCreateTask = (newTask) => {
       console.log("New task received:", newTask);
 
@@ -45,6 +44,7 @@ const Tasks = () => {
   if (roomQuery.isError) {
     return <>Something went wrong . Please refresh</>;
   }
+
   const participants = [
     ...(roomQuery.data.tenants || []),
     ...(roomQuery.data.landlord ? [roomQuery.data.landlord] : []),
