@@ -1,4 +1,8 @@
-import { stringValidation, objectIdValidation, optionalStringValidation } from "@/utils/validation";
+import {
+  stringValidation,
+  objectIdValidation,
+  optionalStringValidation,
+} from "@/utils/validation";
 import { z } from "zod";
 
 export const createRoomTaskSchema = z
@@ -7,16 +11,23 @@ export const createRoomTaskSchema = z
     description: optionalStringValidation(5, 50, "description").optional(),
     currentAssignee: objectIdValidation.optional(),
     assignmentMode: z.enum(["single", "rotation"]),
-    dueDate: z.date().optional()
-     ,
+    dueDate: z.date().optional(),
     startDate: z.date().optional(),
     participants: z.array(objectIdValidation),
     completed: z.boolean().optional(),
     priority: z.enum(["low", "medium", "high"]).optional(),
     recurring: z.boolean().optional(),
-    recurrencePattern: stringValidation(1, 20, "recurrence pattern").optional(),
-    recurrenceDays: z.array(z.number()).optional(),
-    customRecurrence: stringValidation(1, 20, "custom recurrence").optional(),
+    recurrencePattern: optionalStringValidation(
+      1,
+      20,
+      "recurrence pattern"
+    ).optional(),
+    recurrenceDays: z.array(z.string()).optional(),
+    customRecurrence: optionalStringValidation(
+      1,
+      20,
+      "custom recurrence"
+    ).optional(),
   })
   .superRefine((data, ctx) => {
     if (data.recurring) {
@@ -33,19 +44,6 @@ export const createRoomTaskSchema = z
         });
       }
 
-      // Ensure rotationOrder is required when recurring is true
-      if (!data.rotationOrder || data.rotationOrder.length === 0) {
-        ctx.addIssue({
-          path: ["rotationOrder"],
-          message: "Rotation order is required for recurring tasks",
-        });
-      }
-    } else {
-      // If recurring is false, ignore recurrence-related fields
-      data.recurrenceDays = undefined;
-      data.recurrencePattern = undefined;
-      data.customRecurrence = undefined;
-      data.rotationOrder = undefined;
     }
   });
 

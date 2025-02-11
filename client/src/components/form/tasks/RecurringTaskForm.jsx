@@ -1,7 +1,6 @@
 import { useForm } from "react-hook-form";
 import { createRoomTaskSchema } from "@/schema/taskSchema";
 import { zodResolver } from "@hookform/resolvers/zod/src/zod";
-
 import {
   Form,
   FormItem,
@@ -16,7 +15,7 @@ import { Button } from "../../ui/button";
 import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
 import { useTask } from "@/hooks/useTask";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ParticipantSelector from "../../ParticipantsSelector";
 import {
   Select,
@@ -34,6 +33,7 @@ export const RecurringTaskForm = ({ participants }) => {
   const { roomId } = useParams();
   const { createTaskMutation } = useTask(roomId);
   const [customRecurrence, setCustomRecurrence] = useState(false);
+
   const onSubmit = async (values) => {
     const data = {
       ...values,
@@ -67,8 +67,6 @@ export const RecurringTaskForm = ({ participants }) => {
     },
   });
   console.log("Form Errors:", form.formState.errors);
-  //   const participantsValue = form.watch("participants");
-  //   console.log("Participants Value:", participantsValue);
 
   const days = [
     "Sunday",
