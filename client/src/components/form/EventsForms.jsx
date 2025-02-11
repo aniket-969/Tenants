@@ -15,6 +15,7 @@ import { Button } from "../ui/button";
 import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
 import { useEvent } from "@/hooks/useEvent";
+import DatePicker from "../ui/datePicker";
 
 export const EventsForm = () => {
   const { roomId } = useParams();
@@ -37,8 +38,8 @@ export const EventsForm = () => {
         title: "",
         description: "",
         recurrencePattern: "",
-        startDate: "",
-        endDate: "",
+        startDate: undefined,
+        endDate: undefined,
       },
   });
 
@@ -94,6 +95,7 @@ export const EventsForm = () => {
         />
 
         {/* start date */}
+       
         <FormField
           control={form.control}
           name="startDate"
@@ -101,15 +103,15 @@ export const EventsForm = () => {
             <FormItem>
               <FormLabel>Start Date</FormLabel>
               <FormControl>
-                <Input placeholder="add start date " {...field} type="date" />
+                <DatePicker name="startDate" field={field} />
               </FormControl>
-
               <FormMessage />
             </FormItem>
           )}
         />
 
         {/* end date */}
+       
         <FormField
           control={form.control}
           name="endDate"
@@ -117,9 +119,8 @@ export const EventsForm = () => {
             <FormItem>
               <FormLabel>End Date</FormLabel>
               <FormControl>
-                <Input placeholder="add end date" {...field} type="date" />
+                <DatePicker name="endDate" field={field} />
               </FormControl>
-
               <FormMessage />
             </FormItem>
           )}
