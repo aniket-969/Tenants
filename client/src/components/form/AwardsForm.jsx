@@ -16,15 +16,17 @@ import { useParams } from "react-router-dom";
 import { useAward } from "@/hooks/useAwards";
 import { createCustomAwardSchema } from "@/schema/awardsSchema";
 
-
 export const AwardsForm = () => {
   const { roomId } = useParams();
   const { createAwardMutation } = useAward();
   const onSubmit = async (values) => {
-    console.log(values,roomId);
-    
+    console.log(values, roomId);
+
     try {
-      const response = await createAwardMutation.mutateAsync({data:values,roomId});
+      const response = await createAwardMutation.mutateAsync({
+        data: values,
+        roomId,
+      });
       toast(" Events added");
     } catch (error) {
       console.error("Error during registration:", error);
@@ -34,12 +36,12 @@ export const AwardsForm = () => {
   const form = useForm({
     resolver: zodResolver(createCustomAwardSchema),
     defaultValues: {
-        title: "",
-        description: "",
-        image: "",
-        criteria: "",
-        assignedTo: "",
-      },
+      title: "",
+      description: "",
+      image: "",
+      criteria: "",
+      assignedTo: "",
+    },
   });
 
   return (
@@ -101,7 +103,7 @@ export const AwardsForm = () => {
             <FormItem>
               <FormLabel>Criteria</FormLabel>
               <FormControl>
-                <Input placeholder="add criteria " {...field}  />
+                <Input placeholder="add criteria " {...field} />
               </FormControl>
 
               <FormMessage />
@@ -117,7 +119,7 @@ export const AwardsForm = () => {
             <FormItem>
               <FormLabel>Assigned To</FormLabel>
               <FormControl>
-                <Input placeholder="add assignedTo" {...field}  />
+                <Input placeholder="add assignedTo" {...field} />
               </FormControl>
 
               <FormMessage />

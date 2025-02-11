@@ -18,12 +18,12 @@ import { useParams } from "react-router-dom";
 import ParticipantSelector from "../ParticipantsSelector";
 import { useRoom } from "@/hooks/useRoom";
 import { Spinner } from "../ui/spinner";
+import DatePicker from "../ui/datePicker";
 
-export const ExpenseForm = ({participants}) => {
-  
+export const ExpenseForm = ({ participants }) => {
   const onSubmit = async (values) => {
     console.log(values);
-    
+
     try {
       const response = await createExpenseMutation.mutateAsync(values, roomId);
       console.log(response);
@@ -32,18 +32,20 @@ export const ExpenseForm = ({participants}) => {
       console.error("Error during registration:", error);
     }
   };
- 
+
   const form = useForm({
     resolver: zodResolver(createExpenseSchema),
     defaultValues: {
       name: "",
       totalAmount: "",
       imageUrl: "",
-      dueDate: "",
-      userExpense: [{
-        userId:"",
-        amountOwed:"",
-      }],
+      dueDate: undefined,
+      userExpense: [
+        {
+          userId: "",
+          amountOwed: "",
+        },
+      ],
     },
   });
 
@@ -105,9 +107,8 @@ export const ExpenseForm = ({participants}) => {
             <FormItem>
               <FormLabel>Due Date</FormLabel>
               <FormControl>
-                <Input  {...field} type="date" />
+                <DatePicker name="dueDate" field={field} />
               </FormControl>
-
               <FormMessage />
             </FormItem>
           )}
