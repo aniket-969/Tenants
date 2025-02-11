@@ -38,7 +38,7 @@ export const TaskForm = ({ participants }) => {
       currentAssignee: values.participants[0],
     };
     console.log(values, participants);
-    return;
+  
 
     try {
       const response = await createTaskMutation.mutateAsync(data);
@@ -61,7 +61,7 @@ export const TaskForm = ({ participants }) => {
       assignmentMode: "single",
     },
   });
-  console.log("Form Errors:", form.formState.errors);
+  // console.log("Form Errors:", form.formState.errors);
   //   const participantsValue = form.watch("participants");
   //   console.log("Participants Value:", participantsValue);
   return (
