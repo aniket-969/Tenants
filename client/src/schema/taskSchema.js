@@ -13,7 +13,7 @@ export const createRoomTaskSchema = z
     assignmentMode: z.enum(["single", "rotation"]),
     dueDate: z.date().optional(),
     startDate: z.date().optional(),
-    participants: z.array(objectIdValidation),
+    participants: z.array(objectIdValidation).min(1,"Minimum one participants is required").max(20,"Maximum allowed participants are 20"),
     completed: z.boolean().optional(),
     priority: z.enum(["low", "medium", "high"]).optional(),
     recurring: z.boolean().optional(),
@@ -21,13 +21,13 @@ export const createRoomTaskSchema = z
       1,
       20,
       "recurrence pattern"
-    ).optional(),
+    ),
     recurrenceDays: z.array(z.string()).optional(),
     customRecurrence: optionalStringValidation(
       1,
       20,
       "custom recurrence"
-    ).optional(),
+    ),
   })
   .superRefine((data, ctx) => {
     if (data.recurring) {
