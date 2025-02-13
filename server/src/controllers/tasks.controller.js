@@ -17,6 +17,7 @@ const createRoomTask = asyncHandler(async (req, res) => {
     priority,
     recurring,
     recurrencePattern,
+    recurrenceDays,
     customRecurrence,
     completed,
   } = req.body;
@@ -39,6 +40,7 @@ const createRoomTask = asyncHandler(async (req, res) => {
     recurring,
     recurrencePattern,
     customRecurrence,
+    recurrenceDays,
     createdBy,
   };
   room.tasks.push(task);
