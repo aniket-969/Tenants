@@ -35,15 +35,12 @@ export const RecurringTaskForm = ({ participants }) => {
   const [customRecurrence, setCustomRecurrence] = useState(false);
 
   const onSubmit = async (values) => {
-    const data = {
-      ...values,
-      currentAssignee: values.participants[0],
-    };
-    console.log(values, participants);
-    return;
+    
+    console.log(values);
+    // return;
 
     try {
-      const response = await createTaskMutation.mutateAsync(data);
+      const response = await createTaskMutation.mutateAsync(values);
       toast("Task added successfully!");
       console.log(response);
     } catch (error) {
@@ -171,9 +168,9 @@ export const RecurringTaskForm = ({ participants }) => {
                       <SelectValue placeholder="Select pattern" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="low">Weekly</SelectItem>
-                      <SelectItem value="medium">Daily</SelectItem>
-                      <SelectItem value="high">Monthly</SelectItem>
+                      <SelectItem value="weekly">Weekly</SelectItem>
+                      <SelectItem value="daily">Daily</SelectItem>
+                      <SelectItem value="monthly">Monthly</SelectItem>
                     </SelectContent>
                   </Select>
                 </FormControl>

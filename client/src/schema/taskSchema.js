@@ -16,7 +16,6 @@ export const createRoomTaskSchema = z
       .array(objectIdValidation)
       .min(1, "Minimum one participants is required")
       .max(20, "Maximum allowed participants are 20"),
-    completed: z.boolean().optional(),
     priority: z.enum(["low", "medium", "high"]).optional(),
     recurring: z.boolean().optional(),
     recurrencePattern: optionalStringValidation(1, 20, "recurrence pattern"),
