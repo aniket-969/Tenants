@@ -25,13 +25,15 @@ const createRoomTask = asyncHandler(async (req, res) => {
   if (room.tasks.length >= 40) {
     throw new ApiError(404, "Maximum tasks limit reached");
   }
-  if(recurring){
-    const rotationOrder = [...participants]
+  console.log("This is room ",room)
+  const rotationOrder = [];
+  if (recurring) {
+    const rotationOrder = [...participants];
   }
   const task = {
     title,
     description,
-    currentAssignee,
+    currentAssignee: participants[0],
     dueDate,
     participants,
     rotationOrder,
@@ -43,11 +45,12 @@ const createRoomTask = asyncHandler(async (req, res) => {
     recurrenceDays,
     createdBy,
   };
+  console.log(task)
   room.tasks.push(task);
-
+console.log("here")
   await room.save();
   const newTask = room.tasks[room.tasks.length - 1];
-  emitSocketEvent(req,roomId,TaskEventEnum.TASK_CREATE_EVENT, newTask)
+  emitSocketEvent(req, roomId, TaskEventEnum.TASK_CREATE_EVENT, newTask);
   return res.json(new ApiResponse(200, newTask, "Task created successfully"));
 });
 
@@ -75,7 +78,7 @@ const updateRoomTask = asyncHandler(async (req, res) => {
   }
 
   const updatedTask = updatedRoom.tasks.id(taskId);
-  emitSocketEvent(req,roomId,TaskEventEnum.TASK_UPDATED_EVENT,updatedTask)
+  emitSocketEvent(req, roomId, TaskEventEnum.TASK_UPDATED_EVENT, updatedTask);
   return res.json(
     new ApiResponse(200, updatedTask, "Task updated successfully")
   );
@@ -91,11 +94,11 @@ const deleteRoomTask = asyncHandler(async (req, res) => {
   if (taskIndex === -1) {
     throw new ApiError(404, "Task not found in the room");
   }
- 
+
   room.tasks.splice(taskIndex, 1);
 
   await room.save();
-  emitSocketEvent(req,roomId,TaskEventEnum.TASK_DELETE_EVENT,taskId)
+  emitSocketEvent(req, roomId, TaskEventEnum.TASK_DELETE_EVENT, taskId);
 
   return res.json(new ApiResponse(200, {}, "Task deleted successfully"));
 });
@@ -103,7 +106,7 @@ const deleteRoomTask = asyncHandler(async (req, res) => {
 const createSwitchRequest = asyncHandler(async (req, res) => {
   const { taskId, roomId } = req.params;
   const { requestedTo } = req.body;
- 
+
   const updatedRoomTask = await Room.findOneAndUpdate(
     { _id: roomId, "tasks._id": taskId },
     {
