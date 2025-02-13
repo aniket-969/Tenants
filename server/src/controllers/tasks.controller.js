@@ -14,7 +14,6 @@ const createRoomTask = asyncHandler(async (req, res) => {
     currentAssignee,
     dueDate,
     participants,
-    rotationOrder,
     priority,
     recurring,
     recurrencePattern,
@@ -24,6 +23,9 @@ const createRoomTask = asyncHandler(async (req, res) => {
   const room = await Room.findById(roomId);
   if (room.tasks.length >= 40) {
     throw new ApiError(404, "Maximum tasks limit reached");
+  }
+  if(recurring){
+    const rotationOrder = [...participants]
   }
   const task = {
     title,
