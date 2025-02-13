@@ -26,9 +26,20 @@ const createRoomTask = asyncHandler(async (req, res) => {
     throw new ApiError(404, "Maximum tasks limit reached");
   }
   // console.log("This is room ",room)
-  const rotationOrder = [];
+  let mappedRecurrenceDays = [];
+  let rotationOrder = [];
   if (recurring) {
     const rotationOrder = [...participants];
+    const dayMapping = {
+      Sunday: 0,
+      Monday: 1,
+      Tuesday: 2,
+      Wednesday: 3,
+      Thursday: 4,
+      Friday: 5,
+      Saturday: 6,
+    };
+    mappedRecurrenceDays = recurrenceDays.map((day) => dayMapping[day]);
   }
   const task = {
     title,
@@ -42,12 +53,12 @@ const createRoomTask = asyncHandler(async (req, res) => {
     recurring,
     recurrencePattern,
     customRecurrence,
-    recurrenceDays,
+    recurrenceDays: mappedRecurrenceDays,
     createdBy,
   };
   // console.log(task)
   room.tasks.push(task);
-console.log("here")
+  console.log("here");
   await room.save();
   const newTask = room.tasks[room.tasks.length - 1];
   emitSocketEvent(req, roomId, TaskEventEnum.TASK_CREATE_EVENT, newTask);
