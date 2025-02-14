@@ -60,7 +60,7 @@ export const RecurringTaskForm = ({ participants }) => {
       recurring: true,
       recurrencePattern: "",
       recurrenceDays: [],
-      customRecurrence: "",
+      customRecurrence: undefined,
       assignmentMode: "rotation",
     },
   });
