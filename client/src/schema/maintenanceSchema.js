@@ -1,19 +1,19 @@
 import { z } from "zod";
-import { stringValidation } from "./../utils/validation";
+import {
+  optionalStringValidation,
+  stringValidation,
+} from "./../utils/validation";
+
 export const createMaintenanceSchema = z.object({
   title: stringValidation(1, 20, "title"),
-  description: stringValidation(1, 100, "description").optional(),
-  maintenanceProvider: stringValidation(
-    1,
-    20,
-    "maintenanceProvider"
-  ).optional(),
-  contactPhone: stringValidation(10, 15, "contactPhone") // Apply regex separately
+  description: optionalStringValidation(1, 100, "description"),
+  maintenanceProvider: optionalStringValidation(1, 30, "maintenanceProvider"),
+  contactPhone: optionalStringValidation(10, 15, "contactPhone")
     .refine((val) => val === undefined || /^\+?[0-9]+$/.test(val), {
       message:
         "Phone number must contain only digits and an optional leading + for international numbers.",
     }),
-  costEstimate: z
+  costEstimate: z.coerce
     .number()
     .min(1, { message: "Cost estimate should contain at least 1 digit" })
     .max(10000000, { message: "Cost estimate can't exceed above 10^8 digits" })
