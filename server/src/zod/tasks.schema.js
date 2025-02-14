@@ -9,11 +9,14 @@ export const createRoomTaskSchema = z
     dueDate: z.date().optional(),
     startDate: z.date().optional(),
     participants: z.array(objectIdValidation),
-    priority: z.enum(["low", "medium", "high"]).optional(), 
+    priority: z.enum(["low", "medium", "high"]).optional(),
     recurring: z.boolean().optional(),
     recurrencePattern: stringValidation(1, 20, "recurrence pattern").optional(),
     recurrenceDays: z.array(z.string()).optional(),
-    customRecurrence: stringValidation(1, 20, "custom recurrence").optional(),
+    customRecurrence: z.coerce.number()
+    .max(300, { message: "Maximum allowed value for custom recurrence is 300" })
+    .min(1, { message: "Minimum one digit is required" })
+    .optional(),
   })
   .superRefine((data, ctx) => {
     if (data.recurring) {

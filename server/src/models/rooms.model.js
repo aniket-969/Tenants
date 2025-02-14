@@ -203,7 +203,7 @@ const roomSchema = new Schema(
           },
         ],
         customRecurrence: {
-          type: String,
+          type: Number,
         },
       },
     ],
