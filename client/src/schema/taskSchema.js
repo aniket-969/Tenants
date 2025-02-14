@@ -19,7 +19,20 @@ export const createRoomTaskSchema = z
     priority: z.enum(["low", "medium", "high"]).optional(),
     recurring: z.boolean().optional(),
     recurrencePattern: optionalStringValidation(1, 20, "recurrence pattern"),
-    recurrenceDays: z.array(z.string()).optional(),
+    recurrenceDays: z
+  .array(
+    z.enum([
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+    ])
+  )
+  .optional()
+,
     customRecurrence:z.coerce.number()
     .max(300, { message: "Maximum allowed value for custom recurrence is 300" })
     .min(1, { message: "Minimum one digit is required" })
