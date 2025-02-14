@@ -198,9 +198,9 @@ const roomSchema = new Schema(
           enum: ["daily", "weekly", "monthly", "custom"],
         },
         recurrenceDays: [
-          {
-            type: Number,
-          },
+        
+            Number,
+         
         ],
         customRecurrence: {
           type: Number,

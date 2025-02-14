@@ -30,8 +30,8 @@ const createRoomTask = asyncHandler(async (req, res) => {
   let rotationOrder = [];
 
   if (recurring) {
-     rotationOrder = [...participants];
-    console.log("here is rotation",rotationOrder)
+    rotationOrder = [...participants];
+    console.log("here is rotation", rotationOrder);
     const dayMapping = {
       Sunday: 0,
       Monday: 1,
@@ -41,7 +41,9 @@ const createRoomTask = asyncHandler(async (req, res) => {
       Friday: 5,
       Saturday: 6,
     };
-    mappedRecurrenceDays = recurrenceDays.map((day) => dayMapping[day]);
+    mappedRecurrenceDays = recurrenceDays
+      ?.map((day) => dayMapping[day] ?? -1)
+      .filter((num) => num !== -1);
   }
 
   const task = {
@@ -59,7 +61,7 @@ const createRoomTask = asyncHandler(async (req, res) => {
     recurrenceDays: mappedRecurrenceDays,
     createdBy,
   };
-  console.log("This is created task",task)
+  console.log("This is created task", task);
   room.tasks.push(task);
   await room.save();
   const newTask = room.tasks[room.tasks.length - 1];
