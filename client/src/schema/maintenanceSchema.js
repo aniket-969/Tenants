@@ -16,12 +16,12 @@ export const createMaintenanceSchema = z.object({
     }
   ),
   costEstimate: z
-  .string()
-  .transform((val) => (val === "" ? "" : val))
-  .refine((val) => val === "" || !isNaN(Number(val)), {
-    message: "Cost estimate must be a valid number"
-  })
-  .transform((val) => (val === "" ? undefined : Number(val))),
+    .string()
+    .transform((val) => (val === "" ? "" : val))
+    .refine((val) => val === "" || !isNaN(Number(val)), {
+      message: "Cost estimate must be a valid number",
+    })
+    .transform((val) => (val === "" ? undefined : Number(val))),
 });
 
 export const updateMaintenaceSchema = z.object({
