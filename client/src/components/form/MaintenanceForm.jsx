@@ -111,12 +111,15 @@ export const MaintenanceForm = () => {
               <FormControl>
                 <Input
                   placeholder="add probable cost"
-                  {...field}
                   type="number"
-                  onChange={(e) => field.onChange(Number(e.target.value))}
+                  {...field}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    field.onChange(value); // Keep it as string
+                  }}
+                  value={field.value === "" ? "" : field.value}
                 />
               </FormControl>
-
               <FormMessage />
             </FormItem>
           )}

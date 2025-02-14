@@ -8,16 +8,20 @@ export const createMaintenanceSchema = z.object({
   title: stringValidation(1, 20, "title"),
   description: optionalStringValidation(1, 100, "description"),
   maintenanceProvider: optionalStringValidation(1, 30, "maintenanceProvider"),
-  contactPhone: optionalStringValidation(10, 15, "contactPhone")
-    .refine((val) => val === undefined || /^\+?[0-9]+$/.test(val), {
+  contactPhone: optionalStringValidation(10, 15, "contactPhone").refine(
+    (val) => val === undefined || /^\+?[0-9]+$/.test(val),
+    {
       message:
         "Phone number must contain only digits and an optional leading + for international numbers.",
-    }),
-  costEstimate: z.coerce
-    .number()
-    .min(1, { message: "Cost estimate should contain at least 1 digit" })
-    .max(10000000, { message: "Cost estimate can't exceed above 10^8 digits" })
-    .optional(),
+    }
+  ),
+  costEstimate: z
+  .string()
+  .transform((val) => (val === "" ? "" : val))
+  .refine((val) => val === "" || !isNaN(Number(val)), {
+    message: "Cost estimate must be a valid number"
+  })
+  .transform((val) => (val === "" ? undefined : Number(val))),
 });
 
 export const updateMaintenaceSchema = z.object({
