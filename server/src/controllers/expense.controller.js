@@ -4,12 +4,19 @@ import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { ExpenseEventEnum } from "../constants.js";
 import { emitSocketEvent } from "../socket/index.js";
+
 const createExpense = asyncHandler(async (req, res) => {
   const { roomId } = req.params;
-  const { title, imageUrl, dueDate, participants } = req.body;
+  const { title, totalAmount, imageUrl, dueDate, participants } = req.body;
   const paidBy = req.user?._id;
 
-  // Validate participants and calculate totalAmountOwed
+  if (!participants || participants.length === 0) {
+    throw new ApiError(400, "At least one participant is required");
+  }
+
+  // Calculate base amount for each participant
+  const baseAmount = totalAmount / participants.length;
+
   const formattedParticipants = participants.map((participant) => {
     const additionalCharges =
       participant.additionalCharges?.map((charge) => ({
@@ -17,17 +24,18 @@ const createExpense = asyncHandler(async (req, res) => {
         reason: charge.reason,
       })) || [];
 
-    const totalAmountOwed =
-      participant.baseAmount +
-      additionalCharges.reduce((sum, charge) => sum + charge.amount, 0);
+    const additionalTotal = additionalCharges.reduce(
+      (sum, charge) => sum + charge.amount,
+      0
+    );
 
     return {
       user: participant.userId,
       hasPaid: false,
       paidDate: null,
-      baseAmount: participant.baseAmount,
+      baseAmount,
       additionalCharges,
-      totalAmountOwed,
+      totalAmountOwed: baseAmount + additionalTotal,
     };
   });
 
@@ -35,6 +43,7 @@ const createExpense = asyncHandler(async (req, res) => {
     title,
     paidBy,
     roomId,
+    totalAmount,
     imageUrl,
     dueDate,
     participants: formattedParticipants,

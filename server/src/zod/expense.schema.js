@@ -6,23 +6,25 @@ const additionalChargeSchema = z.object({
     .number()
     .positive("Additional charge must be a positive number")
     .max(1000000, "Amount can't exceed 6 digits"),
-  reason: z.string().min(1, "Reason is required").max(200, "Reason too long"),
+  reason: stringValidation(1,200,"Reason"),
 });
 
 const participantSchema = z.object({
   userId: objectIdValidation,
-  hasPaid: z.boolean().default(false),
-  baseAmount: z.coerce
-    .number()
-    .positive("Base amount must be a positive number")
-    .max(1000000, "Amount can't exceed 6 digits"),
   additionalCharges: z.array(additionalChargeSchema).optional(),
 });
 
 export const createExpenseSchema = z.object({
   title: stringValidation(1, 50, "title"),
+  totalAmount: z.coerce
+    .number()
+    .positive("Total amount must be a positive number")
+    .min(1, "Minimum amount is 1")
+    .max(1000000, "Maximum amount allowed is ten lakh"),
   imageUrl: stringValidation(5, 300, "imageUrl").optional(),
-  participants: z.array(participantSchema),
+  participants: z
+    .array(participantSchema)
+    .min(1, { message: "Minimum one participants is required" }),
   dueDate: z.coerce.date().optional(),
 });
 
