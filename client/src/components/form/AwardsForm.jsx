@@ -21,14 +21,14 @@ export const AwardsForm = ({ participants }) => {
   const { roomId } = useParams();
   const { createAwardMutation } = useAward();
   const onSubmit = async (values) => {
-    console.log(values, roomId);
-    return;
+    console.log(values);
+    
     try {
       const response = await createAwardMutation.mutateAsync({
         data: values,
         roomId,
       });
-      toast(" Events added");
+      toast(" Custom Award created successfully ");
     } catch (error) {
       console.error("Error during registration:", error);
     }
