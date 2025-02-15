@@ -26,10 +26,11 @@ import {
 
 export const EventsForm = () => {
   const { roomId } = useParams();
-  // console.log(roomId)
+
   const { createEventMutation } = useEvent();
   const onSubmit = async (values) => {
-    console.log(values, roomId);
+    // console.log(values, roomId);
+    // return;
     try {
       const response = await createEventMutation.mutateAsync({
         data: values,
@@ -53,7 +54,7 @@ export const EventsForm = () => {
       recurring: false,
     },
   });
-
+  console.log("Form Errors:", form.formState.errors);
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
@@ -106,8 +107,8 @@ export const EventsForm = () => {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="weekly">Weekly</SelectItem>
-                    <SelectItem value="daily">Monthly</SelectItem>
-                    <SelectItem value="monthly">Yearly</SelectItem>
+                    <SelectItem value="monthly">Monthly</SelectItem>
+                    <SelectItem value="yearly">Yearly</SelectItem>
                   </SelectContent>
                 </Select>
               </FormControl>
