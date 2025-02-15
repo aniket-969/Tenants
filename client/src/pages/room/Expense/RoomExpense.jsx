@@ -9,22 +9,10 @@ import { useParams } from "react-router-dom";
 
 const RoomExpense = () => {
   const { roomId } = useParams();
-  const socket = getSocket();
+
   const { createExpenseMutation } = useExpense(roomId);
   const { roomQuery } = useRoom(roomId);
   const { data, isLoading, isError } = roomQuery;
- 
-  useEffect(() => {
-    const handleCreateExpense = (newExpense) => {
-      console.log("create it");
-    };
-
-    socket.on("createdExpense", handleCreateExpense);
-
-    return () => {
-      socket.off("createdExpense", handleCreateExpense);
-    };
-  }, [socket]);
 
   if (isLoading) {
     return <Spinner />;
@@ -42,7 +30,7 @@ const RoomExpense = () => {
       <h2 className="font-bold text-xl">Split Expense</h2>
 
       <FormWrapper>
-        <ExpenseForm participants={participants}/>
+        <ExpenseForm participants={participants} />
       </FormWrapper>
     </div>
   );
