@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { objectIdValidation, stringValidation } from "./customValidator.js";
-
+ 
 export const createRoomTaskSchema = z
   .object({
     title: stringValidation(1, 20, "title"),
