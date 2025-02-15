@@ -58,7 +58,7 @@ const ParticipantSelector = ({ participants, onChange }) => {
               src={user.avatar}
               alt={`${user.fullName} avatar`}
               className="w-8 h-8 rounded-full"
-            />
+            /> 
             <div>
               <p className="font-semibold">{user.username}</p>
               <p
