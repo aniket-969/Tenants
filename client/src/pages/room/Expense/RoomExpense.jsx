@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 const RoomExpense = () => {
+  
   const { roomId } = useParams();
 
   const { createExpenseMutation } = useExpense(roomId);

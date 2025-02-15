@@ -25,8 +25,6 @@ export const createExpenseSchema = z.object({
     .positive("Total amount must be a positive number")
     .min(1, "Minimum amount is 1")
     .max(1000000, "Maximum amount allowed is ten lakh"),
-  paidBy: objectIdValidation,
-  roomId: objectIdValidation,
   imageUrl: optionalStringValidation(5, 300, "imageUrl"),
   participants: z
     .array(participantSchema)

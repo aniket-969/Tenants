@@ -46,7 +46,7 @@ export const ExpenseForm = ({ participants }) => {
       participants: [],
     },
   });
-
+console.log(form.formState.errors)
   return (
     <Form {...form}>
       {/* title */}
