@@ -4,25 +4,42 @@ import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { ExpenseEventEnum } from "../constants.js";
 import { emitSocketEvent } from "../socket/index.js";
- 
 const createExpense = asyncHandler(async (req, res) => {
   const { roomId } = req.params;
-  const { name, totalAmount, imageUrl, userExpense, dueDate } = req.body;
+  const { title, imageUrl, dueDate, participants } = req.body;
   const paidBy = req.user?._id;
-  const participants = userExpense.map((user) => ({
-    user: user.userId,
-    amountOwed: user.amountOwed,
-  }));
+
+  // Validate participants and calculate totalAmountOwed
+  const formattedParticipants = participants.map((participant) => {
+    const additionalCharges =
+      participant.additionalCharges?.map((charge) => ({
+        amount: charge.amount,
+        reason: charge.reason,
+      })) || [];
+
+    const totalAmountOwed =
+      participant.baseAmount +
+      additionalCharges.reduce((sum, charge) => sum + charge.amount, 0);
+
+    return {
+      user: participant.userId,
+      hasPaid: false,
+      paidDate: null,
+      baseAmount: participant.baseAmount,
+      additionalCharges,
+      totalAmountOwed,
+    };
+  });
 
   const expense = await Expense.create({
-    name,
-    totalAmount,
+    title,
     paidBy,
     roomId,
     imageUrl,
     dueDate,
-    participants,
+    participants: formattedParticipants,
   });
+
   if (!expense) {
     throw new ApiError(500, "Expense creation failed");
   }

@@ -21,13 +21,9 @@ const participantSchema = z.object({
 
 export const createExpenseSchema = z.object({
   title: stringValidation(1, 50, "title"),
-  paidBy: objectIdValidation,
-  roomId: objectIdValidation,
   imageUrl: stringValidation(5, 300, "imageUrl").optional(),
   participants: z.array(participantSchema),
-  dueDate: z.coerce.
-    date()
-    .optional(),
+  dueDate: z.coerce.date().optional(),
 });
 
 export const updatePaymentSchema = z.object({
