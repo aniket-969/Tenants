@@ -1,30 +1,32 @@
 import { z } from "zod";
 import { objectIdValidation, stringValidation } from "./customValidator.js";
 
+const additionalChargeSchema = z.object({
+  amount: z.coerce
+    .number()
+    .positive("Additional charge must be a positive number")
+    .max(1000000, "Amount can't exceed 6 digits"),
+  reason: z.string().min(1, "Reason is required").max(200, "Reason too long"),
+});
+
 const participantSchema = z.object({
   userId: objectIdValidation,
-  amountOwed: z
+  hasPaid: z.boolean().default(false),
+  baseAmount: z.coerce
     .number()
-    .positive("Amount owed must be a positive number")
-    .max(10000000, { message: "Amount can't be above 7 digits" })
-    .min(1),
+    .positive("Base amount must be a positive number")
+    .max(1000000, "Amount can't exceed 6 digits"),
+  additionalCharges: z.array(additionalChargeSchema).optional(),
 });
 
 export const createExpenseSchema = z.object({
-  name: stringValidation(1, 20, "name"),
-  totalAmount: z
-    .number()
-    .positive("Amount owed must be a positive number")
-    .max(10000000, { message: "Amount can't be above 7 digits" })
-    .min(1),
+  title: stringValidation(1, 50, "title"),
+  paidBy: objectIdValidation,
+  roomId: objectIdValidation,
   imageUrl: stringValidation(5, 300, "imageUrl").optional(),
-  userExpense: z.array(participantSchema),
-  dueDate: z
-    .string()
-    .transform((val) => new Date(val))
-    .refine((date) => !isNaN(date.getTime()), {
-      message: "Invalid date format",
-    })
+  participants: z.array(participantSchema),
+  dueDate: z.coerce.
+    date()
     .optional(),
 });
 
