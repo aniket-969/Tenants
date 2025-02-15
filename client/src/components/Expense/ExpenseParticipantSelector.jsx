@@ -1,16 +1,15 @@
 import React, { useState } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { PlusCircle, X, XCircle } from "lucide-react";
+import { PlusCircle, XCircle } from "lucide-react";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
-import { useFieldArray, useForm } from "react-hook-form";
+import { Input } from "@/components/ui/input";
+import { useFieldArray } from "react-hook-form";
 
 const ExpenseParticipantSelector = ({
   participants,
@@ -19,27 +18,65 @@ const ExpenseParticipantSelector = ({
 }) => {
   const [selectedParticipant, setSelectedParticipant] = useState(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [selectionOrder, setSelectionOrder] = useState({});
 
   const { fields, append, remove } = useFieldArray({
     control: form.control,
     name: "participants",
   });
 
-  const handleParticipantSelect = (participant) => {
-    // Check if participant is already selected
-    const isAlreadySelected = fields.some(
-      (field) => field.userId === participant._id
+  const getParticipantsList = () => {
+    // Get selected participants
+    const selectedParticipants = participants.filter((participant) =>
+      fields.some((field) => field.userId === participant._id)
     );
-    if (isAlreadySelected) return;
 
-    // Add participant to form
-    append({
-      userId: participant._id,
-      additionalCharges: [],
-    });
+    // Sort selected participants by selection order
+    selectedParticipants.sort(
+      (a, b) => selectionOrder[a._id] - selectionOrder[b._id]
+    );
+
+    // Get unselected participants
+    const unselectedParticipants = participants.filter(
+      (participant) => !fields.some((field) => field.userId === participant._id)
+    );
+
+    return [...selectedParticipants, ...unselectedParticipants];
   };
 
-  const handleAddCharge = (participantId) => {
+  const handleParticipantSelect = (participant) => {
+    const isSelected = fields.some((field) => field.userId === participant._id);
+
+    if (isSelected) {
+      // Remove participant
+      const index = fields.findIndex(
+        (field) => field.userId === participant._id
+      );
+      remove(index);
+
+      // Remove from selection order
+      setSelectionOrder((prev) => {
+        const newOrder = { ...prev };
+        delete newOrder[participant._id];
+        return newOrder;
+      });
+    } else {
+      // Add participant
+      append({
+        userId: participant._id,
+        additionalCharges: [],
+      });
+
+      // Add to selection order
+      setSelectionOrder((prev) => ({
+        ...prev,
+        [participant._id]: Date.now(),
+      }));
+    }
+  };
+
+  const handleAddCharge = (participantId, e) => {
+    e.stopPropagation(); // Prevent triggering participant selection
     setSelectedParticipant(participantId);
     setIsDialogOpen(true);
   };
@@ -66,44 +103,66 @@ const ExpenseParticipantSelector = ({
     setIsDialogOpen(false);
   };
 
-  const removeParticipant = (index) => {
+  const removeParticipant = (index, e) => {
+    e.stopPropagation(); // Prevent triggering participant selection
+    const participant = fields[index];
     remove(index);
+
+    // Remove from selection order
+    setSelectionOrder((prev) => {
+      const newOrder = { ...prev };
+      delete newOrder[participant.userId];
+      return newOrder;
+    });
   };
 
   return (
-    <div className="space-y-4">
-      <ScrollArea className="h-[14rem] w-full rounded-md border p-4">
-        <div className="space-y-4">
-          {fields.map((field, index) => {
-            const participant = participants.find(
-              (p) => p._id === field.userId
-            );
-            if (!participant) return null;
+    <div className="space-y-2">
+      <ScrollArea className="h-[14rem] w-full rounded-md border p-2">
+        {getParticipantsList().map((participant, index) => {
+          const isSelected = fields.some(
+            (field) => field.userId === participant._id
+          );
+          const fieldIndex = fields.findIndex(
+            (field) => field.userId === participant._id
+          );
+          const field = isSelected ? fields[fieldIndex] : null;
 
-            return (
-              <div
-                key={field.id}
-                className="flex items-center justify-between space-x-2 bg-card p-3 rounded-lg"
-              >
-                <div className="flex items-center space-x-3">
-                  <img
-                    src={participant.avatar}
-                    alt={`${participant.fullName} avatar`}
-                    className="w-8 h-8 rounded-full"
-                  />
-                  <div>
-                    <p className="font-semibold">{participant.username}</p>
-                    <p className="text-sm text-gray-500">
-                      {participant.fullName}
+          return (
+            <div
+              key={participant._id}
+              onClick={() => handleParticipantSelect(participant)}
+              className={`flex items-center justify-between space-x-2 p-2 rounded-lg cursor-pointer hover:bg-accent/50 mb-2 ${
+                isSelected ? "bg-card text-card-foreground" : ""
+              }`}
+            >
+              <div className="flex items-center space-x-3">
+                <img
+                  src={participant.avatar}
+                  alt={`${participant.fullName} avatar`}
+                  className="w-8 h-8 rounded-full"
+                />
+                <div>
+                  <p className="font-semibold">{participant.username}</p>
+                  <p
+                    className={`text-sm ${isSelected ? "text-card-foreground" : "text-gray-500"}`}
+                  >
+                    {participant.fullName}
+                  </p>
+                  {field?.additionalCharges?.length > 0 && (
+                    <p className="text-xs text-blue-500">
+                      {field.additionalCharges.length} additional charge(s)
                     </p>
-                  </div>
+                  )}
                 </div>
+              </div>
+              {isSelected && (
                 <div className="flex items-center space-x-2">
                   <Button
                     type="button"
                     variant="ghost"
                     size="icon"
-                    onClick={() => handleAddCharge(participant._id)}
+                    onClick={(e) => handleAddCharge(participant._id, e)}
                     disabled={disabled}
                   >
                     <PlusCircle className="h-4 w-4" />
@@ -112,51 +171,16 @@ const ExpenseParticipantSelector = ({
                     type="button"
                     variant="ghost"
                     size="icon"
-                    onClick={() => removeParticipant(index)}
+                    onClick={(e) => removeParticipant(fieldIndex, e)}
                     disabled={disabled}
                   >
                     <XCircle className="h-4 w-4" />
                   </Button>
                 </div>
-              </div>
-            );
-          })}
-        </div>
-      </ScrollArea>
-
-      {/* Participant Selector */}
-      <ScrollArea className="h-[14rem] w-full rounded-md border p-4">
-        <div className="space-y-2">
-          {participants.map((participant) => {
-            const isSelected = fields.some(
-              (field) => field.userId === participant._id
-            );
-
-            return (
-              <div
-                key={participant._id}
-                onClick={() =>
-                  !isSelected && handleParticipantSelect(participant)
-                }
-                className={`flex items-center space-x-3 p-2 rounded-lg cursor-pointer hover:bg-accent ${
-                  isSelected ? "opacity-50 cursor-not-allowed" : ""
-                }`}
-              >
-                <img
-                  src={participant.avatar}
-                  alt={`${participant.fullName} avatar`}
-                  className="w-8 h-8 rounded-full"
-                />
-                <div>
-                  <p className="font-semibold">{participant.username}</p>
-                  <p className="text-sm text-gray-500">
-                    {participant.fullName}
-                  </p>
-                </div>
-              </div>
-            );
-          })}
-        </div>
+              )}
+            </div>
+          );
+        })}
       </ScrollArea>
 
       {/* Additional Charges Dialog */}
