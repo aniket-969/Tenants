@@ -23,7 +23,7 @@ import DatePicker from "../ui/datePicker";
 export const ExpenseForm = ({ participants }) => {
   const onSubmit = async (values) => {
     console.log(values);
-
+    return;
     try {
       const response = await createExpenseMutation.mutateAsync(values, roomId);
       console.log(response);
@@ -36,7 +36,7 @@ export const ExpenseForm = ({ participants }) => {
   const form = useForm({
     resolver: zodResolver(createExpenseSchema),
     defaultValues: {
-      name: "",
+      title: "",
       totalAmount: "",
       imageUrl: "",
       dueDate: undefined,
@@ -54,7 +54,7 @@ export const ExpenseForm = ({ participants }) => {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
         <FormField
           control={form.control}
-          name="name"
+          name="title"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Title</FormLabel>
@@ -107,28 +107,13 @@ export const ExpenseForm = ({ participants }) => {
             <FormItem>
               <FormLabel>Due Date</FormLabel>
               <FormControl>
-                <DatePicker name="dueDate" field={field} />
+                <DatePicker name="dueDate" field={field} disableBefore={new Date(new Date().setHours(0, 0, 0, 0))}/>
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
 
-        {/* Participants selector */}
-        {/* <FormField
-          control={form.control}
-          name="userExpense"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel> Add Participants</FormLabel>
-              <ParticipantSelector
-                participants={participants}
-                onChange={(selected) => form.setValue("userExpense", selected)}
-              />
-              <FormMessage />
-            </FormItem>
-          )}
-        /> */}
         <Button type="submit">Submit</Button>
       </form>
     </Form>

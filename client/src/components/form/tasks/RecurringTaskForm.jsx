@@ -22,7 +22,7 @@ import {
   SelectTrigger,
   SelectContent,
   SelectItem,
-  SelectValue,
+  SelectValue, 
 } from "../../ui/select";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";

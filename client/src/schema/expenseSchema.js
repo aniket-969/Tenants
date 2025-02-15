@@ -11,7 +11,7 @@ const participantSchema = z.object({
 });
 
 export const createExpenseSchema = z.object({
-  name: stringValidation(1, 20, "name"),
+  title: stringValidation(1, 20, "name"),
   totalAmount: z
     .number()
     .positive("Amount owed must be a positive number")
@@ -19,13 +19,7 @@ export const createExpenseSchema = z.object({
     .min(1),
   imageUrl: stringValidation(5, 300, "imageUrl").optional(),
   userExpense: z.array(participantSchema),
-  dueDate: z
-    .string()
-    .transform((val) => new Date(val))
-    .refine((date) => !isNaN(date.getTime()), {
-      message: "Invalid date format",
-    })
-    .optional(),
+  dueDate: z.coerce.date(),
 });
 
 export const updatePaymentSchema = z.object({
