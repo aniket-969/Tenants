@@ -23,13 +23,14 @@ import ExpenseParticipantSelector from "../Expense/ExpenseParticipantSelector";
 
 export const ExpenseForm = ({ participants }) => {
   const { roomId } = useParams();
+  const {createExpenseMutation} = useExpense(roomId)
   const onSubmit = async (values) => {
     console.log(values, roomId);
-    return;
+    // return;
     try {
       const response = await createExpenseMutation.mutateAsync(values, roomId);
       console.log(response);
-      toast("Expense issue added");
+      toast("Splitted Expense ");
     } catch (error) {
       console.error("Error during registration:", error);
     }

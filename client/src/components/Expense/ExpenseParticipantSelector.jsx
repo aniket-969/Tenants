@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import { PlusCircle, XCircle, Pencil } from "lucide-react";
@@ -11,43 +11,47 @@ import {
 import { Input } from "@/components/ui/input";
 import { useFieldArray } from "react-hook-form";
 
-const ExpenseParticipantSelector = ({ 
-  participants, 
+const ExpenseParticipantSelector = ({
+  participants,
   form,
-  disabled = false 
+  disabled = false,
 }) => {
   const [selectedParticipant, setSelectedParticipant] = useState(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingChargeIndex, setEditingChargeIndex] = useState(null);
   const [selectionOrder, setSelectionOrder] = useState({});
-  const [chargeAmount, setChargeAmount] = useState('');
-  const [chargeReason, setChargeReason] = useState('');
+  const [chargeAmount, setChargeAmount] = useState("");
+  const [chargeReason, setChargeReason] = useState("");
 
   const { fields, append, remove, update } = useFieldArray({
     control: form.control,
-    name: "participants"
+    name: "participants",
   });
 
   const getParticipantsList = () => {
-    const selectedParticipants = participants.filter(participant => 
-      fields.some(field => field.userId === participant._id)
+    const selectedParticipants = participants.filter((participant) =>
+      fields.some((field) => field.userId === participant._id)
     );
-    selectedParticipants.sort((a, b) => selectionOrder[a._id] - selectionOrder[b._id]);
+    selectedParticipants.sort(
+      (a, b) => selectionOrder[a._id] - selectionOrder[b._id]
+    );
 
-    const unselectedParticipants = participants.filter(participant => 
-      !fields.some(field => field.userId === participant._id)
+    const unselectedParticipants = participants.filter(
+      (participant) => !fields.some((field) => field.userId === participant._id)
     );
 
     return [...selectedParticipants, ...unselectedParticipants];
   };
 
   const handleParticipantSelect = (participant) => {
-    const isSelected = fields.some(field => field.userId === participant._id);
-    
+    const isSelected = fields.some((field) => field.userId === participant._id);
+
     if (isSelected) {
-      const index = fields.findIndex(field => field.userId === participant._id);
+      const index = fields.findIndex(
+        (field) => field.userId === participant._id
+      );
       remove(index);
-      setSelectionOrder(prev => {
+      setSelectionOrder((prev) => {
         const newOrder = { ...prev };
         delete newOrder[participant._id];
         return newOrder;
@@ -55,11 +59,11 @@ const ExpenseParticipantSelector = ({
     } else {
       append({
         userId: participant._id,
-        additionalCharges: []
+        additionalCharges: [],
       });
-      setSelectionOrder(prev => ({
+      setSelectionOrder((prev) => ({
         ...prev,
-        [participant._id]: Date.now()
+        [participant._id]: Date.now(),
       }));
     }
   };
@@ -69,8 +73,8 @@ const ExpenseParticipantSelector = ({
     e.stopPropagation();
     setSelectedParticipant(participantId);
     setEditingChargeIndex(null);
-    setChargeAmount('');
-    setChargeReason('');
+    setChargeAmount("");
+    setChargeReason("");
     setIsDialogOpen(true);
   };
 
@@ -85,7 +89,9 @@ const ExpenseParticipantSelector = ({
   };
 
   const handleChargeConfirm = () => {
-    const participantIndex = fields.findIndex(p => p.userId === selectedParticipant);
+    const participantIndex = fields.findIndex(
+      (p) => p.userId === selectedParticipant
+    );
     if (participantIndex === -1) return;
 
     const currentParticipant = fields[participantIndex];
@@ -96,7 +102,7 @@ const ExpenseParticipantSelector = ({
       updatedCharges = [...(currentParticipant.additionalCharges || [])];
       updatedCharges[editingChargeIndex] = {
         amount: Number(chargeAmount),
-        reason: chargeReason
+        reason: chargeReason,
       };
     } else {
       // Add new charge
@@ -104,20 +110,20 @@ const ExpenseParticipantSelector = ({
         ...(currentParticipant.additionalCharges || []),
         {
           amount: Number(chargeAmount),
-          reason: chargeReason
-        }
+          reason: chargeReason,
+        },
       ];
     }
 
     update(participantIndex, {
       ...currentParticipant,
-      additionalCharges: updatedCharges
+      additionalCharges: updatedCharges,
     });
 
     setIsDialogOpen(false);
     setEditingChargeIndex(null);
-    setChargeAmount('');
-    setChargeReason('');
+    setChargeAmount("");
+    setChargeReason("");
   };
 
   const removeParticipant = (index, e) => {
@@ -125,7 +131,7 @@ const ExpenseParticipantSelector = ({
     e.stopPropagation();
     const participant = fields[index];
     remove(index);
-    setSelectionOrder(prev => {
+    setSelectionOrder((prev) => {
       const newOrder = { ...prev };
       delete newOrder[participant.userId];
       return newOrder;
@@ -136,8 +142,12 @@ const ExpenseParticipantSelector = ({
     <div className="space-y-2">
       <ScrollArea className="h-[14rem] w-full rounded-md border p-2">
         {getParticipantsList().map((participant, index) => {
-          const isSelected = fields.some(field => field.userId === participant._id);
-          const fieldIndex = fields.findIndex(field => field.userId === participant._id);
+          const isSelected = fields.some(
+            (field) => field.userId === participant._id
+          );
+          const fieldIndex = fields.findIndex(
+            (field) => field.userId === participant._id
+          );
           const field = isSelected ? fields[fieldIndex] : null;
 
           return (
@@ -145,7 +155,7 @@ const ExpenseParticipantSelector = ({
               key={participant._id}
               onClick={() => handleParticipantSelect(participant)}
               className={`flex items-center justify-between space-x-2 p-2 rounded-lg cursor-pointer hover:bg-accent/50 mb-2 ${
-                isSelected ? 'bg-card text-card-foreground' : ''
+                isSelected ? "bg-card text-card-foreground" : ""
               }`}
             >
               <div className="flex-1">
@@ -157,7 +167,9 @@ const ExpenseParticipantSelector = ({
                   />
                   <div>
                     <p className="font-semibold">{participant.username}</p>
-                    <p className={`text-sm ${isSelected ? 'text-card-foreground' : 'text-gray-500'}`}>
+                    <p
+                      className={`text-sm ${isSelected ? "text-card-foreground" : "text-gray-500"}`}
+                    >
                       {participant.fullName}
                     </p>
                   </div>
@@ -165,7 +177,10 @@ const ExpenseParticipantSelector = ({
                 {field?.additionalCharges?.length > 0 && (
                   <div className="mt-2 ml-11 space-y-1">
                     {field.additionalCharges.map((charge, chargeIndex) => (
-                      <div key={chargeIndex} className="flex items-center text-sm text-blue-500">
+                      <div
+                        key={chargeIndex}
+                        className="flex items-center text-sm text-blue-500"
+                      >
                         <span className="flex-1">
                           {charge.amount} - {charge.reason}
                         </span>
@@ -174,7 +189,14 @@ const ExpenseParticipantSelector = ({
                           variant="ghost"
                           size="icon"
                           className="h-6 w-6"
-                          onClick={(e) => handleEditCharge(participant._id, chargeIndex, charge, e)}
+                          onClick={(e) =>
+                            handleEditCharge(
+                              participant._id,
+                              chargeIndex,
+                              charge,
+                              e
+                            )
+                          }
                           disabled={disabled}
                         >
                           <Pencil className="h-3 w-3" />
@@ -212,18 +234,23 @@ const ExpenseParticipantSelector = ({
       </ScrollArea>
 
       {/* Additional Charges Dialog */}
-      <Dialog open={isDialogOpen} onOpenChange={(open) => {
-        if (!open) {
-          setIsDialogOpen(false);
-          setEditingChargeIndex(null);
-          setChargeAmount('');
-          setChargeReason('');
-        }
-      }}>
+      <Dialog
+        open={isDialogOpen}
+        onOpenChange={(open) => {
+          if (!open) {
+            setIsDialogOpen(false);
+            setEditingChargeIndex(null);
+            setChargeAmount("");
+            setChargeReason("");
+          }
+        }}
+      >
         <DialogContent>
           <DialogHeader>
             <DialogTitle>
-              {editingChargeIndex !== null ? 'Edit Additional Charge' : 'Add Additional Charge'}
+              {editingChargeIndex !== null
+                ? "Edit Additional Charge"
+                : "Add Additional Charge"}
             </DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
@@ -244,14 +271,14 @@ const ExpenseParticipantSelector = ({
               />
             </div>
             <div className="flex justify-end space-x-2">
-              <Button 
-                type="button" 
-                variant="outline" 
+              <Button
+                type="button"
+                variant="outline"
                 onClick={() => {
                   setIsDialogOpen(false);
                   setEditingChargeIndex(null);
-                  setChargeAmount('');
-                  setChargeReason('');
+                  setChargeAmount("");
+                  setChargeReason("");
                 }}
               >
                 Cancel
@@ -261,7 +288,7 @@ const ExpenseParticipantSelector = ({
                 onClick={handleChargeConfirm}
                 disabled={!chargeAmount || !chargeReason}
               >
-                {editingChargeIndex !== null ? 'Update' : 'Add'}
+                {editingChargeIndex !== null ? "Update" : "Add"}
               </Button>
             </div>
           </div>
