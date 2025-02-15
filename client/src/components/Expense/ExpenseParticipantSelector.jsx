@@ -1,81 +1,212 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { PlusCircle, X, XCircle } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { useFieldArray, useForm } from "react-hook-form";
 
-const ExpenseParticipantSelector = ({ participants, onChange }) => {
-  const [selected, setSelected] = useState([]);
-  const [additionalCharges, setAdditionalCharges] = useState({});
+const ExpenseParticipantSelector = ({
+  participants,
+  form,
+  disabled = false,
+}) => {
+  const [selectedParticipant, setSelectedParticipant] = useState(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  const toggleSelection = (participant) => {
-    setSelected((prev) =>
-      prev.includes(participant._id)
-        ? prev.filter((id) => id !== participant._id)
-        : [...prev, participant._id]
+  const { fields, append, remove } = useFieldArray({
+    control: form.control,
+    name: "participants",
+  });
+
+  const handleParticipantSelect = (participant) => {
+    // Check if participant is already selected
+    const isAlreadySelected = fields.some(
+      (field) => field.userId === participant._id
     );
+    if (isAlreadySelected) return;
+
+    // Add participant to form
+    append({
+      userId: participant._id,
+      additionalCharges: [],
+    });
   };
 
-  const handleChargeChange = (id, key, value) => {
-    setAdditionalCharges((prev) => ({
-      ...prev,
-      [id]: { ...prev[id], [key]: value },
-    }));
+  const handleAddCharge = (participantId) => {
+    setSelectedParticipant(participantId);
+    setIsDialogOpen(true);
+  };
 
-    onChange(
-      Object.entries(additionalCharges).map(([userId, data]) => ({
-        userId,
-        ...data,
-      }))
+  const handleChargeSubmit = (data) => {
+    const participantIndex = fields.findIndex(
+      (p) => p.userId === selectedParticipant
     );
+    if (participantIndex === -1) return;
+
+    const currentParticipant = fields[participantIndex];
+    const updatedCharges = [
+      ...(currentParticipant.additionalCharges || []),
+      {
+        amount: Number(data.amount),
+        reason: data.reason,
+      },
+    ];
+
+    form.setValue(
+      `participants.${participantIndex}.additionalCharges`,
+      updatedCharges
+    );
+    setIsDialogOpen(false);
+  };
+
+  const removeParticipant = (index) => {
+    remove(index);
   };
 
   return (
-    <ScrollArea>
-      <div className="grid gap-2 h-[14rem] py-2">
-        {participants.map((user) => (
-          <div
-            key={user._id}
-            className={`flex items-center space-x-2 cursor-pointer px-2 py-1 rounded-lg ${
-              selected.includes(user._id) ? "bg-card text-card-foreground" : ""
-            }`}
-            onClick={() => toggleSelection(user)}
-          >
-            <img
-              src={user.avatar}
-              alt={`${user.fullName} avatar`}
-              className="w-8 h-8 rounded-full"
-            />
-            <div>
-              <p className="font-semibold">{user.username}</p>
-              <p className="text-sm text-gray-500">{user.fullName}</p>
-            </div>
-            {selected.includes(user._id) && (
-              <div className="flex flex-col">
-                <Input
-                  type="number"
-                  placeholder="Amount"
-                  value={additionalCharges[user._id]?.amount || ""}
-                  onChange={(e) =>
-                    handleChargeChange(
-                      user._id,
-                      "amount",
-                      Number(e.target.value)
-                    )
-                  }
-                />
-                <Input
-                  type="text"
-                  placeholder="Reason"
-                  value={additionalCharges[user._id]?.reason || ""}
-                  onChange={(e) =>
-                    handleChargeChange(user._id, "reason", e.target.value)
-                  }
-                />
+    <div className="space-y-4">
+      <ScrollArea className="h-[14rem] w-full rounded-md border p-4">
+        <div className="space-y-4">
+          {fields.map((field, index) => {
+            const participant = participants.find(
+              (p) => p._id === field.userId
+            );
+            if (!participant) return null;
+
+            return (
+              <div
+                key={field.id}
+                className="flex items-center justify-between space-x-2 bg-card p-3 rounded-lg"
+              >
+                <div className="flex items-center space-x-3">
+                  <img
+                    src={participant.avatar}
+                    alt={`${participant.fullName} avatar`}
+                    className="w-8 h-8 rounded-full"
+                  />
+                  <div>
+                    <p className="font-semibold">{participant.username}</p>
+                    <p className="text-sm text-gray-500">
+                      {participant.fullName}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => handleAddCharge(participant._id)}
+                    disabled={disabled}
+                  >
+                    <PlusCircle className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => removeParticipant(index)}
+                    disabled={disabled}
+                  >
+                    <XCircle className="h-4 w-4" />
+                  </Button>
+                </div>
               </div>
-            )}
-          </div>
-        ))}
-      </div>
-    </ScrollArea>
+            );
+          })}
+        </div>
+      </ScrollArea>
+
+      {/* Participant Selector */}
+      <ScrollArea className="h-[14rem] w-full rounded-md border p-4">
+        <div className="space-y-2">
+          {participants.map((participant) => {
+            const isSelected = fields.some(
+              (field) => field.userId === participant._id
+            );
+
+            return (
+              <div
+                key={participant._id}
+                onClick={() =>
+                  !isSelected && handleParticipantSelect(participant)
+                }
+                className={`flex items-center space-x-3 p-2 rounded-lg cursor-pointer hover:bg-accent ${
+                  isSelected ? "opacity-50 cursor-not-allowed" : ""
+                }`}
+              >
+                <img
+                  src={participant.avatar}
+                  alt={`${participant.fullName} avatar`}
+                  className="w-8 h-8 rounded-full"
+                />
+                <div>
+                  <p className="font-semibold">{participant.username}</p>
+                  <p className="text-sm text-gray-500">
+                    {participant.fullName}
+                  </p>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </ScrollArea>
+
+      {/* Additional Charges Dialog */}
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Add Additional Charge</DialogTitle>
+          </DialogHeader>
+          <form
+            onSubmit={form.handleSubmit(handleChargeSubmit)}
+            className="space-y-4"
+          >
+            <div className="space-y-2">
+              <Input
+                type="number"
+                placeholder="Amount"
+                {...form.register("amount")}
+              />
+              {form.formState.errors.amount && (
+                <p className="text-sm text-red-500">
+                  {form.formState.errors.amount.message}
+                </p>
+              )}
+            </div>
+            <div className="space-y-2">
+              <Input
+                type="text"
+                placeholder="Reason"
+                {...form.register("reason")}
+              />
+              {form.formState.errors.reason && (
+                <p className="text-sm text-red-500">
+                  {form.formState.errors.reason.message}
+                </p>
+              )}
+            </div>
+            <div className="flex justify-end space-x-2">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setIsDialogOpen(false)}
+              >
+                Cancel
+              </Button>
+              <Button type="submit">Add Charge</Button>
+            </div>
+          </form>
+        </DialogContent>
+      </Dialog>
+    </div>
   );
 };
 

@@ -44,7 +44,6 @@ export const ExpenseForm = ({ participants }) => {
       dueDate: undefined,
       paidBy: "",
       participants: [],
-      additionalCharge: [],
     },
   });
 
@@ -89,15 +88,14 @@ export const ExpenseForm = ({ participants }) => {
         <FormField
           control={form.control}
           name="participants"
-          render={() => (
+          render={({ field }) => (
             <FormItem>
               <FormLabel>Select Participants</FormLabel>
               <FormControl>
                 <ExpenseParticipantSelector
                   participants={participants}
-                  onChange={(selectedParticipants) => {
-                    form.setValue("additionalCharge", selectedParticipants);
-                  }}
+                  form={form}
+                  disabled={field.disabled}
                 />
               </FormControl>
               <FormMessage />
