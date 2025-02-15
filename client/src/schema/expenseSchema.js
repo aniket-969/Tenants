@@ -9,8 +9,7 @@ const additionalChargeSchema = z.object({
   amount: z.coerce
     .number()
     .positive("Additional charge must be a positive number")
-    .max(1000000, "Amount can't exceed 6 digits")
-    .default(0), // Default to 0 if not provided
+    .max(1000000, "Amount can't exceed 6 digits"), 
   reason: z.string().min(1, "Reason is required").max(200, "Reason too long"),
 });
 

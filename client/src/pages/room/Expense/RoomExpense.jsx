@@ -13,7 +13,7 @@ const RoomExpense = () => {
   const { createExpenseMutation } = useExpense(roomId);
   const { roomQuery } = useRoom(roomId);
   const { data, isLoading, isError } = roomQuery;
-
+ 
   useEffect(() => {
     const handleCreateExpense = (newExpense) => {
       console.log("create it");
@@ -42,7 +42,7 @@ const RoomExpense = () => {
       <h2 className="font-bold text-xl">Split Expense</h2>
 
       <FormWrapper>
-        <ExpenseForm />
+        <ExpenseForm participants={participants}/>
       </FormWrapper>
     </div>
   );

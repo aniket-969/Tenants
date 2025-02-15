@@ -11,18 +11,20 @@ import {
   FormField,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 import { toast } from "react-toastify";
 import { useExpense } from "@/hooks/useExpense";
 import { useParams } from "react-router-dom";
 import ParticipantSelector from "../ParticipantsSelector";
 import { useRoom } from "@/hooks/useRoom";
-import { Spinner } from "../ui/spinner";
-import DatePicker from "../ui/datePicker";
+import { Spinner } from "@/components/ui/spinner";
+import DatePicker from "@/components/ui/datePicker";
+import ExpenseParticipantSelector from "../Expense/ExpenseParticipantSelector";
 
 export const ExpenseForm = ({ participants }) => {
+  const { roomId } = useParams();
   const onSubmit = async (values) => {
-    console.log(values);
+    console.log(values, roomId);
     return;
     try {
       const response = await createExpenseMutation.mutateAsync(values, roomId);
@@ -37,20 +39,18 @@ export const ExpenseForm = ({ participants }) => {
     resolver: zodResolver(createExpenseSchema),
     defaultValues: {
       title: "",
-      totalAmount: "",
+      totalAmount: 0,
       imageUrl: "",
       dueDate: undefined,
-      userExpense: [
-        {
-          userId: "",
-          amountOwed: "",
-        },
-      ],
+      paidBy: "",
+      participants: [],
+      additionalCharge: [],
     },
   });
 
   return (
     <Form {...form}>
+      {/* title */}
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
         <FormField
           control={form.control}
@@ -66,7 +66,7 @@ export const ExpenseForm = ({ participants }) => {
             </FormItem>
           )}
         />
-
+        {/* Total amount */}
         <FormField
           control={form.control}
           name="totalAmount"
@@ -77,7 +77,7 @@ export const ExpenseForm = ({ participants }) => {
                 <Input
                   placeholder="add total amount"
                   {...field}
-                  onChange={(e) => field.onChange(Number(e.target.value))}
+                  type="number"
                 />
               </FormControl>
 
@@ -85,21 +85,40 @@ export const ExpenseForm = ({ participants }) => {
             </FormItem>
           )}
         />
+        {/* Participants selector with additional charge*/}
+        <FormField
+          control={form.control}
+          name="participants"
+          render={() => (
+            <FormItem>
+              <FormLabel>Select Participants</FormLabel>
+              <FormControl>
+                <ExpenseParticipantSelector
+                  participants={participants}
+                  onChange={(selectedParticipants) => {
+                    form.setValue("additionalCharge", selectedParticipants);
+                  }}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        {/* image or bill link */}
         <FormField
           control={form.control}
           name="imageUrl"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Expense Provider</FormLabel>
+              <FormLabel>Bill image link</FormLabel>
               <FormControl>
                 <Input placeholder="add link of expense" {...field} />
               </FormControl>
-
               <FormMessage />
             </FormItem>
           )}
         />
-
+        {/* Due date */}
         <FormField
           control={form.control}
           name="dueDate"
@@ -107,7 +126,11 @@ export const ExpenseForm = ({ participants }) => {
             <FormItem>
               <FormLabel>Due Date</FormLabel>
               <FormControl>
-                <DatePicker name="dueDate" field={field} disableBefore={new Date(new Date().setHours(0, 0, 0, 0))}/>
+                <DatePicker
+                  name="dueDate"
+                  field={field}
+                  disableBefore={new Date(new Date().setHours(0, 0, 0, 0))}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
