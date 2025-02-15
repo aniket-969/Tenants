@@ -15,13 +15,14 @@ import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
 import { useAward } from "@/hooks/useAwards";
 import { createCustomAwardSchema } from "@/schema/awardsSchema";
+import ParticipantSelector from "../ParticipantsSelector";
 
-export const AwardsForm = () => {
+export const AwardsForm = ({ participants }) => {
   const { roomId } = useParams();
   const { createAwardMutation } = useAward();
   const onSubmit = async (values) => {
     console.log(values, roomId);
-
+    return;
     try {
       const response = await createAwardMutation.mutateAsync({
         data: values,
@@ -40,7 +41,7 @@ export const AwardsForm = () => {
       description: "",
       image: "",
       criteria: "",
-      assignedTo: "",
+      assignedTo: [],
     },
   });
 
@@ -95,7 +96,7 @@ export const AwardsForm = () => {
           )}
         />
 
-        {/* start date */}
+        {/* criteria*/}
         <FormField
           control={form.control}
           name="criteria"
@@ -111,16 +112,18 @@ export const AwardsForm = () => {
           )}
         />
 
-        {/* end date */}
+        {/* Participants Selector */}
         <FormField
           control={form.control}
           name="assignedTo"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Assigned To</FormLabel>
-              <FormControl>
-                <Input placeholder="add assignedTo" {...field} />
-              </FormControl>
+              <FormLabel> Choose Participants</FormLabel>
+              <ParticipantSelector
+                participants={participants}
+                onChange={field.onChange}
+                selectionTransform={(participant) => participant._id}
+              />
 
               <FormMessage />
             </FormItem>

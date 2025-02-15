@@ -6,62 +6,35 @@ import { AwardsForm } from "@/components/form/AwardsForm";
 import { useEffect, useState } from "react";
 import { getSocket } from "@/socket";
 import FormWrapper from "@/components/ui/formWrapper";
+import { useRoom } from "@/hooks/useRoom";
 
 const Awards = () => {
   const { roomId } = useParams();
-  const { awardsQuery } = useAward();
+
   const [awards, setAwards] = useState([]);
-  const { isLoading, data, isError } = awardsQuery(roomId);
 
-  useEffect(() => {
-    if (data) {
-      setAwards(data);
-    }
-  }, [data]);
+  const { roomQuery } = useRoom(roomId);
 
-
-  const socket = getSocket();
-
-    useEffect(() => {
-      const handleCreateAward = (newAward) => {
-        console.log("create it");
-        setAwards((prevAward) => [...prevAward, newAward]);
-      };
-      socket.on("createAward", handleCreateAward);
-  
-      return () => {
-        socket.off("createAward", handleCreateAward);
-      };
-    }, [socket]);
-
-  if (isLoading) {
+  if (roomQuery.isLoading) {
     return <Spinner />;
   }
-  if (isError) {
-    return <div> Something went wrong. Please refresh or login again</div>;
+  if (roomQuery.isError) {
+    return <>Something went wrong . Please refresh</>;
   }
 
+  const participants = [
+    ...(roomQuery.data.tenants || []),
+    ...(roomQuery.data.landlord ? [roomQuery.data.landlord] : []),
+  ];
+
   return (
-    <div className=" p-6 ">
+    <div className=" p-6 flex flex-col bb gap-4">
       {/* Award heading */}
       <h1 className="text-2xl font-bold mb-6">Awards</h1>
-      {/* Awards grid */}
-      <FormWrapper>
-        <AwardsForm />
-      </FormWrapper>
 
-      <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 lg:gap-10 content-center ">
-        {awards.map((award) => (
-          <AwardCard
-            key={award._id}
-            title={award.title}
-            description={award.description}
-            image={award.image}
-            criteria={award.criteria}
-            assignedTo={award.assignedTo}
-          />
-        ))}
-      </div>
+      <FormWrapper>
+        <AwardsForm participants={participants} />
+      </FormWrapper>
     </div>
   );
 };
