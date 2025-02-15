@@ -66,11 +66,13 @@ const roomSchema = new Schema(
         criteria: {
           type: String,
         },
-        assignedTo: {
-          type: Schema.Types.ObjectId,
-          ref: "User",
-          required: true,
-        },
+        assignedTo: [
+          {
+            type: Schema.Types.ObjectId,
+            ref: "User",
+            required: true,
+          },
+        ],
       },
     ],
     maintenanceRequests: [
