@@ -14,9 +14,9 @@ const ProfileCard = () => {
     Something went wrong . Please refresh</>
   }
   return (
-    <div className="flex flex-col items-center gap-3">
-      <div className="w-[5rem]">
-        <img src={data.avatar} alt="" />
+    <div className="flex flex-col items-center gap-3 ">
+      <div className="w-[5rem] ">
+        <img className="by rounded-[2.4rem]" src={data.avatar} alt="" />
       </div>
       <div className="flex gap-5">
         <h2>{data.fullName}</h2>
